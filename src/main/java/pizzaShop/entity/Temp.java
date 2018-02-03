@@ -9,7 +9,7 @@ public class Temp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "TEMP")
+    @Column(name = "Temp")
     @NotNull
     private String temp;
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -14,15 +15,16 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan("pizzaShop.repository")
+@ComponentScan(basePackages = "pizzaShop", excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @EnableTransactionManagement
-@EnableJpaRepositories("pizzaShop.repository")
+@EnableJpaRepositories("pizzaShop")
 public class RootConfig {
 
     @Bean
@@ -52,7 +54,7 @@ public class RootConfig {
         emf.setDataSource(dataSource);
         emf.setJpaProperties(properties);
         emf.setJpaVendorAdapter(adapter);
-        emf.setPackagesToScan("pizzaShop.repository");
+        emf.setPackagesToScan("pizzaShop");
         return emf;
     }
 

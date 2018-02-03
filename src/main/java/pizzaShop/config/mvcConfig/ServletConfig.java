@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = {"pizzaShop.controller", "pizzaShop.repository"})
+@ComponentScan(basePackages = {"pizzaShop"})
 public class ServletConfig extends WebMvcConfigurerAdapter {
 
     @Bean
