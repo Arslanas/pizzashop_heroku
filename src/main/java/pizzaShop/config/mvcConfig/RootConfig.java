@@ -22,9 +22,10 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = "pizzaShop", excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
+@ComponentScan(basePackages = {"pizzaShop"},
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @EnableTransactionManagement
-@EnableJpaRepositories("pizzaShop")
+@EnableJpaRepositories(basePackages = {"pizzaShop"})
 public class RootConfig {
 
     @Bean

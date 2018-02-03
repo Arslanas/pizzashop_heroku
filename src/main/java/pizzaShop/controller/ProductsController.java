@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import pizzaShop.repository.TempRepository;
 
 @Controller
@@ -26,5 +28,11 @@ public class ProductsController {
     public String products(Model model){
         model.addAttribute("temp",repo.getTemp());
         return "Products";
+    }
+
+    @RequestMapping("/test")
+    public String test(@RequestParam("quantity") int quan, Model model){
+        model.addAttribute("quantity", quan);
+        return "ProductsTest";
     }
 }

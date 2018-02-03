@@ -1,0 +1,19 @@
+body {
+    padding-top: 52px;
+    background-color: #f0efe3;
+}
+.navbar{
+    margin-bottom: 0em;
+}
+#sidebar{
+
+}
+.test_color{
+    color: #d41a10;
+    background-color: #77d409;
+}
+@media (min-width: 922px) {
+    body {
+        padding-top:52px;
+    }
+}
