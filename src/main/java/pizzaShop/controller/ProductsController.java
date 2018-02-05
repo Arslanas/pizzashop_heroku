@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pizzaShop.repository.TempRepository;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/products")
 public class ProductsController {
@@ -18,7 +20,7 @@ public class ProductsController {
 
     @Autowired
     public ProductsController(TempRepository repo){
-        Assert.notNull(repo,"TempRepository is null!!!");
+        Assert.notNull(repo,"TempRepository is null");
         this.repo = repo;
     }
 
