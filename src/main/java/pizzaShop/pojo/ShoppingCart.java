@@ -24,10 +24,7 @@ public class ShoppingCart {
     }
 
     public Product getProductByItemId(Long id) {
-        for (Product p : cart) {
-            if (p.getItem().getId() == id) return p;
-        }
-        return null;
+        return  cart.stream().filter(product -> product.getItem().getId() == id).findFirst().get();
     }
 
     public boolean contains(Product product) {
@@ -41,6 +38,15 @@ public class ShoppingCart {
         }
         return finalPrice;
 
+    }
+
+    public Product getProductByItemID(long itemID){
+       return cart.stream().filter(e-> e.getItem().getId()==itemID).findFirst().get();
+    }
+
+    public void removeFromCartByItemID(long itemID){
+        Product p = cart.stream().filter(e-> e.getItem().getId()==itemID).findFirst().get();
+        cart.remove(p);
     }
 
     @Override

@@ -26,6 +26,9 @@ public class Product {
     public void increaseQuantity(){
         quantity++;
     }
+    public void decreaseQuantity(){
+       if(quantity > 1) quantity--;
+    }
     public void increaseQuantity(int number){
         quantity+= number;
     }
@@ -38,17 +41,13 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
 
         Product product = (Product) o;
-
-        if (quantity != product.quantity) return false;
         return item.equals(product.item);
 
     }
 
     @Override
     public int hashCode() {
-        int result = item.hashCode();
-        result = 31 * result + quantity;
-        return result;
+        return item.hashCode();
     }
 
     @Override

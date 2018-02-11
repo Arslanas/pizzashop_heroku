@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
 
 <html>
 <head>
@@ -46,16 +47,16 @@
                                 <tbody>
                                 <c:forEach items="${cartSet}" var="product">
                                     <tr>
-                                        <td><a href="#" class="btn btn-danger btn-sm "><img
+                                        <td><a href="${contextPath}/products/shoppingCart/remove/${product.item.id}" class="btn btn-danger btn-sm "><img
                                                 src="${contextPath}/resources/vendor/images/circle-x.svg" width="8"></a>
                                             <span
                                                     class="ml-2">${product.item.name}</span>
                                         </td>
                                         <td>${product.item.price} р</td>
-                                        <td><a href="#" class="btn btn-warning btn-sm"><img
+                                        <td><a href="${contextPath}/products/shoppingCart/decrease/${product.item.id}" class="btn btn-warning btn-sm"><img
                                                 src="${contextPath}/resources/vendor/images/minus.svg" width="8"></a>
                                             <span class="mx-3">${product.quantity}</span>
-                                            <a href="#" class="btn btn-warning btn-sm"><img
+                                            <a href="${contextPath}/products/shoppingCart/increase/${product.item.id}" class="btn btn-warning btn-sm"><img
                                                     src="${contextPath}/resources/vendor/images/plus.svg"
                                                     width="8"></a></td>
                                         <td>${product.totalPrice} р</td>
@@ -67,7 +68,7 @@
                             </table>
                         </div>
                         <div class="col-12 mt-3 ml-1 align-self-end">
-                            <a class="btn btn-danger " href="#">Очистить корзину</a>
+                            <a href="${contextPath}/products/shoppingCart/clear" class="btn btn-danger ">Очистить корзину</a>
                         </div>
                     </div>
                 </div>
@@ -79,7 +80,7 @@
                                     class="font-weight-bold"> ${cart.finalPrice} </span>р</h3>
                         </div>
                         <div class="col-12 mb-4">
-                            <a class="btn btn-warning btn-block" href="#">Оформить заказ</a>
+                            <a href="${contextPath}/products/customerDetails" class="btn btn-warning btn-block" href="#">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

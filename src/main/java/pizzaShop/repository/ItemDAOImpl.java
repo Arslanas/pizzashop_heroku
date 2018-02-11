@@ -8,9 +8,9 @@ import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.*;
 
 
 @Repository
@@ -30,6 +30,14 @@ public class ItemDAOImpl extends GenericDAOImpl<Item, Long> implements ItemDAO {
         Category category = categoryDAO.getCategoryByName(categoryName);
         return categoryDAO.getSetOfItems(category);
     };
+
+    @Override
+    public Set<Item> getItemsBySearchString(String search) {
+        search = ("%"+search+"%");
+        String q = "select e from Item e where e.name like :name ";
+        TypedQuery<Item> query = em.createQuery(q, Item.class).setParameter("name", search);
+        return new HashSet(query.getResultList());
+    }
 
     @Transactional
     @Override
