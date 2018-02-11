@@ -51,6 +51,9 @@ public class RootConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter adapter){
         Properties properties = new Properties();
         properties.setProperty("hibernate.format_sql", String.valueOf(true));
+        properties.setProperty("hibernate.connection.CharSet","utf8");
+        properties.setProperty("hibernate.connection.characterEncoding","utf8");
+        properties.setProperty("hibernate.connection.useUnicode", String.valueOf(true));
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
         emf.setJpaProperties(properties);

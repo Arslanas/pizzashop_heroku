@@ -17,7 +17,7 @@ public class Category implements Comparable<Category> {
     @NotNull
     private int order;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
 
     public Category() {
@@ -60,18 +60,11 @@ public class Category implements Comparable<Category> {
         return id;
     }
 
-    Set<CategorizedItem> getsetOfCategorizedItems() {
+    public Set<CategorizedItem> getSetOfCategorizedItems() {
         return setOfCategorizedItems;
     }
 
-    public Set<Item> getSetOfItems() {
-        Set<Item> setOfItems = new HashSet<>();
-        for (CategorizedItem catItem :
-                getsetOfCategorizedItems()) {
-            setOfItems.add(catItem.getItem());
-        }
-        return setOfItems;
-    }
+
 
     @Override
     public boolean equals(Object o) {

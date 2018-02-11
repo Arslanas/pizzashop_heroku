@@ -60,7 +60,7 @@ public class CategorizedItem {
         this.item = item;
         this.id.categoryID = category.getId();
         this.id.itemID = item.getId();
-        category.getsetOfCategorizedItems().add(this);
+        category.getSetOfCategorizedItems().add(this);
         item.getSetOfCategorizedItems().add(this);
     }
 

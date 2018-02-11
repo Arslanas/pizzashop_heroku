@@ -1,6 +1,9 @@
 package pizzaShop.config.mvcConfig;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -17,5 +20,10 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[]{new CharacterEncodingFilter("UTF-8", true)};
     }
 }

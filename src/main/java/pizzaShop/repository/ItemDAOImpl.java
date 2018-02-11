@@ -9,6 +9,7 @@ import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,6 +25,11 @@ public class ItemDAOImpl extends GenericDAOImpl<Item, Long> implements ItemDAO {
 
 
 
+    @Override
+    public Set<Item> getItemsByCategoryName(String categoryName){
+        Category category = categoryDAO.getCategoryByName(categoryName);
+        return categoryDAO.getSetOfItems(category);
+    };
 
     @Transactional
     @Override
@@ -35,7 +41,6 @@ public class ItemDAOImpl extends GenericDAOImpl<Item, Long> implements ItemDAO {
         Item mergedItem = makePersistent(item);
         createCategorizedItems(itemForm.getSetOfCategorizedItems(), mergedItem);
         logger.info(mergedItem.getSetOfCategorizedItems());
-        logger.info(getByID(18l).getSetOfCategorizedItems());
         return mergedItem;
     }
 

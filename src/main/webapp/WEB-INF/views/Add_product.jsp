@@ -18,56 +18,14 @@
 </head>
 <body>
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top ">
-
-    <div class="container">
-        <a class="navbar-brand font-weight-bold display-4 " href="#">Pizza Shop</a>
-
-        <button class="btn btn-warning  mx-auto  " type="submit"><img src="/resources/vendor/images/cart.svg"
-                                                                      width="20"> Ваш заказ : 566 р
-        </button>
-        <ul class="navbar-nav ml-auto">
-            <li>
-                <form class="form-inline mt-5 mt-md-0">
-                    <input class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search">
-                    <button class="btn  btn-warning my-2 my-sm-0" type="submit">Найти</button>
-                </form>
-            </li>
-            <li class="nav-item active ml-3">
-                <button class="btn  btn-warning  my-2 my-sm-0 " type="submit"><img
-                        src="/resources/vendor/images/person.svg" width="20"> Войти
-                </button>
-            </li>
-        </ul>
-    </div>
-
-</nav>
+<%@ include file="templates/NavBar_template.jsp"%>
 
 
 <div class="container">
     <div class="row ">
         <!-- sidebar -->
-        <div class="col-3 bg-info ">
-            <div class="row sticky-top">
-                <div class="col">
-                    <div class="row ">
-                        <div class="col-6 mx-auto ">
-                            <br>
-                            <h1 class="my-4 text-white">Меню</h1>
-                            <br>
-                        </div>
-                    </div>
-                    <div class="row mx-auto list-group mb-3">
-                        <c:forEach items="${categories}" var="cat">
-                            <a class="btn btn-outline-info bg-info btn-block text-white ">${cat.name}</a>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
+        <%@ include file="templates/Sidebar_template.jsp"%>
 
-
-        </div>
-        <!-- sidebar -->
         <div class="col ">
             <div class="row">
 
@@ -123,21 +81,6 @@
 
 
 <!-- Footer -->
-<footer class="py-5 bg-info ">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Pizza Shop 2018</p>
-    </div>
-    <!-- /.container -->
-</footer>
-
-
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="${contextPath}/resources/vendor/js/jquery-3.2.1.slim.min.js"></script>
-<script>window.jQuery || document.write('<script src="${contextPath}/resources/vendor/js/jquery-3.2.1.min"><\/script>')</script>
-<script src="${contextPath}/resources/vendor/js/bootstrap.bundle.min.js"></script>
-<script src="${contextPath}/resources/vendor/js/bootstrap.min.js"></script>
+<%@ include file="templates/Footer_template.jsp"%>
 </body>
 </html>
