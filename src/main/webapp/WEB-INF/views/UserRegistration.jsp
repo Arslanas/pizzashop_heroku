@@ -36,43 +36,39 @@
 
                 <!-- Form -->
                 <div class="col-12 mt-4 mb-5">
-                    <form>
+                    <sf:form action="${contextPath}/admin/userRegistration" commandName="user" method="post">
                         <div class="form-group">
-                            <label for="Name">Имя</label>
-                            <input type=text" class="form-control" id="Name" >
-                        </div>
-                        <div class="form-group">
-                            <label for="Email">Почта</label>
-                            <input type="email" class="form-control" id="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="Mobil">Мобильный тел.</label>
-                            <input type="number" class="form-control" id="Mobil">
-                        </div>
-                        <div class="form-group">
-                            <label for="Username">Имя профиля</label>
-                            <input type="text" class="form-control" id="Username">
+                            <label for="Name">Имя профиля</label>
+                            <sf:input path="username" type="text" class="form-control" id="Name" />
                         </div>
                         <div class="form-group">
                             <label for="Password">Пароль</label>
-                            <input type="password" class="form-control" id="Password">
+                            <sf:input path="password" type="password" class="form-control" id="Password"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Почта</label>
+                            <sf:input path="contact.email" type="email" class="form-control" id="Email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="Mobil">Мобильный тел.</label>
+                            <sf:input path="contact.phoneNum" type="number" class="form-control" id="Mobil"/>
                         </div>
                         <div class="form-group">
                             <label for="Mobil">Адрес</label>
-                            <input type="text" class="form-control" id="Address">
+                            <sf:input path="address.streetHome" type="text" class="form-control" id="Address"/>
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
                                 <label for="Appartment">Квартира</label>
-                                <input type="number" id = "Appartment" class="form-control ml-2">
+                                <sf:input path="address.appartment" type="number" id = "Appartment" class="form-control ml-2"/>
                             </div>
                             <div class="form-group ml-5">
                                 <label for="Level">Этаж</label>
-                                <input type="number" id = "Level" class="form-control ml-2">
+                                <sf:input path="address.level" type="number" id = "Level" class="form-control ml-2"/>
                             </div>
                             <div class="form-group ml-5">
                                 <label for="Entrance">Подьезд</label>
-                                <input type="number" id = "Entrance" class="form-control ml-2">
+                                <sf:input path="address.entrance" type="number" id = "Entrance" class="form-control ml-2"/>
                             </div>
                         </div>
                         <div class="form-inline justify-content-center mt-5">
@@ -81,7 +77,7 @@
                                 <button type="reset" class="btn btn-light ml-3 ">Cancel</button>
                             </div>
                         </div>
-                    </form>
+                    </sf:form>
                 </div>
             </div>
         </div>

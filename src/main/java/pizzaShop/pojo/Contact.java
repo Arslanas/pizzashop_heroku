@@ -1,7 +1,15 @@
 package pizzaShop.pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+
+@Embeddable
 public class Contact {
+    @Column(name = "PHONENUM")
+    @NotNull
     private String phoneNum;
+    @Column(name = "EMAIL")
     private String email;
 
     public Contact() {

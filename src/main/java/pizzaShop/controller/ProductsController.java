@@ -2,6 +2,8 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -13,6 +15,7 @@ import pizzaShop.entity.ItemForm;
 import pizzaShop.pojo.*;
 import pizzaShop.repository.CategoryDAO;
 import pizzaShop.repository.ItemDAO;
+import pizzaShop.repository.ShoppingCartDAO;
 import pizzaShop.repository.TempRepository;
 
 import javax.servlet.http.HttpSession;
@@ -28,15 +31,17 @@ public class ProductsController {
     private final TempRepository repo;
     private final CategoryDAO categoryDAO;
     private final ItemDAO itemDAO;
+    private final ShoppingCartDAO shoppingCartDAO;
 
     @Autowired
-    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO) {
+    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO) {
         Assert.notNull(repo, "TempRepository is null");
         Assert.notNull(categoryDAO, "CategoryDAO is null");
         Assert.notNull(itemDAO, "ItemDAO is null");
         this.repo = repo;
         this.categoryDAO = categoryDAO;
         this.itemDAO = itemDAO;
+        this.shoppingCartDAO = shoppingCartDAO;
     }
 
 
@@ -141,8 +146,17 @@ public class ProductsController {
     }
 
     @RequestMapping("/orderConfirmation")
-    public String confirmationOrder(@ModelAttribute Customer customer) {
+    public String confirmationOrder(@ModelAttribute Customer customer, @SessionAttribute ShoppingCart cart, Model model) {
+        model.addAttribute("cartSet", cart.getCart());
+        cart.setUsername(customer.getName());
         return "OrderConfirmation";
+    }
+
+    @RequestMapping(value = "/orderConfirmation", method = RequestMethod.POST)
+    public String confirmationOrderPost(@SessionAttribute ShoppingCart cart) {
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) return "redirect:/products";
+        shoppingCartDAO.makePersistent(cart);
+        return "redirect:/products";
     }
 //////////////          ORDER_CONFIRMATION
 

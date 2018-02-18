@@ -2,9 +2,22 @@ package pizzaShop.pojo;
 
 import pizzaShop.entity.Item;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Embeddable
 public class Product {
-    private final Item item;
+
+    @ManyToOne
+    @JoinColumn(name = "ITEM_ID" )
+    private Item item;
+    @Column(name = "QUANTITY")
     private int quantity = 1;
+
+    public Product() {
+    }
 
     public Product(Item item){
         this.item = item;

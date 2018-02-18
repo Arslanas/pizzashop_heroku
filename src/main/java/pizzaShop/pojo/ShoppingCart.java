@@ -1,14 +1,35 @@
 package pizzaShop.pojo;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Entity
 public class ShoppingCart {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "USERNAME")
+    private String username;
+    @ElementCollection
+    @CollectionTable(name = "PRODUCTS", joinColumns = @JoinColumn(name = "SHOPPINGCART_ID"))
     private Set<Product> cart = new HashSet<>();
 
     public ShoppingCart() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Set<Product> getCart() {
@@ -56,19 +77,23 @@ public class ShoppingCart {
 
         ShoppingCart that = (ShoppingCart) o;
 
+        if (!username.equals(that.username)) return false;
         return cart.equals(that.cart);
 
     }
 
     @Override
     public int hashCode() {
-        return cart.hashCode();
+        int result = username.hashCode();
+        result = 31 * result + cart.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
         return "ShoppingCart{" +
-                "cart=" + cart +
+                "username='" + username + '\'' +
+                ", cart=" + cart +
                 '}';
     }
 }

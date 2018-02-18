@@ -13,22 +13,28 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @Configuration
 @ComponentScan("pizzaShop")
-public class SecurityConfig  extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     DataSource dataSource;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder amb) throws Exception{
-        amb.inMemoryAuthentication()
-                .withUser("Arslan").password("pass").roles("USER");
-//        amb.jdbcAuthentication().dataSource(dataSource);
+    protected void configure(AuthenticationManagerBuilder amb) throws Exception {
+//        amb.inMemoryAuthentication()
+//                .withUser("Arslan").password("pass").roles("USER");
+        amb.jdbcAuthentication().dataSource(dataSource);
     }
 
     @Override
-    protected void configure(HttpSecurity security)throws Exception{
-//        security.authorizeRequests().regexMatchers("/products/addProduct").hasAuthority("ROLE_USER");
-//        security.formLogin();
-//        security.formLogin().successForwardUrl("/products");
+    protected void configure(HttpSecurity security) throws Exception {
+        security.formLogin().loginPage("/login").loginProcessingUrl("/login").successForwardUrl("/products");
+        security.logout().logoutUrl("/logout").logoutSuccessUrl("/products").invalidateHttpSession(true);
+        security.formLogin().usernameParameter("username");
+        security.formLogin().passwordParameter("password");
+        security.formLogin().successForwardUrl("/products");
+        security.rememberMe().rememberMeParameter("remember-me").key("pizzaShop");
+        security.authorizeRequests().regexMatchers("/products/addProduct").hasAuthority("ADMIN");
+       // security.authorizeRequests().regexMatchers("/products/.*").hasAuthority("USER");
+        security.authorizeRequests().regexMatchers("/.*").permitAll();
     }
 }

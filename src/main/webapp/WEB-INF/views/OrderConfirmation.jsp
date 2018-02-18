@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
 
 <html>
@@ -18,7 +18,7 @@
 <body>
 
 <!-- Navigation -->
-<%@ include file="templates/NavBar_template.jsp"%>
+<%@ include file="templates/NavBar_template.jsp" %>
 
 
 <div class="container">
@@ -109,87 +109,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        <c:forEach items="${cartSet}" var="product">
+                                            <tr>
+                                                <td>${product.item.name}</td>
+                                                <td>${product.item.price} р</td>
+                                                <td>${product.quantity}</td>
+                                                <td>${product.totalPrice} р</td>
+                                            </tr>
+                                        </c:forEach>
                                     <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Итальянская пицца</td>
-                                        <td>455 р</td>
-                                        <td>1</td>
-                                        <td>455 р</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="font-weight-bold table-bordered bg-warning text-right">Общая сумма заказа</td>
-                                        <td class="font-weight-bold table-bordered bg-warning">455 р</td>
+                                        <td colspan="3" class="font-weight-bold table-bordered bg-warning text-right">
+                                            Общая сумма заказа
+                                        </td>
+                                        <td class="font-weight-bold table-bordered bg-warning">${cart.finalPrice} р</td>
                                     </tr>
 
                                     </tbody>
@@ -203,9 +135,11 @@
         <div class="col-12 justify-content-center">
             <div class="form-inline justify-content-center mt-5 mb-5">
                 <div class="form-group">
-                    <button type="submit" class="btn btn-light ">назад</button>
-                    <button type="submit" class="btn btn-warning btn-lg ml-3 ">Отправить заказ</button>
-                    <button type="submit" class="btn btn-light ml-3 ">отмена</button>
+                    <sf:form action="${contextPath}/products/orderConfirmation" method="post">
+                        <button type="button" class="btn btn-light ">назад</button>
+                        <button type="submit" class="btn btn-warning btn-lg ml-3 ">Отправить заказ</button>
+                        <button type="reset" class="btn btn-light ml-3 ">отмена</button>
+                    </sf:form>
                 </div>
             </div>
         </div>
@@ -214,7 +148,7 @@
 
 
 <!-- Footer -->
-<%@ include file="templates/Footer_template.jsp"%>
+<%@ include file="templates/Footer_template.jsp" %>
 
 </body>
 </html>

@@ -1,9 +1,20 @@
 package pizzaShop.pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+
+@Embeddable
 public class Address {
+
+    @Column(name = "STREETHOME")
+    @NotNull
     private String streetHome;
+    @Column(name = "APPARTMENT")
     private int appartment;
+    @Column(name = "ENTRANCE")
     private int entrance;
+    @Column(name = "LEVEL")
     private int level;
 
     public Address() {
