@@ -2,12 +2,13 @@ package pizzaShop.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "ITEM")
-public class Item {
+public class Item implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +18,7 @@ public class Item {
     private Integer price;
     private String description;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
 
     public Item() {
@@ -32,6 +33,10 @@ public class Item {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

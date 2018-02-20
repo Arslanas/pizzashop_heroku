@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -17,7 +18,7 @@
 </head>
 <body>
 <!-- Navigation -->
-<%@ include file="templates/NavBar_template.jsp"%>
+<%@ include file="templates/NavBar_template.jsp" %>
 
 
 <div class="container">
@@ -25,7 +26,7 @@
 
 
         <!-- sidebar -->
-        <%@ include file="templates/Sidebar_template.jsp"%>
+        <%@ include file="templates/Sidebar_template.jsp" %>
 
 
         <!-- Cart -->
@@ -47,16 +48,19 @@
                                 <tbody>
                                 <c:forEach items="${cartSet}" var="product">
                                     <tr>
-                                        <td><a href="${contextPath}/products/shoppingCart/remove/${product.item.id}" class="btn btn-danger btn-sm "><img
+                                        <td><a href="${contextPath}/products/shoppingCart/remove/${product.item.id}"
+                                               class="btn btn-danger btn-sm "><img
                                                 src="${contextPath}/resources/vendor/images/circle-x.svg" width="8"></a>
                                             <span
                                                     class="ml-2">${product.item.name}</span>
                                         </td>
                                         <td>${product.item.price} р</td>
-                                        <td><a href="${contextPath}/products/shoppingCart/decrease/${product.item.id}" class="btn btn-warning btn-sm"><img
+                                        <td><a href="${contextPath}/products/shoppingCart/decrease/${product.item.id}"
+                                               class="btn btn-warning btn-sm"><img
                                                 src="${contextPath}/resources/vendor/images/minus.svg" width="8"></a>
                                             <span class="mx-3">${product.quantity}</span>
-                                            <a href="${contextPath}/products/shoppingCart/increase/${product.item.id}" class="btn btn-warning btn-sm"><img
+                                            <a href="${contextPath}/products/shoppingCart/increase/${product.item.id}"
+                                               class="btn btn-warning btn-sm"><img
                                                     src="${contextPath}/resources/vendor/images/plus.svg"
                                                     width="8"></a></td>
                                         <td>${product.totalPrice} р</td>
@@ -68,7 +72,8 @@
                             </table>
                         </div>
                         <div class="col-12 mt-3 ml-1 align-self-end">
-                            <a href="${contextPath}/products/shoppingCart/clear" class="btn btn-danger ">Очистить корзину</a>
+                            <a href="${contextPath}/products/shoppingCart/clear" class="btn btn-danger ">Очистить
+                                корзину</a>
                         </div>
                     </div>
                 </div>
@@ -80,7 +85,16 @@
                                     class="font-weight-bold"> ${cart.finalPrice} </span>р</h3>
                         </div>
                         <div class="col-12 mb-4">
-                            <a href="${contextPath}/products/customerDetails" class="btn btn-warning btn-block" href="#">Оформить заказ</a>
+                            <c:choose>
+                                <c:when test="${authenticated}">
+                                    <a href="${contextPath}/products/orderConfirmation" class="btn btn-warning btn-block"
+                                       href="#">Оформить заказ</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="${contextPath}/products/customerDetails" class="btn btn-warning btn-block"
+                                       href="#">Оформить заказ</a>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
@@ -91,7 +105,7 @@
 
 
 <!-- Footer -->
-<%@ include file="templates/Footer_template.jsp"%>
+<%@ include file="templates/Footer_template.jsp" %>
 
 </body>
 </html>

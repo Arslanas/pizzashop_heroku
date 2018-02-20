@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -39,7 +40,7 @@
                                     <p class="font-weight-bold">Имя</p>
                                 </div>
                                 <div class="col-12 ml-5">
-                                    <p>${customer.name}</p>
+                                    <p>${customer.username}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -137,6 +138,7 @@
                 <div class="form-group">
                     <sf:form action="${contextPath}/products/orderConfirmation" method="post">
                         <button type="button" class="btn btn-light ">назад</button>
+                        <input type="hidden" name="isAnonymous" value="${customer.enabled}">
                         <button type="submit" class="btn btn-warning btn-lg ml-3 ">Отправить заказ</button>
                         <button type="reset" class="btn btn-light ml-3 ">отмена</button>
                     </sf:form>

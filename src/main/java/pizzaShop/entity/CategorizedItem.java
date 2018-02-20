@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "CATEGORY_ITEM")
-public class CategorizedItem {
+public class CategorizedItem implements Serializable{
 
     @EmbeddedId
     protected CompositeID id = new CompositeID();

@@ -8,8 +8,10 @@ import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;
 
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transaction;
 import java.util.*;
 
 
@@ -41,6 +43,18 @@ public class ItemDAOImpl extends GenericDAOImpl<Item, Long> implements ItemDAO {
 
     @Transactional
     @Override
+    public Item update(Item item) {
+        Item toUpdate = em.find(Item.class, item.getId());
+        toUpdate.setPrice(item.getPrice());
+        toUpdate.setDescription(item.getDescription());
+        toUpdate.setName(item.getName());
+        logger.info(toUpdate);
+        em.merge(toUpdate);
+        return toUpdate;
+    }
+
+    @Transactional
+    @Override
     public Item makePersistent(ItemForm itemForm){
         Item item = new Item();
         item.setName(itemForm.getName());
@@ -48,7 +62,6 @@ public class ItemDAOImpl extends GenericDAOImpl<Item, Long> implements ItemDAO {
         item.setPrice(itemForm.getPrice());
         Item mergedItem = makePersistent(item);
         createCategorizedItems(itemForm.getSetOfCategorizedItems(), mergedItem);
-        logger.info(mergedItem.getSetOfCategorizedItems());
         return mergedItem;
     }
 

@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -18,7 +19,7 @@
 <body>
 
 <!-- Navigation -->
-<%@ include file="templates/NavBar_template.jsp"%>
+<%@ include file="templates/NavBar_template.jsp" %>
 
 
 <div class="container">
@@ -26,7 +27,7 @@
 
 
         <!-- sidebar -->
-        <%@ include file="templates/Sidebar_template.jsp"%>
+        <%@ include file="templates/Sidebar_template.jsp" %>
 
 
         <!-- slider and items -->
@@ -81,8 +82,8 @@
                                 <div class="card">
                                     <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                                     <div class="card-body">
-                                        <h4 class="card-title">
-                                            <a href="#">${item.name}</a>
+                                        <h4 class="card-title text-info">
+                                                ${item.name}
                                         </h4>
 
                                         <small class="text-muted">${item.description}</small>
@@ -91,12 +92,21 @@
                                     <div class="card-footer">
                                         <div class="row">
                                             <div class="col-6 mt-2">
-                                                <h5>${item.price}р</h5>
+                                                <h5 class="text-info">${item.price}р</h5>
                                             </div>
                                             <div class="col-6 mt-2">
-                                                <a href="${contextPath}/products/add/${item.id}" class="btn btn-outline-warning active btn-sm">Заказать</a>
+                                                <a href="${contextPath}/products/add/${item.id}"
+                                                   class="btn btn-outline-warning active btn-sm">Заказать</a>
                                             </div>
                                         </div>
+                                        <sec:authorize url="${contextPath}/products/addProduct">
+                                            <div class="row ">
+                                                <div class="col-12 mt-3  ">
+                                                    <a href="${contextPath}/products/editProduct/${item.id}"
+                                                       class="btn btn-outline-info text-center                                                                                                 btn-block">Редактировать</a>
+                                                </div>
+                                            </div>
+                                        </sec:authorize>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +140,7 @@
 
 
 <!-- Footer -->
-<%@ include file="templates/Footer_template.jsp"%>
+<%@ include file="templates/Footer_template.jsp" %>
 
 </body>
 </html>

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -29,6 +30,9 @@
 
                 <div class="col-6 mx-auto mt-5">
                     <h4 class="text-center text-info">Введите имя Вашего профиля и пароль</h4>
+                    <c:if test="${param.error != null}">
+                            <h4 class="text-center text-danger">Вы ввели неправильные данные</h4>
+                    </c:if>
                 </div>
 
                 <!-- Form -->

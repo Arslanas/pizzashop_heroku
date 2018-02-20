@@ -8,19 +8,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;
+import pizzaShop.entity.User;
 import pizzaShop.pojo.*;
-import pizzaShop.repository.CategoryDAO;
-import pizzaShop.repository.ItemDAO;
-import pizzaShop.repository.ShoppingCartDAO;
-import pizzaShop.repository.TempRepository;
+import pizzaShop.repository.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/products")
@@ -31,10 +32,11 @@ public class ProductsController {
     private final TempRepository repo;
     private final CategoryDAO categoryDAO;
     private final ItemDAO itemDAO;
+    private final UserDAO userDAO;
     private final ShoppingCartDAO shoppingCartDAO;
 
     @Autowired
-    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO) {
+    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO) {
         Assert.notNull(repo, "TempRepository is null");
         Assert.notNull(categoryDAO, "CategoryDAO is null");
         Assert.notNull(itemDAO, "ItemDAO is null");
@@ -42,6 +44,7 @@ public class ProductsController {
         this.categoryDAO = categoryDAO;
         this.itemDAO = itemDAO;
         this.shoppingCartDAO = shoppingCartDAO;
+        this.userDAO = userDAO;
     }
 
 
@@ -54,7 +57,6 @@ public class ProductsController {
 
     @RequestMapping("/{categoryName}")
     public String productsByCategory(@PathVariable("categoryName") String categoryName, Model model, HttpSession session) {
-        logger.info("productsByCategory() invoking itemDAO.getItemsByCategoryName(" + categoryName + ")");
         model.addAttribute("items", itemDAO.getItemsByCategoryName(categoryName));
         session.setAttribute("categoryName", categoryName);
         return "Products";
@@ -85,7 +87,15 @@ public class ProductsController {
 
     //////////////          SHOPPINGCART
     @RequestMapping("/shoppingCart")
-    public String shoppingCartHandler(@SessionAttribute ShoppingCart cart, Model model) {
+    public String shoppingCartHandler(@SessionAttribute ShoppingCart cart, Model model, HttpSession session) {
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken ){
+            session.setAttribute("isRegistered", false);
+        }else {
+            session.setAttribute("isRegistered", true);
+        }
+        session.setAttribute("authorities",SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e->e.getAuthority()).collect(Collectors.toList()));
+
+        logger.info(session.getAttribute("authorities"));
         model.addAttribute("cartSet", cart.getCart());
         return "ShoppingCart";
     }
@@ -123,38 +133,69 @@ public class ProductsController {
     }
 //////////////          TEMP
 
-    //////////////          ADMIN
+//////////////          ADMIN
     @RequestMapping("/addProduct")
-    public String addProduct(Model model, @SessionAttribute("categories") List<Category> categories) {
-        model.addAttribute("items", itemDAO.getAll());
+    public String addProduct(Model model, @SessionAttribute List<Category> categories) {
         model.addAttribute("categoryName", getCategoryName(categories));
         model.addAttribute("item", new ItemForm());
         return "Add_product";
+    }
+    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    public String addProductPost(@ModelAttribute ItemForm itemForm){
+        itemDAO.makePersistent(itemForm);
+        return "redirect:/products/addProduct";
+    }
+
+
+
+    @RequestMapping("/editProduct/{id}")
+    public String editProduct(@PathVariable long id, Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("itemEdit", itemDAO.getByID(id));
+        model.addAttribute("itemID", id);
+        model.addAttribute("categoryName", getCategoryName(categories));
+        model.addAttribute("item", new ItemForm());
+        return "Edit_product";
+    }
+
+    @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
+    public String editProductPost(@ModelAttribute("itemEdit") Item item) {
+        itemDAO.update(item);
+        return "redirect:/products";
     }
 //////////////          ADMIN
 
 //////////////          ORDER_CONFIRMATION
     @RequestMapping("/customerDetails")
     public String customerDetails(Model model) {
-        model.addAttribute("customer", Customer.getCustomer());
+        model.addAttribute("customer", getCustomerUser());
         return "CustomerDetails";
     }
     @RequestMapping(value = "/customerDetails", method = RequestMethod.POST)
-    public String customerDetailsPost(@ModelAttribute Customer customer, RedirectAttributes redirectAttributes) {
+    public String customerDetailsPost(@ModelAttribute User customer, RedirectAttributes redirectAttributes) {
+        logger.info(customer);
         redirectAttributes.addFlashAttribute("customer", customer);
-        return "redirect:/products//orderConfirmation";
+        return "redirect:/products/orderConfirmation";
     }
 
     @RequestMapping("/orderConfirmation")
-    public String confirmationOrder(@ModelAttribute Customer customer, @SessionAttribute ShoppingCart cart, Model model) {
+    public String confirmationOrder(@ModelAttribute("customer") User customer, @SessionAttribute ShoppingCart cart, Model model) {
+        logger.info(customer);
+        if(isUser()){
+            customer = getUserBySecurityUsername();
+        }
         model.addAttribute("cartSet", cart.getCart());
-        cart.setUsername(customer.getName());
+        model.addAttribute("customer", customer);
+        cart.setUsername(customer.getUsername());
         return "OrderConfirmation";
     }
 
     @RequestMapping(value = "/orderConfirmation", method = RequestMethod.POST)
-    public String confirmationOrderPost(@SessionAttribute ShoppingCart cart) {
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) return "redirect:/products";
+
+    public String confirmationOrderPost(@SessionAttribute ShoppingCart cart, SessionStatus status) {
+        status.setComplete();
+        if (!isUser()){
+            return "redirect:/products";
+        }
         shoppingCartDAO.makePersistent(cart);
         return "redirect:/products";
     }
@@ -179,6 +220,17 @@ public class ProductsController {
     @ModelAttribute("categories")
     public List<Category> categoriesAll() {
         return categoryDAO.getAll();
+    }
+    private User getCustomerUser(){
+        return new User("","",false);
+    }
+
+    private boolean isUser(){
+        boolean isAnonymous = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e->e.getAuthority()).anyMatch(e-> e.equals("ROLE_ANONYMOUS"));
+        return !isAnonymous;
+    }
+    private User getUserBySecurityUsername(){
+        return userDAO.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 }

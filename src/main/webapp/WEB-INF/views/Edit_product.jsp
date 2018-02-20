@@ -9,7 +9,7 @@
     <title>Add product</title>
 
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    <s:url value="${contextPath}/products/addProduct" var = "path"></s:url>
+    <s:url value="${contextPath}/products/editProduct" var = "path"></s:url>
 
     <!-- Bootstrap core CSS -->
     <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
@@ -38,16 +38,16 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${path}" method="post" commandName="item">
+                    <sf:form action="${path}" method="post" modelAttribute="${itemEdit}" commandName="itemEdit">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
-                            <sf:input path="name" type="text" class="form-control" id="Name" ></sf:input>
+                            <sf:input path="name" type="text" class="form-control" id="Name"></sf:input>
                         </div>
                         <div class="form-group">
                             <sf:label path="setOfCategorizedItems" for="Category" class="font-weight-bold">Категория</sf:label>
                             <sf:select path="setOfCategorizedItems" id="Category" class="form-control" multiple="true">
-                                    <sf:options items="${categoryName}" />
+                                    <sf:options items="${categoryName}"/>
                             </sf:select>
                         </div>
                         <div class="form-group">
@@ -56,8 +56,11 @@
                         </div>
                         <div class="form-group">
                             <sf:label path="price" for="Price" class="font-weight-bold">Цена</sf:label>
-                            <sf:input path="price" type="number" class="form-control" id="Price"></sf:input>
+                            <sf:input path="price" type="number"  class="form-control" id="Price"></sf:input>
                         </div>
+
+                        <sf:input path="id" type="hidden" id="Price"></sf:input>
+
 
                         <div class="form-group">
                             <label for="exampleFormControlFile1" class="font-weight-bold">Загрузить изображение</label>

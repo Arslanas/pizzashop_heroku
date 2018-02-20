@@ -12,5 +12,6 @@ public interface ItemDAO extends GenericDAO<Item, Long>{
     Item makePersistent(ItemForm itemForm);
     Set<Item> getItemsByCategoryName(String category);
     Set<Item> getItemsBySearchString(String search);
+    Item update(Item item);
 
 }

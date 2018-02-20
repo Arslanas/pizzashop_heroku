@@ -2,12 +2,13 @@ package pizzaShop.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "CATEGORY")
-public class Category implements Comparable<Category> {
+public class Category implements Comparable<Category>, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

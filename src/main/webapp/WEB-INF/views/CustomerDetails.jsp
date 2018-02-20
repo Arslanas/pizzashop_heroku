@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -35,8 +36,8 @@
                 <div class="col-12 mt-4 mb-5">
                     <sf:form action="${contextPath}/products/customerDetails" method="post" commandName="customer">
                         <div class="form-group">
-                            <sf:label path="name" for="Name">Имя</sf:label>
-                            <sf:input path="name" type="text" class="form-control" id="Name" />
+                            <sf:label path="username" for="Name">Имя</sf:label>
+                            <sf:input path="username" type="text" class="form-control" id="Name" />
                         </div>
                         <div class="form-group">
                             <label for="Mobil">Мобильный тел.</label>

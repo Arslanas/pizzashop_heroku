@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -39,11 +40,11 @@
                     <sf:form action="${contextPath}/admin/userRegistration" commandName="user" method="post">
                         <div class="form-group">
                             <label for="Name">Имя профиля</label>
-                            <sf:input path="username" type="text" class="form-control" id="Name" />
+                            <sf:input path="username" type="text" name="username" class="form-control" id="Name" />
                         </div>
                         <div class="form-group">
                             <label for="Password">Пароль</label>
-                            <sf:input path="password" type="password" class="form-control" id="Password"/>
+                            <sf:input path="password" type="password"  name="password" class="form-control" id="Password"/>
                         </div>
                         <div class="form-group">
                             <label for="Email">Почта</label>
