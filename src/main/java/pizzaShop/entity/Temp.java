@@ -16,6 +16,10 @@ public class Temp {
     public Temp() {
     }
 
+    public Temp(String temp) {
+        this.temp = temp;
+    }
+
     public String getTemp() {
         return temp;
     }

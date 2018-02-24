@@ -9,7 +9,7 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="${contextPath}/resources/vendor/js/jquery-3.2.1.slim.min.js"></script>
-<script>window.jQuery || document.write('<script src="${contextPath}/resources/vendor/js/jquery-3.2.1.min"><\/script>')</script>
+<script src="${contextPath}/resources/vendor/js/jquery-3.2.1.min.js"></script>
+<script src="${contextPath}/resources/custom_js/myAjax.js"></script>
 <script src="${contextPath}/resources/vendor/js/bootstrap.bundle.min.js"></script>
 <script src="${contextPath}/resources/vendor/js/bootstrap.min.js"></script>

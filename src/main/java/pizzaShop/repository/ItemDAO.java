@@ -1,5 +1,6 @@
 package pizzaShop.repository;
 
+import org.springframework.data.repository.CrudRepository;
 import pizzaShop.entity.CategorizedItem;
 import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;

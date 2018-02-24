@@ -77,7 +77,15 @@
                                 <h1 class="text-info">Популярное</h1>
                             </div>
                         </div>
-                        <c:forEach items="${items}" var="item">
+                        <div class="col-12 ">
+                            <div class="col-3 mx-auto">
+                                <a href="${contextPath}/products?page=0&sort=name" class="text-info">По имени</a>
+                            </div>
+                            <div class="col-3 mx-auto">
+                                <a href="${contextPath}/products?page=0&sort=price" class="text-info">По цене</a>
+                            </div>
+                        </div>
+                        <c:forEach items="${page.content}" var="item">
                             <div class="col-4 mb-4">
                                 <div class="card">
                                     <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
@@ -107,6 +115,11 @@
                                                 </div>
                                             </div>
                                         </sec:authorize>
+                                        <div class="row ">
+                                            <div class="col-12 mt-3  ">
+                                                <button id="itemID-${item.id}" onclick="myAjaxFunction(${item.id})" class="btn btn-outline-info text-center btn-block">AJAX</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -118,14 +131,14 @@
                         <div class="col mt-4 mb-2">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                    <li class="page-item ">
+                                        <a href="${contextPath}/products?page=${page.number - 1}&sort=${sort}&size=4" class="page-link"  tabindex="-1">Previous</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
+                                        <a href="${contextPath}/products?page=${page.number + 1}&sort=${sort}&size=4" class="page-link" >Next</a>
                                     </li>
                                 </ul>
                             </nav>

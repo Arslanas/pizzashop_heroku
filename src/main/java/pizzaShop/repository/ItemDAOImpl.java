@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transaction;
+import java.io.Serializable;
 import java.util.*;
 
 

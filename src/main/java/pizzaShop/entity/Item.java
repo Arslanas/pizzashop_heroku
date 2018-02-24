@@ -1,5 +1,7 @@
 package pizzaShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -18,6 +20,7 @@ public class Item implements Serializable{
     private Integer price;
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
 

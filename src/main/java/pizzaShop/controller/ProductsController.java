@@ -2,6 +2,9 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,10 +13,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pizzaShop.entity.Category;
-import pizzaShop.entity.Item;
-import pizzaShop.entity.ItemForm;
-import pizzaShop.entity.User;
+import pizzaShop.entity.*;
 import pizzaShop.pojo.*;
 import pizzaShop.repository.*;
 
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/products")
@@ -32,26 +31,37 @@ public class ProductsController {
     private final TempRepository repo;
     private final CategoryDAO categoryDAO;
     private final ItemDAO itemDAO;
+    private final ItemSpringDAO itemSpringDAO;
     private final UserDAO userDAO;
     private final ShoppingCartDAO shoppingCartDAO;
 
     @Autowired
-    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO) {
+    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO, ItemSpringDAO itemSpringDAO) {
         Assert.notNull(repo, "TempRepository is null");
         Assert.notNull(categoryDAO, "CategoryDAO is null");
         Assert.notNull(itemDAO, "ItemDAO is null");
         this.repo = repo;
         this.categoryDAO = categoryDAO;
         this.itemDAO = itemDAO;
+        this.itemSpringDAO = itemSpringDAO;
         this.shoppingCartDAO = shoppingCartDAO;
         this.userDAO = userDAO;
     }
 
+//////////////      REST
+    @RequestMapping(value = "/rest")
+    @ResponseBody
+    public Item  getRest(){
+        return itemDAO.findById(3l);
+    }
+//////////////      REST
 
+//////////////      PRODUCTS
     @RequestMapping
-    public String products(Model model, HttpSession session) {
+    public String products(Model model, HttpSession session, Pageable pageable, Sort sort) {
         if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
-        model.addAttribute("items", itemDAO.getAll());
+        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        model.addAttribute("page", itemSpringDAO.findAll(pageable));
         return "Products";
     }
 
@@ -65,7 +75,7 @@ public class ProductsController {
     // CategoryName not readable code
     @RequestMapping("/add/{itemID}")
     public String item(@PathVariable("itemID") Long itemID, @SessionAttribute("cart") ShoppingCart cart, HttpSession session) {
-        Item item = itemDAO.getByID(itemID);
+        Item item = itemDAO.findById(itemID);
         Product product = new Product(item);
         if (!cart.contains(product)) {
             cart.add(product);
@@ -149,9 +159,9 @@ public class ProductsController {
 
 
     @RequestMapping("/editProduct/{id}")
-    public String editProduct(@PathVariable long id, Model model, @SessionAttribute List<Category> categories) {
-        model.addAttribute("itemEdit", itemDAO.getByID(id));
-        model.addAttribute("itemID", id);
+    public String editProduct(@PathVariable("id") Item itemEdit, Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("itemEdit", itemEdit);
+        model.addAttribute("itemID", itemEdit.getId());
         model.addAttribute("categoryName", getCategoryName(categories));
         model.addAttribute("item", new ItemForm());
         return "Edit_product";
