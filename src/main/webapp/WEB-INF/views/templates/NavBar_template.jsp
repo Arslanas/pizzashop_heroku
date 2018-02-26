@@ -15,9 +15,9 @@
     <div class="container">
         <a href="${contextPath}/products" class="navbar-brand font-weight-bold display-4 " href="#">Pizza Shop</a>
 
-        <a href="${contextPath}/products/shoppingCart" class="btn btn-warning  mx-auto  "><img
+        <a href="${contextPath}/products/shoppingCart" id = "shoppingCart" class="btn btn-warning  mx-auto"><img
                 src="${contextPath}/resources/vendor/images/cart.svg"
-                width="20"> Ваш заказ : ${cart.finalPrice} р
+                width="20"> Ваш заказ : <span id = "cartPrice"> ${cart.totalPrice} </span> р
         </a>
         <ul class="navbar-nav ml-auto">
             <li>

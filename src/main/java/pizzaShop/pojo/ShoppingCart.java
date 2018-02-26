@@ -1,10 +1,8 @@
 package pizzaShop.pojo;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 public class ShoppingCart {
@@ -13,6 +11,10 @@ public class ShoppingCart {
     private Long id;
     @Column(name = "USERNAME")
     private String username;
+    @Column(name = "totalPrice")
+    private long totalPrice;
+    @Column(name = "DATE", updatable = false, insertable = false)
+    private LocalDateTime date;
     @ElementCollection
     @CollectionTable(name = "PRODUCTS", joinColumns = @JoinColumn(name = "SHOPPINGCART_ID"))
     private Set<Product> cart = new HashSet<>();
@@ -32,6 +34,14 @@ public class ShoppingCart {
         this.username = username;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
     public Set<Product> getCart() {
         return cart;
     }
@@ -44,21 +54,26 @@ public class ShoppingCart {
         return cart.add(product);
     }
 
+    public long getTotalPrice() {
+        calculateTotalPrice();
+        return totalPrice;
+    }
+
+    public void setTotalPrice(long totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    private ShoppingCart calculateTotalPrice(){
+        setTotalPrice(cart.stream().map(e->e.getTotalPrice()).reduce(0l, (acc, element)-> acc+element));
+        return this;
+    }
+
     public Product getProductByItemId(Long id) {
         return  cart.stream().filter(product -> product.getItem().getId() == id).findFirst().get();
     }
 
     public boolean contains(Product product) {
         return cart.contains(product);
-    }
-
-    public long getFinalPrice() {
-        long finalPrice = 0;
-        for (Product p : cart) {
-            finalPrice += p.getTotalPrice();
-        }
-        return finalPrice;
-
     }
 
     public Product getProductByItemID(long itemID){

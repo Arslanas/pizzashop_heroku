@@ -45,12 +45,6 @@
                             <sf:input path="name" type="text" class="form-control" id="Name"></sf:input>
                         </div>
                         <div class="form-group">
-                            <sf:label path="setOfCategorizedItems" for="Category" class="font-weight-bold">Категория</sf:label>
-                            <sf:select path="setOfCategorizedItems" id="Category" class="form-control" multiple="true">
-                                    <sf:options items="${categoryName}"/>
-                            </sf:select>
-                        </div>
-                        <div class="form-group">
                             <label for="Description" class="font-weight-bold">Описание товара</label>
                             <sf:textarea path="description" class="form-control" id="Description" aria-label="With textarea"></sf:textarea>
                         </div>
@@ -75,6 +69,9 @@
                         </div>
 
                     </sf:form>
+                    <div class="col-2 ml-auto ">
+                        <a href="${contextPath}/products/remove/${itemEdit.id}"  class="btn btn-outline-danger ">Удалить</a>
+                    </div>
 
                 </div>
             </div>

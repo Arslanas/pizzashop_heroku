@@ -1,15 +1,22 @@
 package pizzaShop.entity;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.Set;
 
 public class ItemForm {
-    @NotNull
+    @NotEmpty(message = "Введите имя")
+    @Size(max = 16, message = "Имя не должно превышать 16 символов")
     private String name;
-    @NotNull
-    private Integer price;
+    @Digits(integer = 9, fraction = 2, message = "Только числа")
+    @DecimalMin(value = "5", message = "Установите цену не ниже 5")
+    private int price = 0;
+    @NotEmpty(message = "Опишите товар")
+    @Size(max = 100, message = "Опишите товар")
     private String description;
+    @NotEmpty(message = "Выберите категории")
     private Set<String> setOfCategorizedItems;
 
     public ItemForm() {
@@ -61,15 +68,15 @@ public class ItemForm {
 
         ItemForm itemForm = (ItemForm) o;
 
-        if (!name.equals(itemForm.name)) return false;
-        return price.equals(itemForm.price);
+        if (price != itemForm.price) return false;
+        return name != null ? name.equals(itemForm.name) : itemForm.name == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + price.hashCode();
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + price;
         return result;
     }
 

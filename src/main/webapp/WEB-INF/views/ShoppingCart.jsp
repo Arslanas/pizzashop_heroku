@@ -82,7 +82,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12 mt-4 mb-3">
                             <h3 class="text-center text-primary">Сумма заказа: <span
-                                    class="font-weight-bold"> ${cart.finalPrice} </span>р</h3>
+                                    class="font-weight-bold"> ${cart.totalPrice} </span>р</h3>
                         </div>
                         <div class="col-12 mb-4">
                             <c:choose>

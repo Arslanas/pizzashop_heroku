@@ -15,13 +15,16 @@ public class Item implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
+    @Column(name = "NAME")
     private String name;
     @NotNull
+    @Column(name = "PRICE")
     private Integer price;
+    @Column(name = "DESCRIPTION")
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
 
     public Item() {

@@ -10,9 +10,10 @@ $(document).ready(function(){              // по окончанию загру
 //     $("#example-1").load('Ajax_tempHTML.html');
 // }
 function myAjaxFunction(itemID){
-    $.getJSON("http://localhost:8080/products/rest",{},function (json) {
+    $.getJSON("http://localhost:8080/products/add/"+itemID,{},function (json) {
         $("#itemID-"+itemID).html("");
         $("#itemID-"+itemID).append("This ID is " +json.id);
+        $("#cartPrice").html(json.totalPrice);
     })
 }
 

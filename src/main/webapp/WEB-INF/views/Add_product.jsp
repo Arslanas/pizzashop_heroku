@@ -38,25 +38,29 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${path}" method="post" commandName="item">
+                    <sf:form id="addProductForm" action="${path}" method="post" commandName="itemForm">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
-                            <sf:input path="name" type="text" class="form-control" id="Name" ></sf:input>
+                            <sf:input path="name"  type="text" class="form-control" id="Name" ></sf:input>
+                            <sf:errors path="name" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <sf:label path="setOfCategorizedItems" for="Category" class="font-weight-bold">Категория</sf:label>
                             <sf:select path="setOfCategorizedItems" id="Category" class="form-control" multiple="true">
                                     <sf:options items="${categoryName}" />
                             </sf:select>
+                            <sf:errors path="setOfCategorizedItems" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <label for="Description" class="font-weight-bold">Описание товара</label>
                             <sf:textarea path="description" class="form-control" id="Description" aria-label="With textarea"></sf:textarea>
+                            <sf:errors path="description" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <sf:label path="price" for="Price" class="font-weight-bold">Цена</sf:label>
                             <sf:input path="price" type="number" class="form-control" id="Price"></sf:input>
+                            <sf:errors path="price" cssClass="alert-danger"/>
                         </div>
 
                         <div class="form-group">

@@ -122,7 +122,7 @@
                                         <td colspan="3" class="font-weight-bold table-bordered bg-warning text-right">
                                             Общая сумма заказа
                                         </td>
-                                        <td class="font-weight-bold table-bordered bg-warning">${cart.finalPrice} р</td>
+                                        <td class="font-weight-bold table-bordered bg-warning">${cart.totalPrice} р</td>
                                     </tr>
 
                                     </tbody>
