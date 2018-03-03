@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
 import pizzaShop.pojo.*;
 import pizzaShop.repository.*;
+import pizzaShop.service.ItemService;
 import pizzaShop.validator.FromStringToInt;
 import pizzaShop.validator.ItemFormValidator;
 
@@ -33,26 +34,17 @@ import java.util.stream.Collectors;
 public class ProductsController {
 
     private static Logger logger = Logger.getLogger(ProductsController.class);
-    private final TempRepository repo;
     private final CategoryDAO categoryDAO;
-    private final ItemDAO itemDAO;
-    private final ItemSpringDAO itemSpringDAO;
-    private final CategorizedItemSpringDAO categorizedItemSpringDAO;
     private final UserDAO userDAO;
     private final ShoppingCartDAO shoppingCartDAO;
+    private final ItemService itemService;
 
     @Autowired
-    public ProductsController(TempRepository repo, CategoryDAO categoryDAO, ItemDAO itemDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO, ItemSpringDAO itemSpringDAO, CategorizedItemSpringDAO categorizedItemSpringDAO) {
-        Assert.notNull(repo, "TempRepository is null");
-        Assert.notNull(categoryDAO, "CategoryDAO is null");
-        Assert.notNull(itemDAO, "ItemDAO is null");
-        this.repo = repo;
+    public ProductsController(CategoryDAO categoryDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO, ItemService itemService) {
         this.categoryDAO = categoryDAO;
-        this.itemDAO = itemDAO;
-        this.itemSpringDAO = itemSpringDAO;
-        this.categorizedItemSpringDAO = categorizedItemSpringDAO;
         this.shoppingCartDAO = shoppingCartDAO;
         this.userDAO = userDAO;
+        this.itemService = itemService;
     }
 
 //////////////      REST
@@ -68,13 +60,13 @@ public class ProductsController {
     public String products(Model model, HttpSession session, Pageable pageable, Sort sort) {
         if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
         model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
-        model.addAttribute("page", itemSpringDAO.findAll(pageable));
+        model.addAttribute("page", itemService.findAll(pageable));
         return "Products";
     }
 
     @RequestMapping("/{categoryName}")
     public String productsByCategory(@PathVariable("categoryName") String categoryName, Model model, HttpSession session) {
-        model.addAttribute("items", itemDAO.getItemsByCategoryName(categoryName));
+        model.addAttribute("items", itemService.getItemsByCategoryName(categoryName));
         session.setAttribute("categoryName", categoryName);
         return "Products";
     }
@@ -109,7 +101,7 @@ public class ProductsController {
     @RequestMapping(value = "/search")
     public String productSearch(Model model, HttpSession session, @RequestParam("searchString") String searchString) {
         if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
-        model.addAttribute("items", itemDAO.getItemsBySearchString(searchString));
+        model.addAttribute("page", itemService.getItemsBySearchString(searchString));
         return "Products";
     }
 
@@ -175,14 +167,12 @@ public class ProductsController {
     }
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public String addProductPost(Model model, @Valid ItemForm itemForm, Errors errors, @SessionAttribute List<Category> categories){
-        logger.info(itemForm);
-
         if(errors.hasErrors()){
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("itemForm", itemForm);
             return "Add_product";
         }
-        itemDAO.makePersistent(itemForm);
+        itemService.makePersistent(itemForm);
         return "redirect:/products/addProduct";
     }
 
@@ -199,13 +189,13 @@ public class ProductsController {
 
     @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
     public String editProductPost(@ModelAttribute("itemEdit") Item item) {
-        itemDAO.update(item);
+        itemService.save(item);
         return "redirect:/products";
     }
 
     @RequestMapping("/remove/{id}")
     public String removeProduct(@PathVariable("id") Item itemRemove) {
-        itemSpringDAO.delete(itemRemove);
+        itemService.delete(itemRemove);
         return "redirect:/products";
     }
 //////////////          ADMIN
@@ -259,11 +249,7 @@ public class ProductsController {
 //////////////          Helpers
     //Change to CONVERTER
     private List<String> getCategoryName(List<Category> categories) {
-        List<String> categoryNames = new ArrayList<>();
-        for (Category category : categories) {
-            categoryNames.add(category.getName());
-        }
-        return categoryNames;
+        return categories.stream().map(e->e.getName()).collect(Collectors.toList());
     }
 
     @ModelAttribute("cart")

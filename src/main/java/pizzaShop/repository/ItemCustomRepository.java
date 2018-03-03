@@ -1,11 +1,11 @@
-package pizzaShop.service;
+package pizzaShop.repository;
 
 import pizzaShop.entity.Item;
 import pizzaShop.entity.ItemForm;
 
 import java.util.Set;
 
-public interface ItemService extends GenericService<Item, Long> {
+public interface ItemCustomRepository {
     Item makePersistent(ItemForm itemForm);
     Set<Item> getItemsByCategoryName(String category);
     Set<Item> getItemsBySearchString(String search);

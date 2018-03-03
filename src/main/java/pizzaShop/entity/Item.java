@@ -37,6 +37,10 @@ public class Item implements Serializable{
         this.setOfCategorizedItems = setOfCategorizedItems;
     }
 
+    public static Item getItemFromForm(ItemForm form){
+        return null;
+    }
+
     public Long getId() {
         return id;
     }
