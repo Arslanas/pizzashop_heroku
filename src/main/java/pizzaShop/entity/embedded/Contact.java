@@ -1,4 +1,4 @@
-package pizzaShop.pojo;
+package pizzaShop.entity.embedded;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

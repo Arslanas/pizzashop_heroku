@@ -1,4 +1,4 @@
-package pizzaShop.pojo;
+package pizzaShop.entity.embedded;
 
 import pizzaShop.entity.Item;
 

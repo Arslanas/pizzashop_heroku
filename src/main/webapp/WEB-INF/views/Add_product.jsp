@@ -38,7 +38,7 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form id="addProductForm" action="${path}" method="post" commandName="itemForm">
+                    <sf:form id="addProductForm" action="${path}" method="post" commandName="item">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>

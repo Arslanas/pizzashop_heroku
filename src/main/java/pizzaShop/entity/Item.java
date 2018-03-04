@@ -37,10 +37,6 @@ public class Item implements Serializable{
         this.setOfCategorizedItems = setOfCategorizedItems;
     }
 
-    public static Item getItemFromForm(ItemForm form){
-        return null;
-    }
-
     public Long getId() {
         return id;
     }
@@ -75,6 +71,10 @@ public class Item implements Serializable{
 
     public Set<CategorizedItem> getSetOfCategorizedItems() {
         return setOfCategorizedItems;
+    }
+
+    public void setSetOfCategorizedItems(Set<CategorizedItem> setOfCategorizedItems) {
+        this.setOfCategorizedItems = setOfCategorizedItems;
     }
 
     @Override

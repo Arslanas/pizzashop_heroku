@@ -83,24 +83,20 @@ public class CategorizedItem implements Serializable{
 
         CategorizedItem that = (CategorizedItem) o;
 
-        if (!category.equals(that.category)) return false;
-        return item.equals(that.item);
+        if (category != null ? !category.equals(that.category) : that.category != null) return false;
+        return item != null ? item.equals(that.item) : that.item == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = category.hashCode();
-        result = 31 * result + item.hashCode();
+        int result = category != null ? category.hashCode() : 0;
+        result = 31 * result + (item != null ? item.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "CategorizedItem{" +
-                "id=" + id +
-                ", category=" + category +
-                ", item=" + item +
-                '}';
+        return "CategorizedItem item: " + (item == null?"null" : item.toString())+ ", category: " + (category == null? "null" : category.toString());
     }
 }

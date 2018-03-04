@@ -2,30 +2,28 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
-import pizzaShop.pojo.*;
+import pizzaShop.entity.embedded.Product;
 import pizzaShop.repository.*;
-import pizzaShop.service.ItemService;
-import pizzaShop.validator.FromStringToInt;
-import pizzaShop.validator.ItemFormValidator;
+import pizzaShop.service.*;
+import pizzaShop.utilities.AppScopedData;
+import pizzaShop.validator.CustomPropertyCategorizedItem;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,17 +32,21 @@ import java.util.stream.Collectors;
 public class ProductsController {
 
     private static Logger logger = Logger.getLogger(ProductsController.class);
-    private final CategoryDAO categoryDAO;
-    private final UserDAO userDAO;
-    private final ShoppingCartDAO shoppingCartDAO;
+    private final AppScopedData appScopedData;
+    private final CategoryService categoryService;
+    private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
     private final ItemService itemService;
+    private final CategorizedItemService categorizedItemService;
 
     @Autowired
-    public ProductsController(CategoryDAO categoryDAO, ShoppingCartDAO shoppingCartDAO, UserDAO userDAO, ItemService itemService) {
-        this.categoryDAO = categoryDAO;
-        this.shoppingCartDAO = shoppingCartDAO;
-        this.userDAO = userDAO;
+    public ProductsController(UserService userService, ShoppingCartService shoppingCartService, CategoryService categoryService, ItemService itemService, CategorizedItemService categorizedItemService, AppScopedData appScopedData) {
+        this.categoryService = categoryService;
+        this.shoppingCartService = shoppingCartService;
+        this.userService = userService;
         this.itemService = itemService;
+        this.categorizedItemService = categorizedItemService;
+        this.appScopedData = appScopedData;
     }
 
 //////////////      REST
@@ -67,7 +69,6 @@ public class ProductsController {
     @RequestMapping("/{categoryName}")
     public String productsByCategory(@PathVariable("categoryName") String categoryName, Model model, HttpSession session) {
         model.addAttribute("items", itemService.getItemsByCategoryName(categoryName));
-        session.setAttribute("categoryName", categoryName);
         return "Products";
     }
 
@@ -145,7 +146,7 @@ public class ProductsController {
     }
     @RequestMapping("/shoppingCart/get")
     public String shoppingCartRemove() {
-        logger.info(shoppingCartDAO.findById(15l).getDate());
+        logger.info(shoppingCartService.findOne(15l).getDate());
         return "redirect:/products";
     }
 //////////////          SHOPPINGCART
@@ -162,28 +163,27 @@ public class ProductsController {
     @RequestMapping("/addProduct")
     public String addProduct(Model model, @SessionAttribute List<Category> categories) {
         model.addAttribute("categoryName", getCategoryName(categories));
-        model.addAttribute("itemForm", new ItemForm());
+        model.addAttribute("item", new Item());
         return "Add_product";
     }
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProductPost(Model model, @Valid ItemForm itemForm, Errors errors, @SessionAttribute List<Category> categories){
+    public String addProductPost(Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories){
         if(errors.hasErrors()){
             model.addAttribute("categoryName", getCategoryName(categories));
-            model.addAttribute("itemForm", itemForm);
+            model.addAttribute("item", item);
             return "Add_product";
         }
-        itemService.makePersistent(itemForm);
+        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e->e.getCategory()).collect(Collectors.toSet());
+        Item itemMerged = itemService.save(item);
+        categorySet.stream().map(e->new CategorizedItem(e,itemMerged)).forEach(categorizedItemService::save);
         return "redirect:/products/addProduct";
     }
 
-
-
     @RequestMapping("/editProduct/{id}")
-    public String editProduct(@PathVariable("id") Item itemEdit, Model model, @SessionAttribute List<Category> categories) {
-        model.addAttribute("itemEdit", itemEdit);
-        model.addAttribute("itemID", itemEdit.getId());
+    public String editProduct(@PathVariable("id") Item item, Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("item", item);
+        model.addAttribute("itemID", item.getId());
         model.addAttribute("categoryName", getCategoryName(categories));
-        model.addAttribute("item", new ItemForm());
         return "Edit_product";
     }
 
@@ -194,8 +194,8 @@ public class ProductsController {
     }
 
     @RequestMapping("/remove/{id}")
-    public String removeProduct(@PathVariable("id") Item itemRemove) {
-        itemService.delete(itemRemove);
+    public String removeProduct(@PathVariable("id") Item item) {
+        itemService.delete(item);
         return "redirect:/products";
     }
 //////////////          ADMIN
@@ -232,17 +232,17 @@ public class ProductsController {
         if (!isUser()){
             return "redirect:/products";
         }
-        shoppingCartDAO.makePersistent(cart);
+        shoppingCartService.save(cart);
         return "redirect:/products";
     }
 //////////////          ORDER_CONFIRMATION
 
 
 //////////////          VALIDATOR
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder){
-//        binder.registerCustomEditor(ItemForm.class, new FromStringToInt());
-//    }
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
+    }
 //////////////          VALIDATOR
 
 
@@ -260,7 +260,7 @@ public class ProductsController {
     //Change due to unnecessary db hit
     @ModelAttribute("categories")
     public List<Category> categoriesAll() {
-        return categoryDAO.getAll();
+        return appScopedData.getAllCategories();
     }
     private User getCustomerUser(){
         return new User("","",false);
@@ -271,7 +271,7 @@ public class ProductsController {
         return !isAnonymous;
     }
     private User getUserBySecurityUsername(){
-        return userDAO.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
 }

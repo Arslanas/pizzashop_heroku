@@ -1,7 +1,7 @@
 package pizzaShop.entity;
 
-import pizzaShop.pojo.Address;
-import pizzaShop.pojo.Contact;
+import pizzaShop.entity.embedded.Address;
+import pizzaShop.entity.embedded.Contact;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

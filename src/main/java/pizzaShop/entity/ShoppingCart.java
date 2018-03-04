@@ -1,4 +1,6 @@
-package pizzaShop.pojo;
+package pizzaShop.entity;
+
+import pizzaShop.entity.embedded.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

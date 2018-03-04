@@ -38,7 +38,7 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${path}" method="post" modelAttribute="${itemEdit}" commandName="itemEdit">
+                    <sf:form action="${path}" method="post" modelAttribute="${item}" commandName="item">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
@@ -70,7 +70,7 @@
 
                     </sf:form>
                     <div class="col-2 ml-auto ">
-                        <a href="${contextPath}/products/remove/${itemEdit.id}"  class="btn btn-outline-danger ">Удалить</a>
+                        <a href="${contextPath}/products/remove/${item.id}"  class="btn btn-outline-danger ">Удалить</a>
                     </div>
 
                 </div>

@@ -9,46 +9,46 @@ import java.util.List;
 
 public class GenericServiceImpl<T,ID extends Serializable> implements GenericService<T,ID> {
 
-    protected JpaRepository<T,ID> repo;
+    protected JpaRepository<T,ID> genericRepo;
     protected final Class classInfo;
 
     protected GenericServiceImpl(Class<T> classInfo, JpaRepository<T,ID> repo){
         this.classInfo = classInfo;
-        this.repo = repo;
+        this.genericRepo = repo;
     }
 
     @Override
     public long count() {
-        return repo.count();
+        return genericRepo.count();
     }
 
     @Override
     public List<T> findAll() {
-        return repo.findAll();
+        return genericRepo.findAll();
     }
 
     @Override
     public Page<T> findAll(Pageable var) {
-        return repo.findAll(var);
+        return genericRepo.findAll(var);
     }
 
     @Override
     public T findOne(ID id) {
-        return repo.findOne(id);
+        return genericRepo.findOne(id);
     }
 
     @Override
     public T save(T t) {
-        return repo.save(t);
+        return genericRepo.save(t);
     }
 
     @Override
     public void delete(T t) {
-        repo.delete(t);
+        genericRepo.delete(t);
     }
 
     @Override
     public boolean exists(ID var1) {
-        return repo.exists(var1);
+        return genericRepo.exists(var1);
     }
 }
