@@ -2,32 +2,33 @@ package pizzaShop.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.repository.ItemRepo;
 
-import java.util.Set;
 
 @Service
 public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements ItemService {
 
     private static Logger logger = Logger.getLogger(ItemServiceImpl.class);
-    CategoryService categoryService;
     ItemRepo repo;
     @Autowired
-    public ItemServiceImpl(ItemRepo itemRepo, CategoryService categoryService){
+    public ItemServiceImpl(ItemRepo itemRepo){
         super(Item.class, itemRepo);
         repo = itemRepo;
-        this.categoryService = categoryService;
     }
 
     @Override
-    public Set<Item> getItemsByCategoryName(String categoryName){
-        return categoryService.getSetOfItems(categoryService.findByName(categoryName));
-    };
+    public Page<Item> getItemsByCategory(Category category, Pageable pageable){
+        return repo.findByCategory(category,pageable);
+    }
 
     @Override
-    public Set<Item> getItemsBySearchString(String search) {
-        return repo.findByNameContainingIgnoreCase(search);
+    public Page getItemsBySearchString(String search, Pageable pageable) {
+        return repo.findByNameContainingIgnoreCase(search, pageable);
     }
+
 }

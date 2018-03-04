@@ -26,9 +26,4 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, Integer> i
     public Category findByName(String name) {
         return repo.findByName(name);
     }
-
-    @Override
-    public Set<Item> getSetOfItems(Category category) {
-        return category.getSetOfCategorizedItems().stream().map(e->e.getItem()).collect(Collectors.toSet());
-    }
 }

@@ -22,7 +22,7 @@
         <ul class="navbar-nav ml-auto">
             <li>
                 <sf:form method="get" action="${contextPath}/products/search" class="form-inline mt-5 mt-md-0">
-                    <input class="form-control mr-sm-2" name="searchString" type="text" placeholder="Поиск"
+                    <input class="form-control mr-sm-2" name="search" type="text" placeholder="Поиск"
                            aria-label="Search">
                     <button class="btn  btn-warning my-2 my-sm-0" type="submit">Найти</button>
                 </sf:form>

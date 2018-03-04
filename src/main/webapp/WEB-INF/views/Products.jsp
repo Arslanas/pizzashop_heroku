@@ -9,7 +9,6 @@
     <title>Homepage</title>
 
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
     <!-- Bootstrap core CSS -->
     <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
 
@@ -79,10 +78,10 @@
                         </div>
                         <div class="col-12 ">
                             <div class="col-3 mx-auto">
-                                <a href="${contextPath}/products?page=0&sort=name" class="text-info">По имени</a>
+                                <a href="${requestType}?page=0&sort=name" class="text-info">По имени</a>
                             </div>
                             <div class="col-3 mx-auto">
-                                <a href="${contextPath}/products?page=0&sort=price" class="text-info">По цене</a>
+                                <a href="${requestType}?page=0&sort=price" class="text-info">По цене</a>
                             </div>
                         </div>
                         <c:forEach items="${page.content}" var="item">
@@ -132,13 +131,13 @@
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item ">
-                                        <a href="${contextPath}/products?page=${page.number - 1}&sort=${sort}&size=4" class="page-link"  tabindex="-1">Previous</a>
+                                        <a href="${requestType}?page=${page.number - 1}&sort=${sort}&size=4&search=${search}" class="page-link"  tabindex="-1">Previous</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a href="${contextPath}/products?page=${page.number + 1}&sort=${sort}&size=4" class="page-link" >Next</a>
+                                        <a href="${requestType}?page=${page.number + 1}&sort=${sort}&size=4&search=${search}" class="page-link" >Next</a>
                                     </li>
                                 </ul>
                             </nav>

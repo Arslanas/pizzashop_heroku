@@ -12,7 +12,7 @@
             </div>
             <div class="row mx-auto list-group mb-3">
                 <c:forEach items="${categories}" var="category">
-                    <a href="${contextPath}/products/${category.name}"
+                    <a href="${contextPath}/products/${category.id}"
                        class="btn btn-outline-info bg-info btn-block text-white ">${category.name}</a>
                 </c:forEach>
                 <a href="${contextPath}/products/addProduct" class="btn btn-outline-info bg-info btn-block text-white ">Add

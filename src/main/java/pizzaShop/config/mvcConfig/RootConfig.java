@@ -26,6 +26,7 @@ import java.util.Properties;
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"pizzaShop"})
+
 public class RootConfig {
 
     @Bean

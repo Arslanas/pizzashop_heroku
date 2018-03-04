@@ -2,8 +2,10 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import pizzaShop.service.*;
 import pizzaShop.utilities.AppScopedData;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -59,20 +62,22 @@ public class ProductsController {
 
 //////////////      PRODUCTS
     @RequestMapping
-    public String products(Model model, HttpSession session, Pageable pageable, Sort sort) {
-        if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
+    public String products(Model model, HttpServletRequest request, Pageable pageable, Sort sort) {
         model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
         model.addAttribute("page", itemService.findAll(pageable));
+        model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
     }
 
-    @RequestMapping("/{categoryName}")
-    public String productsByCategory(@PathVariable("categoryName") String categoryName, Model model, HttpSession session) {
-        model.addAttribute("items", itemService.getItemsByCategoryName(categoryName));
+    @RequestMapping("/{category}")
+    public String productsByCategory(@PathVariable("category") Category category, HttpServletRequest request, Model model, Pageable pageable, Sort sort) {
+        logger.info(category);
+        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        model.addAttribute("page", itemService.getItemsByCategory(category, pageable));
+        model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
     }
 
-    // CategoryName not readable code
     @RequestMapping(value = "/add/{itemID}")
     @ResponseBody
     public ShoppingCart item(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
@@ -84,25 +89,15 @@ public class ProductsController {
         }
         return cart;
     }
-//    @RequestMapping("/add/{itemID}")
-//    public String item(@PathVariable("itemID") Long itemID, @SessionAttribute("cart") ShoppingCart cart, HttpSession session) {
-//        Item item = itemDAO.findById(itemID);
-//        Product product = new Product(item);
-//        if (!cart.contains(product)) {
-//            cart.add(product);
-//        } else {
-//            cart.getProductByItemId(itemID).increaseQuantity();
-//        }
-//        String category = (String) session.getAttribute("categoryName");
-//        session.removeAttribute("categoryName");
-//        if (category == null) return "redirect:/products/";
-//        return "redirect:/products/" + category + "";
-//    }
 
     @RequestMapping(value = "/search")
-    public String productSearch(Model model, HttpSession session, @RequestParam("searchString") String searchString) {
+    public String productSearch(Model model, HttpServletRequest request, HttpSession session, @RequestParam("search") String search, Pageable pageable, Sort sort) {
         if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
-        model.addAttribute("page", itemService.getItemsBySearchString(searchString));
+        if (pageable.getPageSize()>3) pageable = new PageRequest(pageable.getPageNumber(), 2, pageable.getSort());
+        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        model.addAttribute("page", itemService.getItemsBySearchString(search, pageable));
+        model.addAttribute("requestType", request.getRequestURL().toString());
+        model.addAttribute("search", search);
         return "Products";
     }
 
@@ -150,14 +145,6 @@ public class ProductsController {
         return "redirect:/products";
     }
 //////////////          SHOPPINGCART
-
-    //////////////          TEMP
-    @RequestMapping("/test")
-    public String test(@RequestParam("quantity") int quan, Model model) {
-        model.addAttribute("quantity", quan);
-        return "ProductsTest";
-    }
-//////////////          TEMP
 
 //////////////          ADMIN
     @RequestMapping("/addProduct")
@@ -247,7 +234,7 @@ public class ProductsController {
 
 
 //////////////          Helpers
-    //Change to CONVERTER
+
     private List<String> getCategoryName(List<Category> categories) {
         return categories.stream().map(e->e.getName()).collect(Collectors.toList());
     }
@@ -257,7 +244,6 @@ public class ProductsController {
         return new ShoppingCart();
     }
 
-    //Change due to unnecessary db hit
     @ModelAttribute("categories")
     public List<Category> categoriesAll() {
         return appScopedData.getAllCategories();
