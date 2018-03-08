@@ -46,6 +46,9 @@ public class GenericServiceImpl<T,ID extends Serializable> implements GenericSer
     public void delete(T t) {
         genericRepo.delete(t);
     }
+    public void delete(ID id) {
+        genericRepo.delete(id);
+    }
 
     @Override
     public boolean exists(ID var1) {

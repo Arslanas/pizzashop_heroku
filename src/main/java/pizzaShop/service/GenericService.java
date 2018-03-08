@@ -15,5 +15,6 @@ public interface GenericService<T,ID extends Serializable>  {
     T findOne(ID id);
     T save(T t);
     void delete(T t);
+    void delete(ID id);
     boolean exists(ID var1);
 }

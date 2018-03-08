@@ -27,6 +27,7 @@ import java.util.List;
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @ComponentScan(basePackages = {"pizzaShop"})
+
 public class ServletConfig extends WebMvcConfigurerAdapter {
 
 

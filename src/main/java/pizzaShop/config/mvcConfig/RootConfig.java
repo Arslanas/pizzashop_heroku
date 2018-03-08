@@ -1,13 +1,15 @@
 package pizzaShop.config.mvcConfig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,20 +28,37 @@ import java.util.Properties;
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"pizzaShop"})
-
+@PropertySource(value = "classpath:prod.properties")
 public class RootConfig {
 
-    @Bean
+    @Autowired
+    Environment env;
+
+    @Bean(name = "dataSource")
+    @Profile("prod")
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("sid");
-        dataSource.setPassword("");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/pizzashop");
+        dataSource.setDriverClassName(env.getProperty("db.driver"));
+        dataSource.setUsername(env.getProperty("db.user"));
+        dataSource.setPassword(env.getProperty("db.password"));
+        dataSource.setUrl(env.getProperty("db.url"));
         return dataSource;
     }
+    @Bean(name = "dataSource", destroyMethod = "shutdown")
+    @Profile("test")
+    public DataSource dataSourceForTest(){
+        return  new EmbeddedDatabaseBuilder().
+                generateUniqueName(true).
+                setType(EmbeddedDatabaseType.H2).
+                setScriptEncoding("UTF-8").
+                ignoreFailedDrops(true).
+                addScript("my-schema.sql").
+                addScripts("my-data.sql").
+                build();
+    }
 
-    @Bean
+    @Bean(name = "jpaVendorAdapter")
+    @Profile("prod")
     public JpaVendorAdapter jpaVendorAdapter(){
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.MYSQL);
@@ -47,9 +66,19 @@ public class RootConfig {
         adapter.setShowSql(true);
         return adapter;
     }
+    @Bean(name = "jpaVendorAdapter")
+    @Profile("test")
+    public JpaVendorAdapter jpaVendorAdapterForTest(){
+        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+        adapter.setDatabase(Database.H2);
+        adapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+        adapter.setShowSql(true);
+        return adapter;
+    }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter adapter){
+    @Autowired
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory( JpaVendorAdapter adapter, DataSource dataSource){
         Properties properties = new Properties();
         properties.setProperty("hibernate.format_sql", String.valueOf(true));
         properties.setProperty("hibernate.connection.CharSet","utf8");
@@ -63,9 +92,17 @@ public class RootConfig {
         return emf;
     }
 
-    @Bean
+
+    @Bean(name = "transactionManager")
+    @Profile("prod")
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
         return new JpaTransactionManager(emf);
+    }
+
+    @Bean(name = "transactionManager")
+    @Profile("test")
+    public PlatformTransactionManager transactionManagerForTest(){
+        return new DataSourceTransactionManager(dataSourceForTest());
     }
 
     @Bean
