@@ -14,11 +14,13 @@ public class Category implements Comparable<Category>, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull
+    @Column(name = "NAME")
     private String name;
     @NotNull
+    @Column(name = "ORDERS")
     private int order;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category")
     Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
 
     public Category() {

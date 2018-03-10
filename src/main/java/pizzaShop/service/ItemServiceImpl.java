@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.repository.ItemRepo;
 
 
 @Service
+@Transactional
 public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements ItemService {
 
     private static Logger logger = Logger.getLogger(ItemServiceImpl.class);

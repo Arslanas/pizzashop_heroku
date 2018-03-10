@@ -3,16 +3,20 @@ package pizzaShop.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pizzaShop.entity.Item;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class GenericServiceImpl<T,ID extends Serializable> implements GenericService<T,ID> {
 
-    protected JpaRepository<T,ID> genericRepo;
+public class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID> {
+
+    protected JpaRepository<T, ID> genericRepo;
     protected final Class classInfo;
 
-    protected GenericServiceImpl(Class<T> classInfo, JpaRepository<T,ID> repo){
+    protected GenericServiceImpl(Class<T> classInfo, JpaRepository<T, ID> repo) {
         this.classInfo = classInfo;
         this.genericRepo = repo;
     }
@@ -46,6 +50,7 @@ public class GenericServiceImpl<T,ID extends Serializable> implements GenericSer
     public void delete(T t) {
         genericRepo.delete(t);
     }
+
     public void delete(ID id) {
         genericRepo.delete(id);
     }

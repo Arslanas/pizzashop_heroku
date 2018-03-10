@@ -93,17 +93,12 @@ public class RootConfig {
     }
 
 
-    @Bean(name = "transactionManager")
-    @Profile("prod")
+    @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
         return new JpaTransactionManager(emf);
     }
 
-    @Bean(name = "transactionManager")
-    @Profile("test")
-    public PlatformTransactionManager transactionManagerForTest(){
-        return new DataSourceTransactionManager(dataSourceForTest());
-    }
+
 
     @Bean
     public BeanPostProcessor persistenceTranslation(){

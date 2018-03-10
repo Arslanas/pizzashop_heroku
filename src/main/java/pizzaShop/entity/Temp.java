@@ -14,6 +14,10 @@ public class Temp {
     public Temp() {
     }
 
+    public Temp(String name) {
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

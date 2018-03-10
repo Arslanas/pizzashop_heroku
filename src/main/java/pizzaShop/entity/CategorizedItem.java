@@ -60,8 +60,6 @@ public class CategorizedItem implements Serializable{
         this.item = item;
         this.id.categoryID = category.getId();
         this.id.itemID = item.getId();
-        category.getSetOfCategorizedItems().add(this);
-        item.getSetOfCategorizedItems().add(this);
     }
 
     public Category getCategory() {
