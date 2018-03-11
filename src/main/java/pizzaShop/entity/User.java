@@ -6,6 +6,7 @@ import pizzaShop.entity.embedded.Contact;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +29,10 @@ public class User implements Serializable{
     private Contact contact = new Contact();
     @NotNull
     private Address address = new Address();
+    @Column(name = "DATE", updatable = false, insertable = false)
+    private LocalDateTime date;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME"))
     @Column(name = "authority")
     Set<String> authorities ;
@@ -99,6 +102,13 @@ public class User implements Serializable{
         this.address = address;
     }
 
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
     @Override
     public boolean equals(Object o) {

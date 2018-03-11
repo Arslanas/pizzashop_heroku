@@ -21,10 +21,15 @@
                    class="btn btn-outline-info bg-info btn-block text-white ">User registration</a>
                 <a href="${contextPath}/products" class="btn btn-outline-info bg-info btn-block text-white ">All
                     products</a>
-                <a href="${contextPath}/admin/userManagement" class="btn btn-outline-info bg-info btn-block text-white ">All
+                <a href="${contextPath}/admin/userManagement"
+                   class="btn btn-outline-info bg-info btn-block text-white ">All
                     users</a>
+                <a href="${contextPath}/products/user/details" class="btn btn-outline-info bg-info btn-block text-white ">User
+                    details</a>
+                <a href="${contextPath}/products/user/orders" class="btn btn-outline-info bg-info btn-block text-white ">User
+                    orders</a>
                 <sf:form action="/logout" method="post">
-                    <button type="submit"  class="btn btn-outline-info bg-info btn-block text-white ">LOGOUT</button>
+                    <button type="submit" class="btn btn-outline-info bg-info btn-block text-white ">LOGOUT</button>
                 </sf:form>
             </div>
         </div>

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
 import pizzaShop.entity.embedded.Product;
-import pizzaShop.repository.*;
 import pizzaShop.service.*;
 import pizzaShop.utilities.AppScopedData;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
@@ -52,18 +50,23 @@ public class ProductsController {
         this.appScopedData = appScopedData;
     }
 
-//////////////      REST
+    //////////////      REST
     @RequestMapping(value = "/rest/{item}")
     @ResponseBody
-    public Item  getRest(@PathVariable Item item){
+    public Item getRest(@PathVariable Item item) {
         return item;
     }
 //////////////      REST
 
-//////////////      PRODUCTS
+    //////////////      PRODUCTS
     @RequestMapping
     public String products(Model model, HttpServletRequest request, Pageable pageable, Sort sort) {
-        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        if (sort == null) {
+            sort = new Sort("name");
+        }
+        logger.info(pageable);
+        model.addAttribute("sort", sort.iterator().next().getProperty());
+        if (pageable.getPageSize() > 4) pageable = new PageRequest(0, 4, sort);
         model.addAttribute("page", itemService.findAll(pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
@@ -72,7 +75,7 @@ public class ProductsController {
     @RequestMapping("/{category}")
     public String productsByCategory(@PathVariable("category") Category category, HttpServletRequest request, Model model, Pageable pageable, Sort sort) {
         logger.info(category);
-        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "");
         model.addAttribute("page", itemService.getItemsByCategory(category, pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
@@ -93,8 +96,8 @@ public class ProductsController {
     @RequestMapping(value = "/search")
     public String productSearch(Model model, HttpServletRequest request, HttpSession session, @RequestParam("search") String search, Pageable pageable, Sort sort) {
         if (session.getAttribute("categoryName") != null) session.removeAttribute("categoryName");
-        if (pageable.getPageSize()>3) pageable = new PageRequest(pageable.getPageNumber(), 2, pageable.getSort());
-        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "" );
+        if (pageable.getPageSize() > 3) pageable = new PageRequest(pageable.getPageNumber(), 2, pageable.getSort());
+        model.addAttribute("sort", sort != null ? sort.iterator().next().getProperty() : "");
         model.addAttribute("page", itemService.getItemsBySearchString(search, pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         model.addAttribute("search", search);
@@ -104,12 +107,12 @@ public class ProductsController {
     //////////////          SHOPPINGCART
     @RequestMapping("/shoppingCart")
     public String shoppingCartHandler(@SessionAttribute ShoppingCart cart, Model model, HttpSession session) {
-        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken ){
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
             session.setAttribute("isRegistered", false);
-        }else {
+        } else {
             session.setAttribute("isRegistered", true);
         }
-        session.setAttribute("authorities",SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e->e.getAuthority()).collect(Collectors.toList()));
+        session.setAttribute("authorities", SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e -> e.getAuthority()).collect(Collectors.toList()));
 
         logger.info(session.getAttribute("authorities"));
         model.addAttribute("cartSet", cart.getCart());
@@ -139,6 +142,7 @@ public class ProductsController {
         cart.removeFromCartByItemID(itemID);
         return "redirect:/products/shoppingCart";
     }
+
     @RequestMapping("/shoppingCart/get")
     public String shoppingCartRemove() {
         logger.info(shoppingCartService.findOne(15l).getDate());
@@ -146,23 +150,24 @@ public class ProductsController {
     }
 //////////////          SHOPPINGCART
 
-//////////////          ADMIN
+    //////////////          ADMIN
     @RequestMapping("/addProduct")
     public String addProduct(Model model, @SessionAttribute List<Category> categories) {
         model.addAttribute("categoryName", getCategoryName(categories));
         model.addAttribute("item", new Item());
         return "Add_product";
     }
+
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProductPost(Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories){
-        if(errors.hasErrors()){
+    public String addProductPost(Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
+        if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
             return "Add_product";
         }
-        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e->e.getCategory()).collect(Collectors.toSet());
+        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
         Item itemMerged = itemService.save(item);
-        categorySet.stream().map(e->new CategorizedItem(e,itemMerged)).forEach(categorizedItemService::save);
+        categorySet.stream().map(e -> new CategorizedItem(e, itemMerged)).forEach(categorizedItemService::save);
         return "redirect:/products/addProduct";
     }
 
@@ -187,12 +192,26 @@ public class ProductsController {
     }
 //////////////          ADMIN
 
-//////////////          ORDER_CONFIRMATION
+    //////////////          USER
+    @RequestMapping("/user/details")
+    public String userDetails(Model model) {
+        model.addAttribute("user", getUserByAuthentication());
+        return "User_details";
+    }
+    @RequestMapping("/user/details/edit")
+    public String userDetailsEdit(Model model) {
+        model.addAttribute("user", getUserByAuthentication());
+        return "User_details_edit";
+    }
+//////////////          USER
+
+    //////////////          ORDER_CONFIRMATION
     @RequestMapping("/customerDetails")
     public String customerDetails(Model model) {
         model.addAttribute("customer", getCustomerUser());
         return "CustomerDetails";
     }
+
     @RequestMapping(value = "/customerDetails", method = RequestMethod.POST)
     public String customerDetailsPost(@ModelAttribute User customer, RedirectAttributes redirectAttributes) {
         logger.info(customer);
@@ -202,9 +221,8 @@ public class ProductsController {
 
     @RequestMapping("/orderConfirmation")
     public String confirmationOrder(@ModelAttribute("customer") User customer, @SessionAttribute ShoppingCart cart, Model model) {
-        logger.info(customer);
-        if(isUser()){
-            customer = getUserBySecurityUsername();
+        if (!isAnonymous()) {
+            customer = getUserByAuthentication();
         }
         model.addAttribute("cartSet", cart.getCart());
         model.addAttribute("customer", customer);
@@ -216,7 +234,7 @@ public class ProductsController {
 
     public String confirmationOrderPost(@SessionAttribute ShoppingCart cart, SessionStatus status) {
         status.setComplete();
-        if (!isUser()){
+        if (isAnonymous()) {
             return "redirect:/products";
         }
         shoppingCartService.save(cart);
@@ -225,9 +243,9 @@ public class ProductsController {
 //////////////          ORDER_CONFIRMATION
 
 
-//////////////          VALIDATOR
+    //////////////          VALIDATOR
     @InitBinder
-    public void initBinder(WebDataBinder binder){
+    public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
     }
 //////////////          VALIDATOR
@@ -236,7 +254,7 @@ public class ProductsController {
 //////////////          Helpers
 
     private List<String> getCategoryName(List<Category> categories) {
-        return categories.stream().map(e->e.getName()).collect(Collectors.toList());
+        return categories.stream().map(e -> e.getName()).collect(Collectors.toList());
     }
 
     @ModelAttribute("cart")
@@ -248,15 +266,17 @@ public class ProductsController {
     public List<Category> categoriesAll() {
         return appScopedData.getAllCategories();
     }
-    private User getCustomerUser(){
-        return new User("","",false);
+
+    private User getCustomerUser() {
+        return new User("", "", false);
     }
 
-    private boolean isUser(){
-        boolean isAnonymous = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e->e.getAuthority()).anyMatch(e-> e.equals("ROLE_ANONYMOUS"));
-        return !isAnonymous;
+    private boolean isAnonymous() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e -> e.getAuthority()).anyMatch(e -> e.equals("ROLE_ANONYMOUS"));
+
     }
-    private User getUserBySecurityUsername(){
+
+    private User getUserByAuthentication() {
         return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 

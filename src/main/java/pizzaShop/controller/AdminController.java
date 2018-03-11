@@ -31,7 +31,6 @@ public class AdminController {
     }
     @RequestMapping(value = "/userRegistration", method = RequestMethod.POST)
     public String userRegistrationPost(@ModelAttribute User user){
-        logger.info(user);
         userService.save(user);
         return "redirect:/admin/userManagement";
     }
@@ -40,4 +39,5 @@ public class AdminController {
         model.addAttribute("users", userService.findAll());
         return "UserManagement";
     }
+
 }
