@@ -13,12 +13,12 @@ import java.util.Set;
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable{
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
     @Column(name = "USERNAME")
     @NotNull
     private String username;
+
     @Column(name = "PASSWORD")
     @NotNull
     private String password;
@@ -32,7 +32,7 @@ public class User implements Serializable{
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME"))
     @Column(name = "authority")
     Set<String> authorities ;
@@ -55,11 +55,6 @@ public class User implements Serializable{
         this(username, password, enabled);
         this.contact = contact;
         this.address = address;
-    }
-
-
-    public Long getId() {
-        return id;
     }
 
     public String getUsername() {

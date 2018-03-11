@@ -40,6 +40,7 @@
                             <th scope="col">Телефон</th>
                             <th scope="col">Пароль</th>
                             <th scope="col">Статус</th>
+                            <th scope="col">Дата создания</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -50,6 +51,7 @@
                                     <td>${user.contact.phoneNum}</td>
                                     <td>${user.password}</td>
                                     <td>${user.enabled}</td>
+                                    <td>${user.date}</td>
                                 </tr>
                              </c:forEach>
                         </tbody>

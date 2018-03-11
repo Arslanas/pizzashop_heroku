@@ -35,8 +35,7 @@
                 <div class="col-12 mt-4 mb-5">
                     <sf:form action="${contextPath}/admin/userRegistration" commandName="user" method="post">
                         <div class="form-group">
-                            <label for="Name">Имя профиля</label>
-                            <sf:input path="username" type="text" name="username" class="form-control" id="Name" />
+                            <sf:input path="username" type="hidden" name="username" class="form-control" id="Name" />
                         </div>
                         <div class="form-group">
                             <label for="Password">Пароль</label>
