@@ -23,6 +23,7 @@ import pizzaShop.validator.CustomPropertyCategorizedItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +57,28 @@ public class ProductsController {
     public Item getRest(@PathVariable Item item) {
         return item;
     }
+
+    @RequestMapping("/shoppingCart/increase/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.getProductByItemId(itemID).increaseQuantity();
+        return cart;
+    }
+
+    @RequestMapping("/shoppingCart/decrease/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.getProductByItemId(itemID).decreaseQuantity();
+        return cart;
+    }
+
+    @RequestMapping("/shoppingCart/remove/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.removeFromCartByItemID(itemID);
+        return cart;
+    }
+
 //////////////      REST
 
     //////////////      PRODUCTS
@@ -84,13 +107,12 @@ public class ProductsController {
     @RequestMapping(value = "/add/{itemID}")
     @ResponseBody
     public ShoppingCart item(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
-        Product product = new Product(item);
-        if (!cart.contains(product)) {
-            cart.add(product);
-        } else {
-            cart.getProductByItemId(item.getId()).increaseQuantity();
-        }
-        return cart;
+        return addProductToCart(new Product(item), cart);
+    }
+    @RequestMapping(value = "/addCart/{cartID}")
+    @ResponseBody
+    public ShoppingCart item(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
+        return addProductSetToCart(fromCart.getCart(), cart);
     }
 
     @RequestMapping(value = "/search")
@@ -125,29 +147,24 @@ public class ProductsController {
         return "redirect:/products";
     }
 
-    @RequestMapping("/shoppingCart/increase/{item}")
-    public String shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.getProductByItemId(itemID).increaseQuantity();
-        return "redirect:/products/shoppingCart";
-    }
+//    @RequestMapping("/shoppingCart/increase/{item}")
+//    public String shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+//        cart.getProductByItemId(itemID).increaseQuantity();
+//        return "redirect:/products/shoppingCart";
+//    }
+//
+//    @RequestMapping("/shoppingCart/decrease/{item}")
+//    public String shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+//        cart.getProductByItemId(itemID).decreaseQuantity();
+//        return "redirect:/products/shoppingCart";
+//    }
+//
+//    @RequestMapping("/shoppingCart/remove/{item}")
+//    public String shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+//        cart.removeFromCartByItemID(itemID);
+//        return "redirect:/products/shoppingCart";
+//    }
 
-    @RequestMapping("/shoppingCart/decrease/{item}")
-    public String shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.getProductByItemId(itemID).decreaseQuantity();
-        return "redirect:/products/shoppingCart";
-    }
-
-    @RequestMapping("/shoppingCart/remove/{item}")
-    public String shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.removeFromCartByItemID(itemID);
-        return "redirect:/products/shoppingCart";
-    }
-
-    @RequestMapping("/shoppingCart/get")
-    public String shoppingCartRemove() {
-        logger.info(shoppingCartService.findOne(15l).getDate());
-        return "redirect:/products";
-    }
 //////////////          SHOPPINGCART
 
     //////////////          ADMIN
@@ -195,13 +212,18 @@ public class ProductsController {
     //////////////          USER
     @RequestMapping("/user/details")
     public String userDetails(Model model) {
-        model.addAttribute("user", getUserByAuthentication());
+        model.addAttribute("user", userService.findByUsername(getUsername()));
         return "User_details";
     }
     @RequestMapping("/user/details/edit")
     public String userDetailsEdit(Model model) {
-        model.addAttribute("user", getUserByAuthentication());
+        model.addAttribute("user", userService.findByUsername(getUsername()));
         return "User_details_edit";
+    }
+    @RequestMapping("/user/orders")
+    public String userOrders(Model model) {
+        model.addAttribute("sCarts", shoppingCartService.findByUsername(getUsername()));
+        return "User_orders";
     }
 //////////////          USER
 
@@ -222,7 +244,7 @@ public class ProductsController {
     @RequestMapping("/orderConfirmation")
     public String confirmationOrder(@ModelAttribute("customer") User customer, @SessionAttribute ShoppingCart cart, Model model) {
         if (!isAnonymous()) {
-            customer = getUserByAuthentication();
+            customer = userService.findByUsername(getUsername());
         }
         model.addAttribute("cartSet", cart.getCart());
         model.addAttribute("customer", customer);
@@ -275,9 +297,28 @@ public class ProductsController {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e -> e.getAuthority()).anyMatch(e -> e.equals("ROLE_ANONYMOUS"));
 
     }
+    private String getUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    private ShoppingCart addProductToCart(Product product, ShoppingCart cart){
+        if (!cart.contains(product)) {
+            cart.add(product);
+        } else {
+            cart.getProductByItemId(product.getItem().getId()).increaseQuantity();
+        }
+        return cart;
+    }
+    private ShoppingCart addProductSetToCart(Set<Product> products, ShoppingCart cart){
+        products.stream().forEach(product -> {
+            if (!cart.contains(product)) {
+                cart.add(product);
+            } else {
+               Product productCart = cart.getProductByItemId(product.getItem().getId());
+                productCart.setQuantity(productCart.getQuantity() + product.getQuantity());
+            }
+        });
 
-    private User getUserByAuthentication() {
-        return userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        return cart;
     }
 
 }

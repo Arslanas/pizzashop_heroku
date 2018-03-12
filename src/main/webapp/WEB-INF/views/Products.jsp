@@ -116,7 +116,7 @@
                                         </sec:authorize>
                                         <div class="row ">
                                             <div class="col-12 mt-3  ">
-                                                <button id="itemID-${item.id}" onclick="myAjaxFunction(${item.id})" class="btn btn-outline-info text-center btn-block">AJAX</button>
+                                                <button id="itemID-${item.id}" onclick="addToCart(${item.id})" class="btn btn-outline-info text-center btn-block">AJAX</button>
                                             </div>
                                         </div>
                                     </div>

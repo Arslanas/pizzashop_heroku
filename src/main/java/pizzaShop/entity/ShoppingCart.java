@@ -1,9 +1,13 @@
 package pizzaShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 import pizzaShop.entity.embedded.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 @Entity
@@ -17,12 +21,22 @@ public class ShoppingCart {
     private long totalPrice;
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "PRODUCTS", joinColumns = @JoinColumn(name = "SHOPPINGCART_ID"))
     private Set<Product> cart = new HashSet<>();
 
     public ShoppingCart() {
     }
+
+    @JsonIgnore
+    public String getFormattedDate() {
+        return date.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+    }
+    @JsonIgnore
+    public String getFormattedTime() {
+        return date.toLocalTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+    }
+
 
     public Long getId() {
         return id;
@@ -39,6 +53,7 @@ public class ShoppingCart {
     public LocalDateTime getDate() {
         return date;
     }
+
 
     public void setDate(LocalDateTime date) {
         this.date = date;
@@ -114,3 +129,6 @@ public class ShoppingCart {
                 '}';
     }
 }
+//{"id":null,"username":null,"totalPrice":2850,"date":null,"cart":[
+//        {"item":{"id":37,"name":"Anchous","price":450,"description":"ryba"},"quantity":5,"totalPrice":2250},
+//        {"item":{"id":15,"name":"Basket Chilly","price":600,"description":null},"quantity":1,"totalPrice":600}]}

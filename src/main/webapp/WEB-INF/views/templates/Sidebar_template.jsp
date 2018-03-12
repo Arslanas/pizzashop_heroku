@@ -17,8 +17,6 @@
                 </c:forEach>
                 <a href="${contextPath}/products/addProduct" class="btn btn-outline-info bg-info btn-block text-white ">Add
                     product</a>
-                <a href="${contextPath}/admin/userRegistration"
-                   class="btn btn-outline-info bg-info btn-block text-white ">User registration</a>
                 <a href="${contextPath}/products" class="btn btn-outline-info bg-info btn-block text-white ">All
                     products</a>
                 <a href="${contextPath}/admin/userManagement"

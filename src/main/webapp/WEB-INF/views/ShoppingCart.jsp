@@ -47,23 +47,28 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${cartSet}" var="product">
-                                    <tr>
-                                        <td><a href="${contextPath}/products/shoppingCart/remove/${product.item.id}"
+                                    <tr id = "productRow_${product.item.id}">
+                                        <td><button onclick="removeFromCart(${product.item.id})"
                                                class="btn btn-danger btn-sm "><img
-                                                src="${contextPath}/resources/vendor/images/circle-x.svg" width="8"></a>
+                                                src="${contextPath}/resources/vendor/images/circle-x.svg" width="8"></button>
                                             <span
                                                     class="ml-2">${product.item.name}</span>
                                         </td>
                                         <td>${product.item.price} р</td>
-                                        <td><a href="${contextPath}/products/shoppingCart/decrease/${product.item.id}"
-                                               class="btn btn-warning btn-sm"><img
-                                                src="${contextPath}/resources/vendor/images/minus.svg" width="8"></a>
-                                            <span class="mx-3">${product.quantity}</span>
-                                            <a href="${contextPath}/products/shoppingCart/increase/${product.item.id}"
-                                               class="btn btn-warning btn-sm"><img
+                                        <td>
+                                            <button onclick="decreaseCart(${product.item.id})"
+                                                    class="btn btn-warning btn-sm"><img
+                                                    src="${contextPath}/resources/vendor/images/minus.svg" width="8">
+                                            </button>
+                                            <span id="productQuantity_${product.item.id}"
+                                                  class="mx-3">${product.quantity}</span>
+                                            <button onclick="increaseCart(${product.item.id})"
+                                                    class="btn btn-warning btn-sm"><img
                                                     src="${contextPath}/resources/vendor/images/plus.svg"
-                                                    width="8"></a></td>
-                                        <td>${product.totalPrice} р</td>
+                                                    width="8"></button>
+                                        </td>
+                                        <td><span id="productPrice_${product.item.id}">${product.totalPrice}</span> р
+                                        </td>
                                     </tr>
 
                                 </c:forEach>
@@ -81,13 +86,14 @@
                 <div class="col-6 mx-auto">
                     <div class="row justify-content-center">
                         <div class="col-12 mt-4 mb-3">
-                            <h3 class="text-center text-primary">Сумма заказа: <span
+                            <h3 class="text-center text-primary">Сумма заказа: <span id = "cartTotalPrice"
                                     class="font-weight-bold"> ${cart.totalPrice} </span>р</h3>
                         </div>
                         <div class="col-12 mb-4">
                             <c:choose>
                                 <c:when test="${authenticated}">
-                                    <a href="${contextPath}/products/orderConfirmation" class="btn btn-warning btn-block"
+                                    <a href="${contextPath}/products/orderConfirmation"
+                                       class="btn btn-warning btn-block"
                                        href="#">Оформить заказ</a>
                                 </c:when>
                                 <c:otherwise>

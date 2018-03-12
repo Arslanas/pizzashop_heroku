@@ -43,7 +43,7 @@ public class Product {
        if(quantity > 1) quantity--;
     }
     public void increaseQuantity(int number){
-        quantity+= number;
+        quantity += number;
     }
     public long getTotalPrice(){
         return item.getPrice()*quantity;

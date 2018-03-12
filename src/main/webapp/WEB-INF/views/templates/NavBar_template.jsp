@@ -5,9 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 
-
 <sec:authorize access="authenticated" var="authenticated"/>
-
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top ">
@@ -15,9 +13,9 @@
     <div class="container">
         <a href="${contextPath}/products" class="navbar-brand font-weight-bold display-4 " href="#">Pizza Shop</a>
 
-        <a href="${contextPath}/products/shoppingCart" id = "shoppingCart" class="btn btn-warning  mx-auto"><img
+        <a href="${contextPath}/products/shoppingCart" id="shoppingCart" class="btn btn-warning  mx-auto"><img
                 src="${contextPath}/resources/vendor/images/cart.svg"
-                width="20"> Ваш заказ : <span id = "cartPrice"> ${cart.totalPrice} </span> р
+                width="20"> Ваш заказ : <span id="cartPrice"> ${cart.totalPrice} </span> р
         </a>
         <ul class="navbar-nav ml-auto">
             <li>
@@ -32,16 +30,35 @@
                 <c:when test="${authenticated}">
                     <sec:authentication property="name" var="userName"/>
                     <li class="nav-item active ml-3">
-                        </a><a href="${contextPath}/login" class="btn btn-warning my-2 my-sm-0 " type="submit"><img
-                            src="${contextPath}/resources/vendor/images/person.svg" width="20"> Привет, ${userName}!
-                    </a>
+                        <div class="dropdown">
+                            <button class="btn  btn-warning dropdown-toggle my-2 my-sm-0 " type="button" id="userMenu"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="${contextPath}/resources/vendor/images/person.svg" width="20">${userName}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="userMenu">
+                                <a class="dropdown-item" href="${contextPath}/products/user/orders">Ваши заказы</a>
+                                <a class="dropdown-item" href="${contextPath}/products/user/details">Ваш профиль</a>
+                                <div class="dropdown-divider"></div>
+                                <sf:form action="${contextPath}/logout" method="post">
+                                    <button type="submit" class="dropdown-item">Выход</button>
+                                </sf:form>
+                            </div>
+                        </div>
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <li class="nav-item active ml-3">
-                        <a href="${contextPath}/login" class="btn  btn-warning  my-2 my-sm-0 " type="submit"><img
-                                src="${contextPath}/resources/vendor/images/person.svg" width="20"> Войти
-                        </a>
+                    <li class="nav-item ml-3">
+                        <div class="dropdown">
+                            <button class="btn  btn-warning dropdown-toggle my-2 my-sm-0 " type="button"
+                                    id="userMenuAnonym"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="${contextPath}/resources/vendor/images/person.svg" width="20"> Войти
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="userMenuAnonym">
+                                <a class="dropdown-item" href="${contextPath}/login">Вход</a>
+                                <a class="dropdown-item" href="${contextPath}/admin/userRegistration">Регистрация</a>
+                            </div>
+                        </div>
                     </li>
                 </c:otherwise>
             </c:choose>

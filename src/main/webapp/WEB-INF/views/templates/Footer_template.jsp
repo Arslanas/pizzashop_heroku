@@ -13,5 +13,4 @@
 <script src="${contextPath}/resources/vendor/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/custom_js/myAjax.js"></script>
 <script src="${contextPath}/resources/custom_js/addProductFormValidator.js"></script>
-<script src="${contextPath}/resources/vendor/js/bootstrap.bundle.min.js"></script>
 <script src="${contextPath}/resources/vendor/js/bootstrap.min.js"></script>
