@@ -2,6 +2,8 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
@@ -35,8 +37,8 @@ public class AdminController {
         return "redirect:/admin/userManagement";
     }
     @RequestMapping(value = "/userManagement")
-    public String userManagement(Model model){
-        model.addAttribute("users", userService.findAll());
+    public String userManagement(Model model, Pageable pageable){
+        model.addAttribute("users", userService.findAll(pageable));
         return "UserManagement";
     }
 
