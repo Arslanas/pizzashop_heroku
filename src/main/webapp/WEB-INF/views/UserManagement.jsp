@@ -35,12 +35,12 @@
                     <table class="table tab table-hover table-striped table-light">
                         <thead>
                         <tr>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=username">Имя профиля</a></th>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=contact.email">Почта</a></th>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=contact.phoneNum">Телефон</a></th>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=password">Пароль</a></th>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=enabled">Статус</a></th>
-                            <th scope="col"><a href="${contextPath}/admin/userManagement?page=0&sort=date,desc">Дата создания</a></th>
+                            <th scope="col"><a  class="btn" href="${contextPath}/admin/userManagement?page=0&sort=username">Имя профиля</a></th>
+                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=contact.email">Почта</a></th>
+                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=contact.phoneNum">Телефон</a></th>
+                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=password">Пароль</a></th>
+                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=enabled">Статус</a></th>
+                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=date,desc">Дата создания</a></th>
                         </tr>
                         </thead>
                         <tbody>
