@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
@@ -19,7 +19,7 @@
 <body>
 
 <!-- Navigation -->
-<%@ include file="templates/NavBar_template.jsp"%>
+<%@ include file="templates/NavBar_template.jsp" %>
 
 
 <div class="container">
@@ -35,25 +35,39 @@
                     <table class="table tab table-hover table-striped table-light">
                         <thead>
                         <tr>
-                            <th scope="col"><a  class="btn" href="${contextPath}/admin/userManagement?page=0&sort=username">Имя профиля</a></th>
-                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=contact.email">Почта</a></th>
-                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=contact.phoneNum">Телефон</a></th>
-                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=password">Пароль</a></th>
-                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=enabled">Статус</a></th>
-                            <th scope="col"><a class="btn"href="${contextPath}/admin/userManagement?page=0&sort=date,desc">Дата создания</a></th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=username">Имя
+                                профиля</a></th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=contact.email">Почта</a>
+                            </th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=contact.phoneNum">Телефон</a>
+                            </th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=password">Пароль</a>
+                            </th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=enabled">Статус</a>
+                            </th>
+                            <th scope="col"><a class="btn"
+                                               href="${contextPath}/admin/userManagement?page=0&sort=date,desc">Дата
+                                создания</a></th>
                         </tr>
                         </thead>
                         <tbody>
-                             <c:forEach items="${users.content}" var="user">
+                        <div id="usersDiv">
+                            <c:forEach items="${users.content}" var="user">
                                 <tr>
                                     <td>${user.username}</td>
                                     <td>${user.contact.email}</td>
                                     <td>${user.contact.phoneNum}</td>
                                     <td>${user.password}</td>
                                     <td>${user.enabled}</td>
-                                    <td>${user.date}</td>
+                                    <td>${user.formattedDate}</td>
                                 </tr>
-                             </c:forEach>
+                            </c:forEach>
+                        </div>
                         </tbody>
                     </table>
                 </div>
@@ -65,7 +79,7 @@
 
 
 <!-- Footer -->
-<%@ include file="templates/Footer_template.jsp"%>
+<%@ include file="templates/Footer_template.jsp" %>
 
 </body>
 </html>

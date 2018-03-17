@@ -1,5 +1,6 @@
 package pizzaShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -103,6 +106,15 @@ public class User implements Serializable{
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    @JsonIgnore
+    public String getFormattedDate() {
+        return date.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+    }
+    @JsonIgnore
+    public String getFormattedTime() {
+        return date.toLocalTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
     }
 
     @Override

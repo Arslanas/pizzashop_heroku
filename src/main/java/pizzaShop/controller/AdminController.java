@@ -41,5 +41,10 @@ public class AdminController {
         model.addAttribute("users", userService.findAll(pageable));
         return "UserManagement";
     }
+//    @RequestMapping(value = "/userManagement")
+//    public String userManagement(Model model, Pageable pageable){
+//        model.addAttribute("users", userService.findAll(pageable));
+//        return "UserManagement";
+//    }
 
 }
