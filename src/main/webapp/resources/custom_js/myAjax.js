@@ -9,6 +9,21 @@
 // function myFunction(){
 //     $("#example-1").load('Ajax_tempHTML.html');
 // }
+function findUsers(sort, direction) {
+    direction == "asc" ? direction="desc" : direction="asc";
+    $('#'+sort+'Button').attr("onclick", "findUsers('"+sort+"','"+direction+"')");
+    requestUsers(sort, direction);
+}
+function requestUsers(sort, direction){
+    $.getJSON("http://localhost:8080/admin/userManagementRest?page=0&sort="+sort+","+direction, {}, function (json){
+        var usersBody = $("#usersBody");
+        usersBody.html("");
+        for(var i = 0; i <json.length; i++){
+            var user = json[i];
+            usersBody.append("<tr> <td>"+user.username+"</td> <td>"+user.contact.email+"</td> <td>"+user.contact.phoneNum+"</td> <td>"+user.password+"</td> <td>"+user.enabled+"</td><td>"+user.date+"</td> </tr>")
+        }
+    });
+}
 function addToCart(itemID) {
     $.getJSON("http://localhost:8080/products/add/" + itemID, {}, function (json) {
         $("#itemID-" + itemID).html("");

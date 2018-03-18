@@ -1,6 +1,8 @@
 package pizzaShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
 import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
 
@@ -32,6 +34,8 @@ public class User implements Serializable{
     private Contact contact = new Contact();
     @NotNull
     private Address address = new Address();
+
+    @JsonFormat(pattern="dd-MM-yyyy")
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
 
@@ -99,7 +103,6 @@ public class User implements Serializable{
     public void setAddress(Address address) {
         this.address = address;
     }
-
     public LocalDateTime getDate() {
         return date;
     }

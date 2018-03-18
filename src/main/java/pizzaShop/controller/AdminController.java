@@ -10,8 +10,11 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import pizzaShop.entity.User;
 import pizzaShop.service.UserService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,15 +39,16 @@ public class AdminController {
         userService.save(user);
         return "redirect:/admin/userManagement";
     }
+    @RequestMapping(value = "/userManagementRest")
+    @ResponseBody
+    public List<User> userManagementRest(Model model, Pageable pageable){
+        return userService.findAll(pageable).getContent();
+    }
     @RequestMapping(value = "/userManagement")
     public String userManagement(Model model, Pageable pageable){
         model.addAttribute("users", userService.findAll(pageable));
         return "UserManagement";
     }
-//    @RequestMapping(value = "/userManagement")
-//    public String userManagement(Model model, Pageable pageable){
-//        model.addAttribute("users", userService.findAll(pageable));
-//        return "UserManagement";
-//    }
+
 
 }

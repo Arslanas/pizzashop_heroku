@@ -9,6 +9,7 @@
     <title>Homepage</title>
 
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <c:set var="usersURL" value="${contextPath}/admin/userManagementRest"/>
 
     <!-- Bootstrap core CSS -->
     <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
@@ -35,39 +36,39 @@
                     <table class="table tab table-hover table-striped table-light">
                         <thead>
                         <tr>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=username">Имя
-                                профиля</a></th>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=contact.email">Почта</a>
+                            <th scope="col">
+                                <button id = "usernameButton" class="btn" onclick="findUsers('username', 'asc')">Имя профиля</button>
                             </th>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=contact.phoneNum">Телефон</a>
+                            <th scope="col">
+                                <button id = "contact.emailButton" class="btn" onclick="findUsers('contact.email', 'asc')">Почта</button>
                             </th>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=password">Пароль</a>
+                            <th scope="col">
+                                <button id = "contact.phoneNumButton" class="btn" onclick="findUsers('contact.phoneNum', 'asc')">Телефон</button>
                             </th>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=enabled">Статус</a>
+                            <th scope="col">
+                                <button id = "passwordButton" class="btn" onclick="findUsers('password', 'asc')">Пароль</button>
                             </th>
-                            <th scope="col"><a class="btn"
-                                               href="${contextPath}/admin/userManagement?page=0&sort=date,desc">Дата
-                                создания</a></th>
+                            <th scope="col">
+                                <button id = "enabledButton" class="btn" onclick="findUsers('enabled', 'asc')">Статус</button>
+                            </th>
+                            <th scope="col">
+                                <button id = "dateButton" class="btn" onclick="findUsers('date', 'asc')">Дата
+                                    создания
+                                </button>
+                            </th>
                         </tr>
                         </thead>
-                        <tbody>
-                        <div id="usersDiv">
-                            <c:forEach items="${users.content}" var="user">
-                                <tr>
-                                    <td>${user.username}</td>
-                                    <td>${user.contact.email}</td>
-                                    <td>${user.contact.phoneNum}</td>
-                                    <td>${user.password}</td>
-                                    <td>${user.enabled}</td>
-                                    <td>${user.formattedDate}</td>
-                                </tr>
-                            </c:forEach>
-                        </div>
+                        <tbody id="usersBody">
+                        <c:forEach items="${users.content}" var="user">
+                            <tr>
+                                <td>${user.username}</td>
+                                <td>${user.contact.email}</td>
+                                <td>${user.contact.phoneNum}</td>
+                                <td>${user.password}</td>
+                                <td>${user.enabled}</td>
+                                <td>${user.formattedDate}</td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
