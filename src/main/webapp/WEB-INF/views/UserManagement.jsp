@@ -9,7 +9,7 @@
     <title>Homepage</title>
 
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    <c:set var="usersURL" value="${contextPath}/admin/userManagementRest"/>
+    <s:url var="findUsersURL" value="${contextPath}/admin/userManagementRest"/>
 
     <!-- Bootstrap core CSS -->
     <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
@@ -37,22 +37,22 @@
                         <thead>
                         <tr>
                             <th scope="col">
-                                <button id = "usernameButton" class="btn" onclick="findUsers('username', 'asc')">Имя профиля</button>
+                                <button id = "usernameButton" class="btn" onclick="findUsers('${findUsersURL}','username', 'asc')">Имя профиля</button>
                             </th>
                             <th scope="col">
-                                <button id = "contact.emailButton" class="btn" onclick="findUsers('contact.email', 'asc')">Почта</button>
+                                <button id = "contact.emailButton" class="btn" onclick="findUsers('${findUsersURL}','contact.email', 'asc')">Почта</button>
                             </th>
                             <th scope="col">
-                                <button id = "contact.phoneNumButton" class="btn" onclick="findUsers('contact.phoneNum', 'asc')">Телефон</button>
+                                <button id = "contact.phoneNumButton" class="btn" onclick="findUsers('${findUsersURL}','contact.phoneNum', 'asc')">Телефон</button>
                             </th>
                             <th scope="col">
-                                <button id = "passwordButton" class="btn" onclick="findUsers('password', 'asc')">Пароль</button>
+                                <button id = "passwordButton" class="btn" onclick="findUsers('${findUsersURL}','password', 'asc')">Пароль</button>
                             </th>
                             <th scope="col">
-                                <button id = "enabledButton" class="btn" onclick="findUsers('enabled', 'asc')">Статус</button>
+                                <button id = "enabledButton" class="btn" onclick="findUsers('${findUsersURL}','enabled', 'asc')">Статус</button>
                             </th>
                             <th scope="col">
-                                <button id = "dateButton" class="btn" onclick="findUsers('date', 'asc')">Дата
+                                <button id = "dateButton" class="btn" onclick="findUsers('${findUsersURL}','date', 'asc')">Дата
                                     создания
                                 </button>
                             </th>

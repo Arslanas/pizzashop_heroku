@@ -87,7 +87,16 @@
                         <c:forEach items="${page.content}" var="item">
                             <div class="col-4 mb-4">
                                 <div class="card">
-                                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                                    <c:choose>
+                                        <c:when test="${not empty item.image.picture}">
+                                            <a href="#"><img class="card-img-top"
+                                                             src="${contextPath}/products/image/${item.id}"></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="#"><img class="card-img-top"
+                                                             src="/resources/vendor/images/1200x350.png"></a>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <div class="card-body">
                                         <h4 class="card-title text-info">
                                                 ${item.name}
@@ -108,7 +117,7 @@
                                         </div>
                                         <sec:authorize url="${contextPath}/products/addProduct">
                                             <div class="row ">
-                                                <div class="col-12 mt-3  ">
+                                                <div class="col-12 mt-3 ">
                                                     <a href="${contextPath}/products/editProduct/${item.id}"
                                                        class="btn btn-outline-info text-center                                                                                                 btn-block">Редактировать</a>
                                                 </div>
@@ -116,7 +125,9 @@
                                         </sec:authorize>
                                         <div class="row ">
                                             <div class="col-12 mt-3  ">
-                                                <button id="itemID-${item.id}" onclick="addToCart(${item.id})" class="btn btn-outline-info text-center btn-block">AJAX</button>
+                                                <button id="itemID-${item.id}" onclick="addToCart(${item.id})"
+                                                        class="btn btn-outline-info text-center btn-block">AJAX
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -131,13 +142,15 @@
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-end">
                                     <li class="page-item ">
-                                        <a href="${requestType}?page=${page.number - 1}&sort=${sort}&size=4&search=${search}" class="page-link"  tabindex="-1">Previous</a>
+                                        <a href="${requestType}?page=${page.number - 1}&sort=${sort}&size=4&search=${search}"
+                                           class="page-link" tabindex="-1">Previous</a>
                                     </li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
                                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                                     <li class="page-item">
-                                        <a href="${requestType}?page=${page.number + 1}&sort=${sort}&size=4&search=${search}" class="page-link" >Next</a>
+                                        <a href="${requestType}?page=${page.number + 1}&sort=${sort}&size=4&search=${search}"
+                                           class="page-link">Next</a>
                                     </li>
                                 </ul>
                             </nav>

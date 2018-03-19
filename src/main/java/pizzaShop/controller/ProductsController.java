@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
 import pizzaShop.entity.embedded.Product;
@@ -20,9 +21,12 @@ import pizzaShop.service.*;
 import pizzaShop.utilities.AppScopedData;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -82,6 +86,26 @@ public class ProductsController {
 //////////////      REST
 
     //////////////      PRODUCTS
+
+    @RequestMapping("/image/{id}")
+    public void productsImage(@PathVariable("id") Item item, HttpServletResponse response) throws ServletException, IOException {
+        int DEFAULT_BUFFER_SIZE = 10240;
+        response.reset();
+        response.setBufferSize(DEFAULT_BUFFER_SIZE);
+        response.setContentType("image/JPG");
+
+        try (InputStream inputStream = new ByteArrayInputStream(item.getImage().getPicture());
+             BufferedInputStream input = new BufferedInputStream(inputStream, DEFAULT_BUFFER_SIZE);
+             BufferedOutputStream output = new BufferedOutputStream(response.getOutputStream(), DEFAULT_BUFFER_SIZE);
+        ){
+            byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+            int length;
+            while((length = input.read(buffer))> 0){
+                output.write(buffer, 0, DEFAULT_BUFFER_SIZE);
+            }
+        }
+    }
+
     @RequestMapping
     public String products(Model model, HttpServletRequest request, Pageable pageable, Sort sort) {
         if (sort == null) {
@@ -147,24 +171,6 @@ public class ProductsController {
         return "redirect:/products";
     }
 
-//    @RequestMapping("/shoppingCart/increase/{item}")
-//    public String shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-//        cart.getProductByItemId(itemID).increaseQuantity();
-//        return "redirect:/products/shoppingCart";
-//    }
-//
-//    @RequestMapping("/shoppingCart/decrease/{item}")
-//    public String shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-//        cart.getProductByItemId(itemID).decreaseQuantity();
-//        return "redirect:/products/shoppingCart";
-//    }
-//
-//    @RequestMapping("/shoppingCart/remove/{item}")
-//    public String shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-//        cart.removeFromCartByItemID(itemID);
-//        return "redirect:/products/shoppingCart";
-//    }
-
 //////////////          SHOPPINGCART
 
     //////////////          ADMIN
@@ -176,11 +182,17 @@ public class ProductsController {
     }
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProductPost(Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
+    public String addProductPost(@RequestPart("picture") MultipartFile file, Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
         if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
             return "Add_product";
+        }
+        logger.info(String.format("%s_%s_%s_%s", file.getName(), file.getContentType(), file.getOriginalFilename(), String.valueOf(file.getSize())));
+        try{
+             item.getImage().setPicture(file.getBytes());
+        }catch (IOException e){
+            e.printStackTrace();
         }
         Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
         Item itemMerged = itemService.save(item);
@@ -197,7 +209,12 @@ public class ProductsController {
     }
 
     @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
-    public String editProductPost(@ModelAttribute("itemEdit") Item item) {
+    public String editProductPost(@RequestPart("picture") MultipartFile file, @ModelAttribute("itemEdit") Item item) {
+        try{
+            item.getImage().setPicture(file.getBytes());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         itemService.save(item);
         return "redirect:/products";
     }

@@ -1,6 +1,7 @@
 package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import pizzaShop.entity.embedded.Image;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,8 @@ public class Item implements Serializable{
     @Column(name = "DESCRIPTION")
     private String description;
 
+    private Image image = new Image();
+
     @JsonIgnore
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
@@ -34,6 +37,14 @@ public class Item implements Serializable{
         this.name = name;
         this.price = price;
         this.description = description;
+        this.setOfCategorizedItems = setOfCategorizedItems;
+    }
+
+    public Item(String name, Integer price, String description, Image image, Set<CategorizedItem> setOfCategorizedItems) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.image = image;
         this.setOfCategorizedItems = setOfCategorizedItems;
     }
 
@@ -75,6 +86,14 @@ public class Item implements Serializable{
 
     public void setSetOfCategorizedItems(Set<CategorizedItem> setOfCategorizedItems) {
         this.setOfCategorizedItems = setOfCategorizedItems;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     @Override

@@ -38,7 +38,7 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${path}" method="post" modelAttribute="${item}" commandName="item">
+                    <sf:form action="${path}" method="post" modelAttribute="${item}" commandName="item" enctype="multipart/form-data">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
@@ -58,7 +58,7 @@
 
                         <div class="form-group">
                             <label for="exampleFormControlFile1" class="font-weight-bold">Загрузить изображение</label>
-                            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                            <input type="file" name="picture" accept="image/jpeg" class="form-control-file" id="exampleFormControlFile1">
                         </div>
 
                         <div class="form-inline justify-content-center mt-5">

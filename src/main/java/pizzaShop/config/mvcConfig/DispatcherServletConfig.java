@@ -3,9 +3,8 @@ package pizzaShop.config.mvcConfig;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
+import javax.servlet.*;
+import javax.servlet.ServletRegistration.Dynamic;
 
 public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -34,5 +33,9 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
         super.onStartup(servletContext);
         servletContext.setInitParameter("spring.profiles.active", "prod");
 
+    }
+        @Override
+    public void customizeRegistration(Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
     }
 }

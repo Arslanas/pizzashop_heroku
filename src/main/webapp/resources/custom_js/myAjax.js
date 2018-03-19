@@ -9,13 +9,11 @@
 // function myFunction(){
 //     $("#example-1").load('Ajax_tempHTML.html');
 // }
-function findUsers(sort, direction) {
+function findUsers(url, sort, direction) {
     direction == "asc" ? direction="desc" : direction="asc";
-    $('#'+sort+'Button').attr("onclick", "findUsers('"+sort+"','"+direction+"')");
-    requestUsers(sort, direction);
-}
-function requestUsers(sort, direction){
-    $.getJSON("http://localhost:8080/admin/userManagementRest?page=0&sort="+sort+","+direction, {}, function (json){
+    $("button[id~='"+sort+"Button']").attr("onclick", "findUsers('"+url+"','"+sort+"','"+direction+"')");
+
+    $.getJSON(""+url+"?page=0&sort="+sort+","+direction, {}, function (json){
         var usersBody = $("#usersBody");
         usersBody.html("");
         for(var i = 0; i <json.length; i++){
@@ -24,6 +22,7 @@ function requestUsers(sort, direction){
         }
     });
 }
+
 function addToCart(itemID) {
     $.getJSON("http://localhost:8080/products/add/" + itemID, {}, function (json) {
         $("#itemID-" + itemID).html("");
