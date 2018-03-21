@@ -10,6 +10,7 @@
 
     <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
     <s:url var="findUsersURL" value="${contextPath}/admin/userManagementRest"/>
+    <s:url var="disableUserURL" value="${contextPath}/admin/userManagementRest/disable/"/>
 
     <!-- Bootstrap core CSS -->
     <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
@@ -37,23 +38,33 @@
                         <thead>
                         <tr>
                             <th scope="col">
-                                <button id = "usernameButton" class="btn" onclick="findUsers('${findUsersURL}','username', 'asc')">Имя профиля</button>
+                                <button id="usernameButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','username', 'asc')">Имя профиля
+                                </button>
                             </th>
                             <th scope="col">
-                                <button id = "contact.emailButton" class="btn" onclick="findUsers('${findUsersURL}','contact.email', 'asc')">Почта</button>
+                                <button id="contact.emailButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','contact.email', 'asc')">Почта
+                                </button>
                             </th>
                             <th scope="col">
-                                <button id = "contact.phoneNumButton" class="btn" onclick="findUsers('${findUsersURL}','contact.phoneNum', 'asc')">Телефон</button>
+                                <button id="contact.phoneNumButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','contact.phoneNum', 'asc')">Телефон
+                                </button>
                             </th>
                             <th scope="col">
-                                <button id = "passwordButton" class="btn" onclick="findUsers('${findUsersURL}','password', 'asc')">Пароль</button>
+                                <button id="passwordButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','password', 'asc')">Пароль
+                                </button>
                             </th>
                             <th scope="col">
-                                <button id = "enabledButton" class="btn" onclick="findUsers('${findUsersURL}','enabled', 'asc')">Статус</button>
+                                <button id="enabledButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','enabled', 'asc')">Статус
+                                </button>
                             </th>
                             <th scope="col">
-                                <button id = "dateButton" class="btn" onclick="findUsers('${findUsersURL}','date', 'asc')">Дата
-                                    создания
+                                <button id="dateButton" class="btn btn-light"
+                                        onclick="findUsers('${findUsersURL}','date', 'asc')">Дата создания
                                 </button>
                             </th>
                         </tr>
@@ -65,12 +76,30 @@
                                 <td>${user.contact.email}</td>
                                 <td>${user.contact.phoneNum}</td>
                                 <td>${user.password}</td>
-                                <td>${user.enabled}</td>
+                                <td>
+                                    <button id="${user.username}_enabled"
+                                            onclick="disableUser('${disableUserURL}','${user.username}')">${user.enabled}</button>
+                                </td>
                                 <td>${user.formattedDate}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                </div>
+                <div class="col-12">
+                    <div class="col ml-auto mt-4 mb-2">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

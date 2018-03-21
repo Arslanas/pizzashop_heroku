@@ -9,16 +9,26 @@
 // function myFunction(){
 //     $("#example-1").load('Ajax_tempHTML.html');
 // }
+function disableUser(url, username) {
+    $.getJSON(url + username, {}, function (user) {
+        var button = $('#' + username + '_enabled');
+        if (user.enabled == true) {
+            button.html("enabled");
+        } else {
+            button.html("disabled");
+        }
+    })
+}
 function findUsers(url, sort, direction) {
-    direction == "asc" ? direction="desc" : direction="asc";
-    $("button[id~='"+sort+"Button']").attr("onclick", "findUsers('"+url+"','"+sort+"','"+direction+"')");
+    direction == "asc" ? direction = "desc" : direction = "asc";
+    $("button[id~='" + sort + "Button']").attr("onclick", "findUsers('" + url + "','" + sort + "','" + direction + "')");
 
-    $.getJSON(""+url+"?page=0&sort="+sort+","+direction, {}, function (json){
+    $.getJSON("" + url + "?page=0&sort=" + sort + "," + direction, {}, function (json) {
         var usersBody = $("#usersBody");
         usersBody.html("");
-        for(var i = 0; i <json.length; i++){
+        for (var i = 0; i < json.length; i++) {
             var user = json[i];
-            usersBody.append("<tr> <td>"+user.username+"</td> <td>"+user.contact.email+"</td> <td>"+user.contact.phoneNum+"</td> <td>"+user.password+"</td> <td>"+user.enabled+"</td><td>"+user.date+"</td> </tr>")
+            usersBody.append("<tr> <td>" + user.username + "</td> <td>" + user.contact.email + "</td> <td>" + user.contact.phoneNum + "</td> <td>" + user.password + "</td> <td>" + user.enabled + "</td><td>" + user.date + "</td> </tr>")
         }
     });
 }
@@ -39,7 +49,7 @@ function removeFromCart(itemID) {
     $.getJSON("http://localhost:8080/products/shoppingCart/remove/" + itemID, {}, function (json) {
         $("#cartPrice").html(json.totalPrice);
         $("#cartTotalPrice").html(json.totalPrice);
-        $("#productRow_"+itemID).remove();
+        $("#productRow_" + itemID).remove();
     })
 }
 function increaseCart(itemID) {
@@ -53,7 +63,7 @@ function decreaseCart(itemID) {
         modifyCart(json, itemID);
     })
 }
-function modifyCart(dataJson, itemID){
+function modifyCart(dataJson, itemID) {
     $("#cartPrice").html(dataJson.totalPrice);
     $("#cartTotalPrice").html(dataJson.totalPrice);
     var quantityTag = $("#productQuantity_" + itemID);
@@ -70,7 +80,8 @@ function modifyCart(dataJson, itemID){
             priceTag.html(price);
             return;
         }
-    };
+    }
+    ;
 
 }
 
