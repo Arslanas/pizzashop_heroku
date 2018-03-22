@@ -10,23 +10,25 @@ import java.time.format.FormatStyle;
 public class TempClass {
     public static void main(String[] args) {
 
-        CategorizedItem categorizedItem = new CategorizedItem();
-        Category category = new Category();
-        category.setName("ars");
-        categorizedItem.setCategory(category);
-        System.out.println(categorizedItem);;
 
 
-        LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Etc/GMT-3"));
-        System.out.println(dateTime);
-        System.out.println(dateTime.toLocalDate());
-        System.out.println(dateTime.toLocalTime());
-        System.out.println(dateTime.format(DateTimeFormatter.ISO_DATE));
-        System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        System.out.println(dateTime.format(DateTimeFormatter.BASIC_ISO_DATE));
-        System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-        System.out.println(dateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
-        System.out.println(dateTime.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
+//        CategorizedItem categorizedItem = new CategorizedItem();
+//        Category category = new Category();
+//        category.setName("ars");
+//        categorizedItem.setCategory(category);
+//        System.out.println(categorizedItem);;
+//
+//
+//        LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Etc/GMT-3"));
+//        System.out.println(dateTime);
+//        System.out.println(dateTime.toLocalDate());
+//        System.out.println(dateTime.toLocalTime());
+//        System.out.println(dateTime.format(DateTimeFormatter.ISO_DATE));
+//        System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+//        System.out.println(dateTime.format(DateTimeFormatter.BASIC_ISO_DATE));
+//        System.out.println(dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+//        System.out.println(dateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
+//        System.out.println(dateTime.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)));
 ////        LocalDate date = LocalDate.now();
 ////        System.out.println(date);
 ////        System.out.println(date.getMonthValue());
