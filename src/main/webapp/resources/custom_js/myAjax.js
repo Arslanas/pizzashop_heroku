@@ -23,14 +23,8 @@ function findUsers(url, sort, direction) {
     direction == "asc" ? direction = "desc" : direction = "asc";
     $("button[id~='" + sort + "Button']").attr("onclick", "findUsers('" + url + "','" + sort + "','" + direction + "')");
 
-    $.getJSON("" + url + "?page=0&sort=" + sort + "," + direction, {}, function (json) {
-        var usersBody = $("#usersBody");
-        usersBody.html("");
-        for (var i = 0; i < json.length; i++) {
-            var user = json[i];
-            usersBody.append("<tr> <td>" + user.username + "</td> <td>" + user.contact.email + "</td> <td>" + user.contact.phoneNum + "</td> <td>" + user.password + "</td> <td>" + user.enabled + "</td><td>" + user.date + "</td> </tr>")
-        }
-    });
+    getUsersPage(0, gPageSize, sort, direction, url);
+    stateStart();
 }
 
 function addToCart(itemID) {

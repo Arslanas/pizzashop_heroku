@@ -70,14 +70,14 @@
                         </tr>
                         </thead>
                         <tbody id="usersBody">
-                        <c:forEach items="${users.content}" var="user">
+                        <c:forEach items="${page.content}" var="user">
                             <tr>
                                 <td>${user.username}</td>
                                 <td>${user.contact.email}</td>
                                 <td>${user.contact.phoneNum}</td>
                                 <td>${user.password}</td>
                                 <td>
-                                    <button id="${user.username}_enabled"
+                                    <button id='${user.username}_enabled'
                                             onclick="disableUser('${disableUserURL}','${user.username}')">${user.enabled}</button>
                                 </td>
                                 <td>${user.formattedDate}</td>
@@ -88,15 +88,43 @@
                 </div>
                 <div class="col-12">
                     <div class="col ml-auto mt-4 mb-2">
+                        <div class="col-3">
+                            <a class="page-link" href="#" tabindex="-1">Страница <span id="pageNumID">1</span> из
+                                <span id="pageTotalID">${page.totalPages}</span></a>
+                        </div>
                         <ul class="pagination justify-content-end">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            <li id="firstPageID" class="page-item ">
+                                <button id="firstPageButtonID" class="page-link "
+                                        onclick="getFirstUsersPage('${findUsersURL}')">First
+                                </button>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
+                            <li id="prevPageID" class="page-item ">
+                                <button id="previousPageButtonID" class="page-link"
+                                        onclick="getPrevUsersPage('${findUsersURL}')">Previous
+                                </button>
+                            </li>
+                            <li id="nextPageID" class="page-item">
+                                <button id="nextPageButtonID" class="page-link"
+                                        onclick="getNextUsersPage('${findUsersURL}')">Next
+                                </button>
+                            </li>
+                            <li id="lastPageID" class="page-item">
+                                <button id="lastPageButtonID" class="page-link"
+                                        onclick="getLastUsersPage('${findUsersURL}')">Last
+                                </button>
+                            </li>
+                        </ul>
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item ">
+                                <button class="page-link "
+                                        onclick="getUsersPageBySize(1,'${findUsersURL}')">1
+                                </button>
+                                <button class="page-link "
+                                        onclick="getUsersPageBySize(2,'${findUsersURL}')">2
+                                </button>
+                                <button class="page-link "
+                                        onclick="getUsersPageBySize(3,'${findUsersURL}')">3
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -110,6 +138,7 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
-
+<script src="${contextPath}/resources/custom_js/paginator.js"></script>
+<script>onloadUsersManagement(${page.totalPages}, ${page.totalElements}, '${disableUserURL}')</script>
 </body>
 </html>

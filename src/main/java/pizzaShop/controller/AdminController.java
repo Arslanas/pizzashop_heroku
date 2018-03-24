@@ -2,6 +2,8 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -40,8 +42,8 @@ public class AdminController {
 
     @RequestMapping(value = "/userManagementRest")
     @ResponseBody
-    public List<User> userManagementRest(Pageable pageable) {
-        return userService.findAll(pageable).getContent();
+    public Page<User> userManagementRest(Pageable pageable) {
+        return userService.findAll(pageable);
     }
 
     @RequestMapping(value = "/userManagementRest/disable/{username}")
@@ -60,9 +62,10 @@ public class AdminController {
 
     @RequestMapping(value = "/userManagement")
     public String userManagement(Model model, Pageable pageable) {
-        model.addAttribute("users", userService.findAll(pageable));
+        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), 2, pageable.getSort());
+        model.addAttribute("page", userService.findAll(pageRequest));
         return "UserManagement";
     }
-
+//    {"content":[{"username":"olya","password":"a","enabled":true,"contact":{"phoneNum":"79605896231","email":"olya@gmail.com"},"address":{"streetHome":"Feoktistova, 3","appartment":15,"entrance":1,"level":1},"date":"11-03-2018"}],"last":false,"totalPages":5,"totalElements":5,"size":1,"number":1,"sort":[{"direction":"ASC","property":"date","ignoreCase":false,"nullHandling":"NATIVE","ascending":true,"descending":false}],"numberOfElements":1,"first":false}
 
 }
