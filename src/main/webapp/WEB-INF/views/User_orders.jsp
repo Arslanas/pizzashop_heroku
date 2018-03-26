@@ -28,54 +28,60 @@
         <%@ include file="templates/Sidebar_template.jsp" %>
 
         <!-- sidebar -->
-        <div class="col ">
-            <div class="row justify-content-between">
-                <div class="col-12 mx-auto mt-5 mb-2">
-                    <h3 class="text-center font-weight-bold text-info">Ваши заказы</h3>
-                </div>
-            </div>
-
-            <c:forEach items="${sCarts}" var="sCart">
-                <div class="row">
-                    <div class="col mx-auto mt-2 mb-5">
-                        <table class="table table-light">
-                            <tbody>
-                            <tr class="bg-info text-white">
-                                <th>Оформлено</th>
-                                <td>${sCart.formattedDate}</td>
-                                <td>${sCart.formattedTime}</td>
-
-                            </tr>
-
-                            <c:forEach items="${sCart.cart}" var="product">
-                                <tr>
-                                    <td>${product.item.name}</td>
-                                    <td>${product.quantity} шт</td>
-                                    <td>${product.totalPrice} р</td>
+        <div class="col mt-3">
+            <table id="tableID" class="table table-light">
+                <thead>
+                <tr>
+                    <th scope="col" class="bg-white"><h3 class="text-center font-weight-bold text-info">Ваши
+                        заказы</h3>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${sCarts}" var="sCart">
+                    <tr>
+                        <td>
+                            <table class="table table-light">
+                                <tbody>
+                                <tr class="bg-info text-white">
+                                    <th>Оформлено</th>
+                                    <td>${sCart.formattedDate}</td>
+                                    <td>${sCart.formattedTime}</td>
                                 </tr>
-
-                            </c:forEach>
-
-                            <tr class="bg-info text-white">
-                                <td>
-                                    <button onclick="addToCartFromCart(${sCart.id})" class="btn btn-warning">Повторить заказ</button>
-                                </td>
-                                <th>Итого</th>
-                                <th>${sCart.totalPrice} р</th>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </c:forEach>
+                                <c:forEach items="${sCart.cart}" var="product">
+                                    <tr>
+                                        <td>${product.item.name}</td>
+                                        <td>${product.quantity} шт</td>
+                                        <td>${product.totalPrice} р</td>
+                                    </tr>
+                                </c:forEach>
+                                <tr class="bg-info text-white">
+                                    <td>
+                                        <button onclick="addToCartFromCart(${sCart.id})" class="btn btn-warning">
+                                            Повторить заказ
+                                        </button>
+                                    </td>
+                                    <th>Итого</th>
+                                    <th>${sCart.totalPrice} р</th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
 
         </div>
-
     </div>
 </div>
 
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
+<script src="${contextPath}/resources/vendor/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="${contextPath}/resources/vendor/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="${contextPath}/resources/custom_js/UserOrders.js"></script>
+<script>$(document).ready(onloadUserOrders())</script>
 </body>
 </html>

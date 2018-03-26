@@ -7,6 +7,7 @@ import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class User implements Serializable{
     @NotNull
     private Boolean enabled = true;
     @NotNull
+    @Valid
     private Contact contact = new Contact();
     @NotNull
     private Address address = new Address();

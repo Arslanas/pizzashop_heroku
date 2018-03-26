@@ -1,32 +1,3 @@
-/*
- $(document).ready(function(){              // по окончанию загрузки страницы
- $('#example-1').click(function(){      // вешаем на клик по элементу с id = example-1
- $(this).load('Ajax_tempHTML.html'); // загрузку HTML кода из файла example.html
- })
- });
- */
-
-// function myFunction(){
-//     $("#example-1").load('Ajax_tempHTML.html');
-// }
-function disableUser(url, username) {
-    $.getJSON(url + username, {}, function (user) {
-        var button = $('#' + username + '_enabled');
-        if (user.enabled == true) {
-            button.html("enabled");
-        } else {
-            button.html("disabled");
-        }
-    })
-}
-function findUsers(url, sort, direction) {
-    direction == "asc" ? direction = "desc" : direction = "asc";
-    $("button[id~='" + sort + "Button']").attr("onclick", "findUsers('" + url + "','" + sort + "','" + direction + "')");
-
-    getUsersPage(0, gPageSize, sort, direction, url);
-    stateStart();
-}
-
 function addToCart(itemID) {
     $.getJSON("http://localhost:8080/products/add/" + itemID, {}, function (json) {
         $("#itemID-" + itemID).html("");
@@ -75,22 +46,4 @@ function modifyCart(dataJson, itemID) {
             return;
         }
     }
-    ;
-
 }
-
-/*
- $(document).ready(function(){                            // по завершению загрузки страницы
- $('#example-4').click(function(){                    // вешаем на клик по элементу с id = example-4
- $.getJSON('ajax/example.json', {}, function(json){  // загрузку JSON данных из файла example.json
- $('#example-4').html('');
- // заполняем DOM элемент данными из JSON объекта
- $('#example-4').append('To: '   + json.note.to + '<br/>')
- .append('From: ' + json.note.from + '<br/>')
- .append('<b>'    + json.note.heading + '</b><br/>')
- .append(           json.note.body + '<br/>');
- });
- })
- });
-
- */

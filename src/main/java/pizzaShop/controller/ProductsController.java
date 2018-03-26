@@ -16,6 +16,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
+import pizzaShop.entity.embedded.Address;
+import pizzaShop.entity.embedded.Contact;
 import pizzaShop.entity.embedded.Product;
 import pizzaShop.service.*;
 import pizzaShop.utilities.AppScopedData;
@@ -107,13 +109,7 @@ public class ProductsController {
     }
 
     @RequestMapping
-    public String products(Model model, HttpServletRequest request, Pageable pageable, Sort sort) {
-        if (sort == null) {
-            sort = new Sort("name");
-        }
-        logger.info(pageable);
-        model.addAttribute("sort", sort.iterator().next().getProperty());
-        if (pageable.getPageSize() > 4) pageable = new PageRequest(0, 4, sort);
+    public String products(Model model, HttpServletRequest request, Pageable pageable) {
         model.addAttribute("page", itemService.findAll(pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
@@ -252,8 +248,12 @@ public class ProductsController {
     }
 
     @RequestMapping(value = "/customerDetails", method = RequestMethod.POST)
-    public String customerDetailsPost(@ModelAttribute User customer, RedirectAttributes redirectAttributes) {
-        logger.info(customer);
+    public String customerDetailsPost(RedirectAttributes redirectAttributes, Model model,  @Valid @ModelAttribute("customer") User customer, Errors errors) {
+        logger.info(errors);
+        if(errors.hasErrors()){
+            model.addAttribute("customer", customer);
+            return "CustomerDetails";
+        }
         redirectAttributes.addFlashAttribute("customer", customer);
         return "redirect:/products/orderConfirmation";
     }

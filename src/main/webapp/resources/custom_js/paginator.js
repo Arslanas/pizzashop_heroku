@@ -5,67 +5,91 @@ var gPageSize;
 var gTotalPages;
 var gTotalElements;
 var gDisableUserUrl;
+var gFindUsersUrl;
 
-function getUsersPage(pageNum, size, sort, direction, url) {
-    $.getJSON("" + url + "?page=" + pageNum + "&size=" + size + "&sort=" + sort + "," + direction, {}, function (json) {
+function getUsersPage(pageNum, size, sort, direction) {
+    $.getJSON("" + gFindUsersUrl + "?page=" + pageNum + "&size=" + size + "&sort=" + sort + "," + direction, {}, function (json) {
         var content = json.content;
         var usersBody = $("#usersBody");
         usersBody.html("");
         for (var i = 0; i < content.length; i++) {
             var user = content[i];
-            usersBody.append("<tr> <td>" + user.username + "</td> <td>" + user.contact.email + "</td> <td>" + user.contact.phoneNum + "</td> <td>" + user.password + "</td> <td><button id='" + user.username + "_enabled' onclick=\"disableUser('" + gDisableUserUrl + "', '" + user.username + "')\">" + user.enabled + "</button></td><td>" + user.date + "</td> </tr>")
+            usersBody.append("<tr> <td>" + user.username + "</td> <td>" + user.contact.email + "</td> <td>" + user.contact.phoneNum + "</td> <td>" + user.password + "</td> <td><button id='" + user.username + "_enabled' onclick=\"disableUser('" + user.username + "')\">" + user.enabled + "</button></td><td>" + user.date + "</td> </tr>")
         }
         updateGData(json);
         renameBooleanToEnabled();
         updatePageState();
     });
 }
-function getUsersPageBySize(size, url) {
-    getUsersPage(0, size, gSort, gDirection, url);
+function findUsers(sort, direction) {
+    direction == "asc" ? direction = "desc" : direction = "asc";
+    $("button[id~='" + sort + "Button']").attr("onclick", "findUsers('" + sort + "','" + direction + "')");
+    getUsersPage(0, gPageSize, sort, direction);
 }
-function getFirstUsersPage(url) {
-    getUsersPage(0, gPageSize, gSort, gDirection, url);
+
+function disableUser(username) {
+    $.getJSON(gDisableUserUrl + username, {}, function (user) {
+        var button = $('#' + username + '_enabled');
+        if (user.enabled == true) {
+            button.html("enabled");
+        } else {
+            button.html("disabled");
+        }
+    })
 }
-function getPrevUsersPage(url) {
-    getUsersPage(gPage - 1, gPageSize, gSort, gDirection, url);
+function showBy(id) {
+    var value = $("#" + id).text();
+    if (value.trim() == "Все"){
+        gPageSize = -1;
+        $("#showByButtons").text("Показать все");
+    }else {
+        gPageSize = Number(value);
+        $("#showByButtons").text("Показать по "+gPageSize);
+    }
+    getUsersPage(0, gPageSize, gSort, gDirection);
 }
-function getNextUsersPage(url) {
-    getUsersPage(gPage + 1, gPageSize, gSort, gDirection, url);
+function getFirstUsersPage() {
+    getUsersPage(0, gPageSize, gSort, gDirection);
 }
-function getLastUsersPage(url) {
-    getUsersPage(gTotalPages - 1, gPageSize, gSort, gDirection, url);
+function getPrevUsersPage() {
+    getUsersPage(gPage - 1, gPageSize, gSort, gDirection);
+}
+function getNextUsersPage() {
+    getUsersPage(gPage + 1, gPageSize, gSort, gDirection);
+}
+function getLastUsersPage() {
+    getUsersPage(gTotalPages - 1, gPageSize, gSort, gDirection);
 }
 function updatePageState() {
     if (gTotalPages > 1) {
-        if (gPage == 0) {
-            stateStart();
-        }
-        if (gPage == gTotalPages - 1) {
-            stateEnd();
-        }
-        if (gPage > 0 && gPage < gTotalPages - 1) {
-            stateMiddle();
+        switch (gPage) {
+            case 0 :
+                stateStart();
+                break;
+
+            case gTotalPages - 1 :
+                stateEnd();
+                break;
+
+            default:
+                stateMiddle();
         }
     } else {
         stateSingle();
     }
 }
 
-function onloadUsersManagement(totalPages, totalElements, disableUserUrl) {
+function onloadUsersManagement(totalPages, totalElements, disableUserUrl, findUsersUrl) {
     gSort = 'username';
     gDirection = 'asc';
     gPage = 0;
-    gPageSize = 1;
+    gPageSize = 2;
     gTotalPages = totalPages;
     gTotalElements = totalElements;
     gDisableUserUrl = disableUserUrl;
+    gFindUsersUrl = findUsersUrl;
     renameBooleanToEnabled();
-    if (gTotalPages > 1) {
-        stateStart();
-    } else {
-        stateSingle();
-    }
-
+    updatePageState();
 }
 function updateGData(json) {
     gPage = json.number;
@@ -73,7 +97,7 @@ function updateGData(json) {
     gDirection = json.sort[0].direction;
     gTotalPages = json.totalPages;
     gPageSize = json.size;
-    $("#pageNumID").text(gPage+1);
+    $("#pageNumID").text(gPage + 1);
     $("#pageTotalID").text(gTotalPages);
 }
 function renameBooleanToEnabled() {
@@ -87,50 +111,32 @@ function renameBooleanToEnabled() {
 }
 
 function stateStart() {
-    lockFirst();
-    lockPrev();
-    unlockNext();
-    unlockLast();
+    lock("first");
+    lock("prev");
+    unlock("next");
+    unlock("last");
 }
 function stateMiddle() {
-    unlockFirst();
-    unlockPrev();
-    unlockNext();
-    unlockLast();
+    unlock("first");
+    unlock("prev");
+    unlock("next");
+    unlock("last");
 }
 function stateEnd() {
-    unlockFirst();
-    unlockPrev();
-    lockNext();
-    lockLast();
+    unlock("first");
+    unlock("prev");
+    lock("next");
+    lock("last");
 }
 function stateSingle() {
-    lockFirst();
-    lockPrev();
-    lockNext();
-    lockLast();
+    lock("first");
+    lock("prev");
+    lock("next");
+    lock("last");
 }
-function unlockPrev() {
-    $("#prevPageID").removeClass('disabled');
+function unlock(id) {
+    $("#" + id + "PageID").removeClass('disabled');
 }
-function lockPrev() {
-    $("#prevPageID").addClass('disabled');
-}
-function unlockNext() {
-    $("#nextPageID").removeClass('disabled');
-}
-function lockNext() {
-    $("#nextPageID").addClass('disabled');
-}
-function unlockFirst() {
-    $("#firstPageID").removeClass('disabled');
-}
-function lockFirst() {
-    $("#firstPageID").addClass('disabled');
-}
-function unlockLast() {
-    $("#lastPageID").removeClass('disabled');
-}
-function lockLast() {
-    $("#lastPageID").addClass('disabled');
+function lock(id) {
+    $("#" + id + "PageID").addClass('disabled');
 }

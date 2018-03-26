@@ -18,7 +18,7 @@ public class ShoppingCart {
     @Column(name = "USERNAME")
     private String username;
     @Column(name = "totalPrice")
-    private long totalPrice;
+    private long totalPrice = 0l;
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
     @ElementCollection(fetch = FetchType.EAGER)

@@ -10,7 +10,9 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="${contextPath}/resources/vendor/js/jquery-3.2.1.min.js"></script>
+<script src="${contextPath}/resources/vendor/js/popper.min.js"></script>
 <script src="${contextPath}/resources/vendor/js/jquery.validate.js"></script>
+<script src="${contextPath}/resources/vendor/js/jquery.mask.min.js"></script>
 <script src="${contextPath}/resources/custom_js/myAjax.js"></script>
 <script src="${contextPath}/resources/custom_js/addProductFormValidator.js"></script>
 <script src="${contextPath}/resources/vendor/js/bootstrap.min.js"></script>

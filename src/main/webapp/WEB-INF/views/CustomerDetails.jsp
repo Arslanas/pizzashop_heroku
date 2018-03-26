@@ -34,14 +34,18 @@
 
                 <!-- Form -->
                 <div class="col-12 mt-4 mb-5">
-                    <sf:form action="${contextPath}/products/customerDetails" method="post" commandName="customer">
+                    <sf:form id="formID" action="${contextPath}/products/customerDetails" method="POST" commandName="customer">
                         <div class="form-group">
                             <sf:label path="username" for="Name">Имя</sf:label>
-                            <sf:input path="username" type="text" class="form-control" id="Name" />
+                            <sf:input path="username"  type="text" class="form-control" id="Name" />
                         </div>
                         <div class="form-group">
-                            <label for="Mobil">Мобильный тел.</label>
-                            <sf:input path="contact.phoneNum" type="number" class="form-control" id="Mobil"/>
+                            <sf:input path="password" type="hidden" class="form-control" id="Password" />
+                        </div>
+                        <div class="form-group">
+                            <sf:label path="contact.phoneNum" for="Mobil">Мобильный тел.</sf:label>
+                            <sf:input path="contact.phoneNum"  type="text" class="form-control" id="Mobil"/>
+                            <sf:errors path="contact.phoneNum"/>
                         </div>
                         <div class="form-group">
                             <label for="Mobil">Адрес</label>
@@ -78,6 +82,7 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp"%>
-
+<script src="${contextPath}/resources/custom_js/customerDetails.js"></script>
+<script>$(document).ready(addMask())</script>
 </body>
 </html>

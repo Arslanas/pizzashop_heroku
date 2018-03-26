@@ -1,13 +1,18 @@
 package pizzaShop.entity.embedded;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Embeddable
 public class Contact {
     @Column(name = "PHONENUM")
     @NotNull
+    @NotBlank
+    @Pattern(regexp = "^\\+7 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$", message = "Not matches")
     private String phoneNum;
     @Column(name = "EMAIL")
     private String email;

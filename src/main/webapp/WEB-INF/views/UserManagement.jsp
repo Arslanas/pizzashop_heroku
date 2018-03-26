@@ -34,37 +34,60 @@
                 </div>
                 <!-- Form -->
                 <div class="col-12 mx-auto mt-4 mb-5">
+                    <div class="dropdown mb-4 btn-sm">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="showByButtons"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Показать по ${page.size}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="showByButtons">
+                            <button id="showButtonID_01" class="dropdown-item" onclick="showBy(this.id)" type="button">
+                                1
+                            </button>
+                            <button id="showButtonID_02" class="dropdown-item" onclick="showBy(this.id)" type="button">
+                                2
+                            </button>
+                            <button id="showButtonID_03" class="dropdown-item" onclick="showBy(this.id)" type="button">
+                                3
+                            </button>
+                            <button id="showButtonID_04" class="dropdown-item" onclick="showBy(this.id)" type="button">
+                                5
+                            </button>
+                            <button id="showButtonID_05" class="dropdown-item" onclick="showBy(this.id)" type="button">
+                                Все
+                            </button>
+                        </div>
+                    </div>
                     <table class="table tab table-hover table-striped table-light">
                         <thead>
                         <tr>
                             <th scope="col">
                                 <button id="usernameButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','username', 'asc')">Имя профиля
+                                        onclick="findUsers('username', 'asc')">Имя профиля
                                 </button>
                             </th>
                             <th scope="col">
                                 <button id="contact.emailButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','contact.email', 'asc')">Почта
+                                        onclick="findUsers('contact.email', 'asc')">Почта
                                 </button>
                             </th>
                             <th scope="col">
                                 <button id="contact.phoneNumButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','contact.phoneNum', 'asc')">Телефон
+                                        onclick="findUsers('contact.phoneNum', 'asc')">Телефон
                                 </button>
                             </th>
                             <th scope="col">
                                 <button id="passwordButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','password', 'asc')">Пароль
+                                        onclick="findUsers('password', 'asc')">Пароль
                                 </button>
                             </th>
                             <th scope="col">
                                 <button id="enabledButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','enabled', 'asc')">Статус
+                                        onclick="findUsers('enabled', 'asc')">Статус
                                 </button>
                             </th>
                             <th scope="col">
                                 <button id="dateButton" class="btn btn-light"
-                                        onclick="findUsers('${findUsersURL}','date', 'asc')">Дата создания
+                                        onclick="findUsers('date', 'asc')">Дата создания
                                 </button>
                             </th>
                         </tr>
@@ -78,52 +101,40 @@
                                 <td>${user.password}</td>
                                 <td>
                                     <button id='${user.username}_enabled'
-                                            onclick="disableUser('${disableUserURL}','${user.username}')">${user.enabled}</button>
+                                            onclick="disableUser('${user.username}')">${user.enabled}</button>
                                 </td>
                                 <td>${user.formattedDate}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        <h5 class="text-primary">Страница <span id="pageNumID">1</span> из
+                            <span id="pageTotalID">${page.totalPages}</span></h5>
+                    </div>
+
                 </div>
                 <div class="col-12">
                     <div class="col ml-auto mt-4 mb-2">
-                        <div class="col-3">
-                            <a class="page-link" href="#" tabindex="-1">Страница <span id="pageNumID">1</span> из
-                                <span id="pageTotalID">${page.totalPages}</span></a>
-                        </div>
                         <ul class="pagination justify-content-end">
                             <li id="firstPageID" class="page-item ">
                                 <button id="firstPageButtonID" class="page-link "
-                                        onclick="getFirstUsersPage('${findUsersURL}')">First
+                                        onclick="getFirstUsersPage()">First
                                 </button>
                             </li>
                             <li id="prevPageID" class="page-item ">
                                 <button id="previousPageButtonID" class="page-link"
-                                        onclick="getPrevUsersPage('${findUsersURL}')">Previous
+                                        onclick="getPrevUsersPage()">Previous
                                 </button>
                             </li>
                             <li id="nextPageID" class="page-item">
                                 <button id="nextPageButtonID" class="page-link"
-                                        onclick="getNextUsersPage('${findUsersURL}')">Next
+                                        onclick="getNextUsersPage()">Next
                                 </button>
                             </li>
                             <li id="lastPageID" class="page-item">
                                 <button id="lastPageButtonID" class="page-link"
-                                        onclick="getLastUsersPage('${findUsersURL}')">Last
-                                </button>
-                            </li>
-                        </ul>
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item ">
-                                <button class="page-link "
-                                        onclick="getUsersPageBySize(1,'${findUsersURL}')">1
-                                </button>
-                                <button class="page-link "
-                                        onclick="getUsersPageBySize(2,'${findUsersURL}')">2
-                                </button>
-                                <button class="page-link "
-                                        onclick="getUsersPageBySize(3,'${findUsersURL}')">3
+                                        onclick="getLastUsersPage()">Last
                                 </button>
                             </li>
                         </ul>
@@ -139,6 +150,6 @@
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
 <script src="${contextPath}/resources/custom_js/paginator.js"></script>
-<script>onloadUsersManagement(${page.totalPages}, ${page.totalElements}, '${disableUserURL}')</script>
+<script>$(document).ready(onloadUsersManagement(${page.totalPages}, ${page.totalElements}, '${disableUserURL}', '${findUsersURL}'))</script>
 </body>
 </html>
