@@ -9,5 +9,6 @@ public class RegexTest {
         Pattern p = Pattern.compile("^\\+7 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$");
         Matcher matcher = p.matcher(text);
         System.out.println(matcher.matches());
+
     }
 }

@@ -1,21 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<!-- TagLibs -->
+<%@ include file="templates/TagLibs_template.jsp" %>
+
 <html>
 <head>
-    <meta charset="UTF-8">
     <title>Add product</title>
 
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    <s:url value="${contextPath}/products/addProduct" var = "path"></s:url>
+    <!-- Styles -->
+    <%@ include file="templates/Css_template.jsp" %>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="${contextPath}/resources/custom_css/custom_style.css" rel="stylesheet">
 </head>
 <body>
 <!-- Navigation -->
@@ -58,8 +51,8 @@
                             <sf:errors path="description" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <sf:label path="price" for="Price" class="font-weight-bold">Цена</sf:label>
-                            <sf:input path="price" type="number" class="form-control" id="Price"></sf:input>
+                            <sf:label path="price.amount" for="Price" class="font-weight-bold">Цена</sf:label>
+                            <sf:input path="price.amount" type="text" class="form-control" id="Price"></sf:input>
                             <sf:errors path="price" cssClass="alert-danger"/>
                         </div>
 

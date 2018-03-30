@@ -2,6 +2,7 @@ package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
+import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.entity.embedded.Product;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class ShoppingCart {
     @Column(name = "USERNAME")
     private String username;
     @Column(name = "totalPrice")
-    private long totalPrice = 0l;
+    private MonetaryAmount totalPrice = new MonetaryAmount(0d);
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
     @ElementCollection(fetch = FetchType.EAGER)
@@ -71,17 +72,17 @@ public class ShoppingCart {
         return cart.add(product);
     }
 
-    public long getTotalPrice() {
+    public MonetaryAmount getTotalPrice() {
         calculateTotalPrice();
         return totalPrice;
     }
 
-    public void setTotalPrice(long totalPrice) {
+    public void setTotalPrice(MonetaryAmount totalPrice) {
         this.totalPrice = totalPrice;
     }
 
     private ShoppingCart calculateTotalPrice(){
-        setTotalPrice(cart.stream().map(e->e.getTotalPrice()).reduce(0l, (acc, element)-> acc+element));
+        setTotalPrice(cart.stream().map(e->e.getTotalPrice()).reduce(new MonetaryAmount(0d), (acc, element)-> acc.plus(element)));
         return this;
     }
 

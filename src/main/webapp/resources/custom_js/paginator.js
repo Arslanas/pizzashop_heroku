@@ -17,7 +17,7 @@ function getUsersPage(pageNum, size, sort, direction) {
             usersBody.append("<tr> <td>" + user.username + "</td> <td>" + user.contact.email + "</td> <td>" + user.contact.phoneNum + "</td> <td>" + user.password + "</td> <td><button id='" + user.username + "_enabled' onclick=\"disableUser('" + user.username + "')\">" + user.enabled + "</button></td><td>" + user.date + "</td> </tr>")
         }
         updateGData(json);
-        renameBooleanToEnabled();
+        enabledButtonInit();
         updatePageState();
     });
 }
@@ -32,8 +32,11 @@ function disableUser(username) {
         var button = $('#' + username + '_enabled');
         if (user.enabled == true) {
             button.html("enabled");
+            button.removeClass("btn-danger").addClass("btn-success");
         } else {
             button.html("disabled");
+            button.removeClass("btn-success").addClass("btn-danger");
+
         }
     })
 }
@@ -88,7 +91,7 @@ function onloadUsersManagement(totalPages, totalElements, disableUserUrl, findUs
     gTotalElements = totalElements;
     gDisableUserUrl = disableUserUrl;
     gFindUsersUrl = findUsersUrl;
-    renameBooleanToEnabled();
+    enabledButtonInit();
     updatePageState();
 }
 function updateGData(json) {
@@ -100,12 +103,14 @@ function updateGData(json) {
     $("#pageNumID").text(gPage + 1);
     $("#pageTotalID").text(gTotalPages);
 }
-function renameBooleanToEnabled() {
+function enabledButtonInit() {
     $("[id$=_enabled]").each(function () {
         if ($(this).text() == 'true') {
             $(this).text("enabled");
+            $(this).addClass("btn btn-sm btn-success");
         } else {
             $(this).text("disabled");
+            $(this).addClass("btn btn-sm btn-danger");
         }
     });
 }

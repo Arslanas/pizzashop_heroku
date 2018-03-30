@@ -2,6 +2,7 @@ package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import pizzaShop.entity.embedded.Image;
+import pizzaShop.entity.embedded.MonetaryAmount;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,9 +19,9 @@ public class Item implements Serializable{
     @NotNull
     @Column(name = "NAME")
     private String name;
-    @NotNull
-    @Column(name = "PRICE")
-    private Integer price;
+
+    private MonetaryAmount price = new MonetaryAmount(0);
+
     @Column(name = "DESCRIPTION")
     private String description;
 
@@ -33,14 +34,14 @@ public class Item implements Serializable{
     public Item() {
     }
 
-    public Item(String name, Integer price, String description, Set<CategorizedItem> setOfCategorizedItems) {
+    public Item(String name, MonetaryAmount price, String description, Set<CategorizedItem> setOfCategorizedItems) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.setOfCategorizedItems = setOfCategorizedItems;
     }
 
-    public Item(String name, Integer price, String description, Image image, Set<CategorizedItem> setOfCategorizedItems) {
+    public Item(String name, MonetaryAmount price, String description, Image image, Set<CategorizedItem> setOfCategorizedItems) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -64,11 +65,11 @@ public class Item implements Serializable{
         this.name = name;
     }
 
-    public Integer getPrice() {
+    public MonetaryAmount getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(MonetaryAmount price) {
         this.price = price;
     }
 
@@ -101,11 +102,11 @@ public class Item implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Item item = (Item) o;
+        Item other = (Item) o;
 
-        if (!name.equals(item.name)) return false;
-        if (!price.equals(item.price)) return false;
-        return description != null ? description.equals(item.description) : item.description == null;
+        if (!name.equals(other.name)) return false;
+        if (!price.equals(other.price)) return false;
+        return description != null ? description.equals(other.description) : other.description == null;
 
     }
 

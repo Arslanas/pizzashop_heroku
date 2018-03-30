@@ -1,20 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"        prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags"      prefix="s"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<!-- TagLibs -->
+<%@ include file="templates/TagLibs_template.jsp" %>
 
 <html>
 <head>
-    <title>Homepage</title>
+    <title>Customer details</title>
 
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <!-- Styles -->
+    <%@ include file="templates/Css_template.jsp" %>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="${contextPath}/resources/custom_css/custom_style.css" rel="stylesheet">
 </head>
 <body>
 

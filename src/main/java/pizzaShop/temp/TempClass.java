@@ -1,17 +1,10 @@
 package pizzaShop.temp;
 
-import pizzaShop.entity.CategorizedItem;
-import pizzaShop.entity.Category;
-;import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+;
 
 public class TempClass {
     public static void main(String[] args) {
-
-
-
+        System.out.println(Double.valueOf("231.12312"));
 //        CategorizedItem categorizedItem = new CategorizedItem();
 //        Category category = new Category();
 //        category.setName("ars");

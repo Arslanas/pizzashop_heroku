@@ -8,7 +8,7 @@ import pizzaShop.service.CategoryService;
 
 import java.beans.PropertyEditorSupport;
 
-@Component
+
 public class CustomPropertyCategorizedItem extends PropertyEditorSupport {
 
     private static Logger logger = Logger.getLogger(CustomPropertyCategorizedItem.class);

@@ -45,8 +45,8 @@ public class Product {
     public void increaseQuantity(int number){
         quantity += number;
     }
-    public long getTotalPrice(){
-        return item.getPrice()*quantity;
+    public MonetaryAmount getTotalPrice(){
+        return new MonetaryAmount(item.getPrice().getAmount().doubleValue()*quantity);
     }
     @Override
     public boolean equals(Object o) {

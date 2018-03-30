@@ -16,11 +16,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
-import pizzaShop.entity.embedded.Address;
-import pizzaShop.entity.embedded.Contact;
+import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.entity.embedded.Product;
 import pizzaShop.service.*;
 import pizzaShop.utilities.AppScopedData;
+import pizzaShop.utilities.CustomPropertyMonetaryAmount;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
 
 import javax.servlet.ServletException;
@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -124,16 +123,7 @@ public class ProductsController {
         return "Products";
     }
 
-    @RequestMapping(value = "/add/{itemID}")
-    @ResponseBody
-    public ShoppingCart item(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
-        return addProductToCart(new Product(item), cart);
-    }
-    @RequestMapping(value = "/addCart/{cartID}")
-    @ResponseBody
-    public ShoppingCart item(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
-        return addProductSetToCart(fromCart.getCart(), cart);
-    }
+
 
     @RequestMapping(value = "/search")
     public String productSearch(Model model, HttpServletRequest request, HttpSession session, @RequestParam("search") String search, Pageable pageable, Sort sort) {
@@ -147,6 +137,16 @@ public class ProductsController {
     }
 
     //////////////          SHOPPINGCART
+    @RequestMapping(value = "/add/{itemID}")
+    @ResponseBody
+    public ShoppingCart item(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
+        return addProductToCart(new Product(item), cart);
+    }
+    @RequestMapping(value = "/addCart/{cartID}")
+    @ResponseBody
+    public ShoppingCart item(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
+        return addProductSetToCart(fromCart.getCart(), cart);
+    }
     @RequestMapping("/shoppingCart")
     public String shoppingCartHandler(@SessionAttribute ShoppingCart cart, Model model, HttpSession session) {
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
@@ -179,6 +179,7 @@ public class ProductsController {
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public String addProductPost(@RequestPart("picture") MultipartFile file, Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
+        logger.info(item);
         if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
@@ -186,7 +187,7 @@ public class ProductsController {
         }
         logger.info(String.format("%s_%s_%s_%s", file.getName(), file.getContentType(), file.getOriginalFilename(), String.valueOf(file.getSize())));
         try{
-             item.getImage().setPicture(file.getBytes());
+             if(file.getBytes().length != 0) item.getImage().setPicture(file.getBytes());
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -286,6 +287,7 @@ public class ProductsController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
+        binder.registerCustomEditor(MonetaryAmount.class, new CustomPropertyMonetaryAmount());
     }
 //////////////          VALIDATOR
 
@@ -317,8 +319,10 @@ public class ProductsController {
     private String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
     private ShoppingCart addProductToCart(Product product, ShoppingCart cart){
         if (!cart.contains(product)) {
+            logger.info(cart.getCart());
             cart.add(product);
         } else {
             cart.getProductByItemId(product.getItem().getId()).increaseQuantity();

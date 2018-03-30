@@ -1,9 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
 
 <sec:authorize access="authenticated" var="authenticated"/>
 
@@ -15,7 +10,7 @@
 
         <a href="${contextPath}/products/shoppingCart" id="shoppingCart" class="btn btn-warning  mx-auto"><img
                 src="${contextPath}/resources/vendor/images/cart.svg"
-                width="20"> Ваш заказ : <span id="cartPrice"> ${cart.totalPrice} </span> р
+                width="20"> Ваш заказ : <span id="cartPrice"> ${cart.totalPrice} </span>
         </a>
         <ul class="navbar-nav ml-auto">
             <li>

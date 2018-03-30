@@ -1,20 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<!-- TagLibs -->
+<%@ include file="templates/TagLibs_template.jsp" %>
 
 <html>
 <head>
     <title>Homepage</title>
 
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    <!-- Styles -->
+    <%@ include file="templates/Css_template.jsp" %>
 
-    <!-- Bootstrap core CSS -->
-    <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="${contextPath}/resources/custom_css/custom_style.css" rel="stylesheet">
 </head>
 <body>
 <!-- Navigation -->
@@ -54,7 +48,7 @@
                                             <span
                                                     class="ml-2">${product.item.name}</span>
                                         </td>
-                                        <td>${product.item.price} р</td>
+                                        <td>${product.item.price}</td>
                                         <td>
                                             <button onclick="decreaseCart(${product.item.id})"
                                                     class="btn btn-warning btn-sm"><img
@@ -67,7 +61,7 @@
                                                     src="${contextPath}/resources/vendor/images/plus.svg"
                                                     width="8"></button>
                                         </td>
-                                        <td><span id="productPrice_${product.item.id}">${product.totalPrice}</span> р
+                                        <td><span id="productPrice_${product.item.id}">${product.totalPrice}</span>
                                         </td>
                                     </tr>
 
@@ -87,7 +81,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12 mt-4 mb-3">
                             <h3 class="text-center text-primary">Сумма заказа: <span id = "cartTotalPrice"
-                                    class="font-weight-bold"> ${cart.totalPrice} </span>р</h3>
+                                    class="font-weight-bold"> ${cart.totalPrice} </span></h3>
                         </div>
                         <div class="col-12 mb-4">
                             <c:choose>

@@ -1,19 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="s" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<!-- TagLibs -->
+<%@ include file="templates/TagLibs_template.jsp" %>
 
 <html>
 <head>
     <title>Homepage</title>
 
-    <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-    <!-- Bootstrap core CSS -->
-    <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Styles -->
+    <%@ include file="templates/Css_template.jsp" %>
 
-    <!-- Custom styles for this template -->
-    <link href="${contextPath}/resources/custom_css/custom_style.css" rel="stylesheet">
 </head>
 <body>
 
@@ -100,7 +95,7 @@
                                     <div class="card-footer">
                                         <div class="row">
                                             <div class="col-6 mt-2">
-                                                <h5 class="text-info">${item.price}р</h5>
+                                                <h5 class="text-info">${item.price}</h5>
                                             </div>
                                             <div class="col-6 mt-2">
                                                 <a href="${contextPath}/products/add/${item.id}"
