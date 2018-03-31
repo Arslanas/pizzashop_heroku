@@ -1,7 +1,5 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<s:url value="${contextPath}/products/editProduct" var = "path"></s:url>
-<s:url value="${contextPath}/products/addProduct" var = "path"></s:url>
 
 <!-- Bootstrap core CSS -->
 <link href="${contextPath}/resources/vendor/css/bootstrap.min.css" rel="stylesheet">

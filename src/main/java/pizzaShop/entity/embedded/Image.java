@@ -39,4 +39,11 @@ public class Image {
     public int hashCode() {
         return Arrays.hashCode(picture);
     }
+
+    @Override
+    public String toString() {
+        return "Image{" +
+                "picture=" + "somePicture" +
+                '}';
+    }
 }

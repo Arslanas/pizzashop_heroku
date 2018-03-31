@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Add product</title>
-
+    <s:url value="${contextPath}/products/addProduct" var = "path"></s:url>
     <!-- Styles -->
     <%@ include file="templates/Css_template.jsp" %>
 

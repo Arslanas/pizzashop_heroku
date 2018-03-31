@@ -81,7 +81,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <a href="#"><img class="card-img-top"
-                                                             src="/resources/vendor/images/1200x350.png"></a>
+                                                             src="/resources/images/PizzaShop.jpg"></a>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="card-body">
@@ -98,8 +98,8 @@
                                                 <h5 class="text-info">${item.price}</h5>
                                             </div>
                                             <div class="col-6 mt-2">
-                                                <a href="${contextPath}/products/add/${item.id}"
-                                                   class="btn btn-outline-warning active btn-sm">Заказать</a>
+                                                <button id="itemID-${item.id}" onclick="addToCart(${item.id})"
+                                                   class="btn btn-outline-warning active btn-sm">Заказать</button>
                                             </div>
                                         </div>
                                         <sec:authorize url="${contextPath}/products/addProduct">
@@ -110,13 +110,6 @@
                                                 </div>
                                             </div>
                                         </sec:authorize>
-                                        <div class="row ">
-                                            <div class="col-12 mt-3  ">
-                                                <button id="itemID-${item.id}" onclick="addToCart(${item.id})"
-                                                        class="btn btn-outline-info text-center btn-block">AJAX
-                                                </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +125,7 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
-
+<script src="${contextPath}/resources/custom_js/UserOrders.js"></script>
+<script>$(document).ready(initProductsPage())</script>
 </body>
 </html>

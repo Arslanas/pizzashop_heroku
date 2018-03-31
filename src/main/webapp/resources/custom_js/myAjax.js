@@ -1,7 +1,5 @@
 function addToCart(itemID) {
     $.getJSON("http://localhost:8080/products/add/" + itemID, {}, function (json) {
-        $("#itemID-" + itemID).html("");
-        $("#itemID-" + itemID).append("This ID is " + json.id);
         $("#cartPrice").html(json.totalPrice.amount +" "+ json.totalPrice.currency);
     })
 }
