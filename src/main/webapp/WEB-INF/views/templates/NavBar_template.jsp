@@ -34,7 +34,7 @@
                                 <a class="dropdown-item" href="${contextPath}/products/user/orders">Ваши заказы</a>
                                 <a class="dropdown-item" href="${contextPath}/products/user/details">Ваш профиль</a>
                                 <div class="dropdown-divider"></div>
-                                <sf:form action="${contextPath}/logout" method="post">
+                                <sf:form action="${contextPath}/logout" method="POST">
                                     <button type="submit" class="dropdown-item">Выход</button>
                                 </sf:form>
                             </div>

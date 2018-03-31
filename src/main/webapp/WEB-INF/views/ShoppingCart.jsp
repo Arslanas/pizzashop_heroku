@@ -106,6 +106,6 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
-
+<script>$(document).ready(initProductsPage('${contextPath}'))</script>
 </body>
 </html>

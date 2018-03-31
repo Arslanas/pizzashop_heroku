@@ -1,4 +1,5 @@
-function onloadUserOrders() {
+function onloadUserOrders(context) {
+    initProductsPage(context);
     $('#tableID').dataTable({
         "lengthChange":false,
         "info":false,

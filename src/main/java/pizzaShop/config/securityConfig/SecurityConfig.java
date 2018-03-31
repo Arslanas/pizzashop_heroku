@@ -22,8 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder amb) throws Exception {
-//        amb.inMemoryAuthentication()
-//                .withUser("Arslan").password("pass").roles("USER");
         amb.jdbcAuthentication().dataSource(dataSource);
     }
 
@@ -34,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         security.formLogin().usernameParameter("username");
         security.formLogin().passwordParameter("password");
         security.formLogin().successForwardUrl("/products");
-        security.rememberMe().rememberMeParameter("remember-me").key("pizzaShop");
+        security.rememberMe().rememberMeParameter("remember-me").key("pizzaShopKey");
         security.authorizeRequests().regexMatchers("/products/addProduct").hasAuthority("ADMIN");
         security.authorizeRequests().regexMatchers("/products/editProduct/.*").hasAuthority("ADMIN");
        // security.authorizeRequests().regexMatchers("/products/.*").hasAuthority("USER");

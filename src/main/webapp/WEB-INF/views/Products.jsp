@@ -37,15 +37,15 @@
                         </ol>
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
-                                <img class="d-block img-fluid" src="/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
                                      alt="First slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block img-fluid" src="/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
                                      alt="Second slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block img-fluid" src="/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
                                      alt="Third slide">
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <a href="#"><img class="card-img-top"
-                                                             src="/resources/images/PizzaShop.jpg"></a>
+                                                             src="${contextPath}/resources/images/PizzaShop.jpg"></a>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="card-body">
@@ -125,7 +125,6 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
-<script src="${contextPath}/resources/custom_js/UserOrders.js"></script>
-<script>$(document).ready(initProductsPage())</script>
+<script>$(document).ready(initProductsPage('${contextPath}'))</script>
 </body>
 </html>

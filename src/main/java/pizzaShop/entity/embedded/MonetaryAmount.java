@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 @Embeddable
 public class MonetaryAmount {
@@ -80,7 +82,7 @@ public class MonetaryAmount {
         if(amount.doubleValue() == amount.longValue() || amount.doubleValue() == 0d)
             return String.format("%d %s", amount.longValue(), currency);
         else
-            return String.format("%s %s", amount.doubleValue(), currency);
+            return String.format("%.2f %s", amount.doubleValue(), currency);
     }
 
 }

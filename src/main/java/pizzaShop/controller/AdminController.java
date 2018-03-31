@@ -66,6 +66,4 @@ public class AdminController {
         model.addAttribute("page", userService.findAll(pageRequest));
         return "UserManagement";
     }
-//    {"content":[{"username":"olya","password":"a","enabled":true,"contact":{"phoneNum":"79605896231","email":"olya@gmail.com"},"address":{"streetHome":"Feoktistova, 3","appartment":15,"entrance":1,"level":1},"date":"11-03-2018"}],"last":false,"totalPages":5,"totalElements":5,"size":1,"number":1,"sort":[{"direction":"ASC","property":"date","ignoreCase":false,"nullHandling":"NATIVE","ascending":true,"descending":false}],"numberOfElements":1,"first":false}
-
 }

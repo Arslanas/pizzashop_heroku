@@ -8,7 +8,6 @@
 
     <!-- Styles -->
     <%@ include file="templates/Css_template.jsp" %>
-
 </head>
 <body>
 <!-- Navigation -->
@@ -75,6 +74,6 @@
 <script src="${contextPath}/resources/vendor/DataTables/DataTables-1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="${contextPath}/resources/vendor/DataTables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
 <script src="${contextPath}/resources/custom_js/UserOrders.js"></script>
-<script>$(document).ready(onloadUserOrders())</script>
+<script>$(document).ready(onloadUserOrders('${contextPath}'))</script>
 </body>
 </html>
