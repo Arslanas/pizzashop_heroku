@@ -2,9 +2,7 @@ package pizzaShop.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pizzaShop.entity.*;
-import pizzaShop.entity.embedded.Image;
 import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.entity.embedded.Product;
 import pizzaShop.service.*;
@@ -55,37 +50,29 @@ public class ProductsController {
         this.categorizedItemService = categorizedItemService;
     }
 
-    //////////////      REST
-    @RequestMapping(value = "/rest/{item}")
-    @ResponseBody
-    public Item getRest(@PathVariable Item item) {
-        return item;
-    }
-
-    @RequestMapping("/shoppingCart/increase/{item}")
-    @ResponseBody
-    public ShoppingCart shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.getProductByItemId(itemID).increaseQuantity();
-        return cart;
-    }
-
-    @RequestMapping("/shoppingCart/decrease/{item}")
-    @ResponseBody
-    public ShoppingCart shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.getProductByItemId(itemID).decreaseQuantity();
-        return cart;
-    }
-
-    @RequestMapping("/shoppingCart/remove/{item}")
-    @ResponseBody
-    public ShoppingCart shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
-        cart.removeFromCartByItemID(itemID);
-        return cart;
-    }
-
-//////////////      REST
 
     //////////////      PRODUCTS
+
+
+    @RequestMapping
+    public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
+        model.addAttribute("page", itemService.findAll(pageable));
+        model.addAttribute("requestType", request.getRequestURL().toString());
+        return "Products";
+    }
+
+    @RequestMapping("/{category}")
+    public String productsByCategory(@PathVariable("category") Category category, Model model, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
+        model.addAttribute("page", itemService.getItemsByCategory(category, pageable));
+        return "Products";
+    }
+
+    @RequestMapping(value = "/search")
+    public String productSearch(Model model, @RequestParam("search") String search, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
+        model.addAttribute("page", itemService.getItemsBySearchString(search, pageable));
+        model.addAttribute("search", search);
+        return "Products";
+    }
 
     @RequestMapping("/image/{id}")
     public void productsImage(@PathVariable("id") Item item, HttpServletResponse response) throws ServletException, IOException {
@@ -106,36 +93,16 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping
-    public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
-        model.addAttribute("page", itemService.findAll(pageable));
-        model.addAttribute("requestType", request.getRequestURL().toString());
-        return "Products";
-    }
-
-    @RequestMapping("/{category}")
-    public String productsByCategory(@PathVariable("category") Category category, Model model, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
-        model.addAttribute("page", itemService.getItemsByCategory(category, pageable));
-        return "Products";
-    }
-
-    @RequestMapping(value = "/search")
-    public String productSearch(Model model, @RequestParam("search") String search, Pageable pageable) {
-        model.addAttribute("page", itemService.getItemsBySearchString(search, pageable));
-        model.addAttribute("search", search);
-        return "Products";
-    }
-
     //////////////          SHOPPINGCART
     @RequestMapping(value = "/add/{itemID}")
     @ResponseBody
-    public ShoppingCart item(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
+    public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
         return addProductToCart(new Product(item), cart);
     }
 
     @RequestMapping(value = "/addCart/{cartID}")
     @ResponseBody
-    public ShoppingCart item(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
+    public ShoppingCart addItemSetToCart(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
         return addProductSetToCart(fromCart.getCart(), cart);
     }
 
@@ -159,109 +126,62 @@ public class ProductsController {
         return "redirect:/products";
     }
 
+    //////////////      REST
+
+    @RequestMapping("/shoppingCart/increase/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.getProductByItemId(itemID).increaseQuantity();
+        return cart;
+    }
+
+    @RequestMapping("/shoppingCart/decrease/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.getProductByItemId(itemID).decreaseQuantity();
+        return cart;
+    }
+
+    @RequestMapping("/shoppingCart/remove/{item}")
+    @ResponseBody
+    public ShoppingCart shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
+        cart.removeFromCartByItemID(itemID);
+        return cart;
+    }
+
+//////////////      REST
 //////////////          SHOPPINGCART
 
-    //////////////          ADMIN
-    @RequestMapping("/addProduct")
-    public String addProduct(Model model, @SessionAttribute List<Category> categories) {
-        model.addAttribute("categoryName", getCategoryName(categories));
-        model.addAttribute("item", new Item());
-        return "Add_product";
-    }
-
-    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
-    public String addProductPost(@RequestPart("picture") MultipartFile file, Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
-        logger.info(item);
-        if (errors.hasErrors()) {
-            model.addAttribute("categoryName", getCategoryName(categories));
-            model.addAttribute("item", item);
-            return "Add_product";
-        }
-        try {
-            if (file.getBytes().length != 0) item.getImage().setPicture(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
-        Item itemMerged = itemService.save(item);
-        categorySet.stream().map(e -> new CategorizedItem(e, itemMerged)).forEach(categorizedItemService::save);
-        return "redirect:/products/addProduct";
-    }
-
-    @RequestMapping("/editProduct/{id}")
-    public String editProduct(@PathVariable("id") Item item, Model model, @SessionAttribute List<Category> categories) {
-        model.addAttribute("item", item);
-        model.addAttribute("itemID", item.getId());
-        model.addAttribute("categoryName", getCategoryName(categories));
-        return "Edit_product";
-    }
-
-    @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
-    public String editProductPost(@RequestPart("picture") MultipartFile file, @ModelAttribute("itemEdit") Item item) {
-        if(file.getSize()>0){
-            try {
-                item.getImage().setPicture(file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            Image image = itemService.findOne(item.getId()).getImage();
-            item.setImage(image);
-        }
-        itemService.save(item);
-        return "redirect:/products";
-    }
-
-    @RequestMapping("/remove/{id}")
-    public String removeProduct(@PathVariable("id") Item item) {
-        itemService.delete(item);
-        return "redirect:/products";
-    }
-//////////////          ADMIN
-
-    //////////////          USER
-    @RequestMapping("/user/details")
-    public String userDetails(Model model) {
-        model.addAttribute("user", userService.findByUsername(getUsername()));
-        return "User_details";
-    }
-
-    @RequestMapping("/user/details/edit")
-    public String userDetailsEdit(Model model) {
-        model.addAttribute("user", userService.findByUsername(getUsername()));
-        return "User_details_edit";
-    }
-
-    @RequestMapping("/user/orders")
-    public String userOrders(Model model) {
-        model.addAttribute("sCarts", shoppingCartService.findByUsername(getUsername()));
-        return "User_orders";
-    }
-//////////////          USER
-
     //////////////          ORDER_CONFIRMATION
+
     @RequestMapping("/customerDetails")
-    public String customerDetails(Model model) {
-        model.addAttribute("customer", getCustomerUser());
-        return "CustomerDetails";
+    public String customerDetails(Model model, HttpSession session) {
+        if(!isAnonymous()){
+            session.setAttribute("customer", userService.findByUsername(getAuthenticatedUsername()));
+            return "redirect:/products/orderConfirmation";
+        }
+        if (session.getAttribute("customer") != null) {
+            model.addAttribute("customer", session.getAttribute("customer"));
+            return "CustomerDetails";
+        }else {
+            User newCustomer = getCustomerUser();
+            model.addAttribute("customer", newCustomer);
+            return "CustomerDetails";
+        }
     }
 
     @RequestMapping(value = "/customerDetails", method = RequestMethod.POST)
-    public String customerDetailsPost(RedirectAttributes redirectAttributes, Model model, @Valid @ModelAttribute("customer") User customer, Errors errors) {
-        logger.info(errors);
+    public String customerDetailsPost(HttpSession session, Model model, @Valid @ModelAttribute("customer") User customer, Errors errors) {
         if (errors.hasErrors()) {
             model.addAttribute("customer", customer);
             return "CustomerDetails";
         }
-        redirectAttributes.addFlashAttribute("customer", customer);
+        session.setAttribute("customer", customer);
         return "redirect:/products/orderConfirmation";
     }
 
     @RequestMapping("/orderConfirmation")
-    public String confirmationOrder(@ModelAttribute("customer") User customer, @SessionAttribute ShoppingCart cart, Model model) {
-        if (!isAnonymous()) {
-            customer = userService.findByUsername(getUsername());
-        }
+    public String confirmationOrder(@SessionAttribute User customer, @SessionAttribute ShoppingCart cart, Model model) {
         model.addAttribute("cartSet", cart.getCart());
         model.addAttribute("customer", customer);
         cart.setUsername(customer.getUsername());
@@ -269,7 +189,6 @@ public class ProductsController {
     }
 
     @RequestMapping(value = "/orderConfirmation", method = RequestMethod.POST)
-
     public String confirmationOrderPost(@SessionAttribute ShoppingCart cart, SessionStatus status) {
         status.setComplete();
         if (isAnonymous()) {
@@ -278,6 +197,7 @@ public class ProductsController {
         shoppingCartService.save(cart);
         return "redirect:/products";
     }
+
 //////////////          ORDER_CONFIRMATION
 
 
@@ -292,9 +212,6 @@ public class ProductsController {
 
 //////////////          Helpers
 
-    private List<String> getCategoryName(List<Category> categories) {
-        return categories.stream().map(e -> e.getName()).collect(Collectors.toList());
-    }
 
     @ModelAttribute("cart")
     public ShoppingCart shoppingCart() {
@@ -315,7 +232,7 @@ public class ProductsController {
 
     }
 
-    private String getUsername() {
+    private String getAuthenticatedUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 

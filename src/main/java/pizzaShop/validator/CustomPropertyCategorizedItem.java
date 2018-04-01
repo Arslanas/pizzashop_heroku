@@ -22,10 +22,8 @@ public class CustomPropertyCategorizedItem extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        logger.info(text);
         CategorizedItem categorizedItem = new CategorizedItem();
         categorizedItem.setCategory(categoryService.findByName(text));
-        logger.info(categorizedItem);
         setValue(categorizedItem);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,9 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         security.formLogin().passwordParameter("password");
         security.formLogin().successForwardUrl("/products");
         security.rememberMe().rememberMeParameter("remember-me").key("pizzaShopKey");
-        security.authorizeRequests().regexMatchers("/products/addProduct").hasAuthority("ADMIN");
-        security.authorizeRequests().regexMatchers("/products/editProduct/.*").hasAuthority("ADMIN");
-       // security.authorizeRequests().regexMatchers("/products/.*").hasAuthority("USER");
+
+
+        security.authorizeRequests().regexMatchers("/admin/.*").hasAuthority("ADMIN");
+        security.authorizeRequests().regexMatchers("/user/registration").permitAll();
+        security.authorizeRequests().regexMatchers("/user/.*").authenticated();
         security.authorizeRequests().regexMatchers("/.*").permitAll();
     }
 

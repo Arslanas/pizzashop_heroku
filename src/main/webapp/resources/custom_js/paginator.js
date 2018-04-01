@@ -82,11 +82,11 @@ function updatePageState() {
     }
 }
 
-function onloadUsersManagement(totalPages, totalElements, disableUserUrl, findUsersUrl) {
+function onloadUsersManagement(totalPages, totalElements, disableUserUrl, findUsersUrl, size) {
     gSort = 'username';
     gDirection = 'asc';
     gPage = 0;
-    gPageSize = 2;
+    gPageSize = size;
     gTotalPages = totalPages;
     gTotalElements = totalElements;
     gDisableUserUrl = disableUserUrl;

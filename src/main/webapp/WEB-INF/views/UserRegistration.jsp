@@ -31,7 +31,7 @@
 
                 <!-- Form -->
                 <div class="col-12 mt-4 mb-5">
-                    <sf:form action="${contextPath}/admin/userRegistration" commandName="user" method="post">
+                    <sf:form action="${contextPath}/user/registration" commandName="user" method="POST">
                         <div class="form-group">
                             <label for="Name">Имя профиля</label>
                             <sf:input path="username" type="text" name="username" class="form-control" id="Name" />
@@ -46,7 +46,7 @@
                         </div>
                         <div class="form-group">
                             <label for="Mobil">Мобильный тел.</label>
-                            <sf:input path="contact.phoneNum" type="number" class="form-control" id="Mobil"/>
+                            <sf:input path="contact.phoneNum" type="text" class="form-control" id="Mobil"/>
                         </div>
                         <div class="form-group">
                             <label for="Mobil">Адрес</label>
@@ -68,8 +68,8 @@
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary ">Submit</button>
-                                <button type="reset" class="btn btn-light ml-3 ">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Подтвердить</button>
+                                <a href="${contextPath}/products" class="btn btn-light ml-3">Назад</a>
                             </div>
                         </div>
                     </sf:form>

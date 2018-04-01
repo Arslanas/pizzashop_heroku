@@ -15,16 +15,13 @@
                     <a href="${contextPath}/products/${category.id}"
                        class="btn btn-outline-info bg-info btn-block text-white ">${category.name}</a>
                 </c:forEach>
-                <a href="${contextPath}/products/addProduct" class="btn btn-outline-info bg-info btn-block text-white ">Add
-                    product</a>
-                <a href="${contextPath}/products" class="btn btn-outline-info bg-info btn-block text-white ">All
-                    products</a>
-                <a href="${contextPath}/admin/userManagement"
-                   class="btn btn-outline-info bg-info btn-block text-white ">All
-                    users</a>
-                <sf:form action="/logout" method="post">
-                    <button type="submit" class="btn btn-outline-info bg-info btn-block text-white ">LOGOUT</button>
-                </sf:form>
+                <sec:authorize access="hasAuthority('ADMIN')">
+                    <a href="${contextPath}/admin/addProduct" class="btn btn-outline-info bg-info btn-block text-white">Add
+                        product</a>
+                    <a href="${contextPath}/admin/userManagement"
+                       class="btn btn-outline-info bg-info btn-block text-white ">All
+                        users</a>
+                </sec:authorize>
             </div>
         </div>
     </div>

@@ -27,7 +27,7 @@
                     <h3 class="text-center font-weight-bold text-info">Ваши данные</h3>
                 </div>
                 <div class="col-4 mx-auto mt-5">
-                    <a href = "${contextPath}/products/user/details/edit" class="btn btn-warning">Редактировать</a>
+                    <a href = "${contextPath}/user/detailsEdit" class="btn btn-warning">Редактировать</a>
                 </div>
             </div>
             <div class="row">

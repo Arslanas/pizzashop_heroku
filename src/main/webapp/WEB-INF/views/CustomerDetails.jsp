@@ -61,8 +61,8 @@
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary ">Submit</button>
-                                <button type="reset" class="btn btn-light ml-3 ">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Подтвердить</button>
+                                <a href="${contextPath}/products/shoppingCart" class="btn btn-light ml-3 ">Назад</a>
                             </div>
                         </div>
                     </sf:form>

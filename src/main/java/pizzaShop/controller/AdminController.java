@@ -9,11 +9,25 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pizzaShop.entity.CategorizedItem;
+import pizzaShop.entity.Category;
+import pizzaShop.entity.Item;
 import pizzaShop.entity.User;
-import pizzaShop.service.UserService;
+import pizzaShop.entity.embedded.Image;
+import pizzaShop.entity.embedded.MonetaryAmount;
+import pizzaShop.service.*;
+import pizzaShop.utilities.CustomPropertyMonetaryAmount;
+import pizzaShop.validator.CustomPropertyCategorizedItem;
 
+import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -21,24 +35,22 @@ public class AdminController {
 
 
     private static Logger logger = Logger.getLogger(AdminController.class);
+    private final CategoryService categoryService;
     private final UserService userService;
+    private final ShoppingCartService shoppingCartService;
+    private final ItemService itemService;
+    private final CategorizedItemService categorizedItemService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, ShoppingCartService shoppingCartService, CategoryService categoryService, ItemService itemService, CategorizedItemService categorizedItemService) {
+        this.categoryService = categoryService;
+        this.shoppingCartService = shoppingCartService;
         this.userService = userService;
+        this.itemService = itemService;
+        this.categorizedItemService = categorizedItemService;
     }
 
-    @RequestMapping("/userRegistration")
-    public String userRegistration(Model model) {
-        model.addAttribute("user", new User());
-        return "UserRegistration";
-    }
 
-    @RequestMapping(value = "/userRegistration", method = RequestMethod.POST)
-    public String userRegistrationPost(@ModelAttribute User user) {
-        userService.save(user);
-        return "redirect:/admin/userManagement";
-    }
 
     @RequestMapping(value = "/userManagementRest")
     @ResponseBody
@@ -62,8 +74,77 @@ public class AdminController {
 
     @RequestMapping(value = "/userManagement")
     public String userManagement(Model model, Pageable pageable) {
-        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), 2, pageable.getSort());
+        PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), 5, pageable.getSort());
         model.addAttribute("page", userService.findAll(pageRequest));
         return "UserManagement";
+    }
+
+    @RequestMapping("/addProduct")
+    public String addProduct(Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("categoryName", getCategoryName(categories));
+        model.addAttribute("item", new Item());
+        return "Add_product";
+    }
+
+    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    public String addProductPost(@RequestPart("picture") MultipartFile file, Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
+        logger.info(item);
+        if (errors.hasErrors()) {
+            model.addAttribute("categoryName", getCategoryName(categories));
+            model.addAttribute("item", item);
+            return "Add_product";
+        }
+        try {
+            if (file.getBytes().length != 0) item.getImage().setPicture(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
+        Item itemMerged = itemService.save(item);
+        categorySet.stream().map(e -> new CategorizedItem(e, itemMerged)).forEach(categorizedItemService::save);
+        return "redirect:/products";
+    }
+
+    @RequestMapping("/editProduct/{id}")
+    public String editProduct(@PathVariable("id") Item item, Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("item", item);
+        model.addAttribute("itemID", item.getId());
+        model.addAttribute("categoryName", getCategoryName(categories));
+        return "Edit_product";
+    }
+
+    @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
+    public String editProductPost(@RequestPart("picture") MultipartFile file, @ModelAttribute("itemEdit") Item item) {
+        if(file.getSize()>0){
+            try {
+                item.getImage().setPicture(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Image image = itemService.findOne(item.getId()).getImage();
+            item.setImage(image);
+        }
+        itemService.save(item);
+        return "redirect:/products";
+    }
+
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
+    public String removeProduct(@PathVariable("id") Item item) {
+        itemService.delete(item);
+        return "redirect:/products";
+    }
+
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
+        binder.registerCustomEditor(MonetaryAmount.class, new CustomPropertyMonetaryAmount());
+    }
+//____________________________
+
+    private List<String> getCategoryName(List<Category> categories) {
+        return categories.stream().map(e -> e.getName()).collect(Collectors.toList());
     }
 }

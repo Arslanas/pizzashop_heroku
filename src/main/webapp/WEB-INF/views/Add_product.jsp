@@ -5,20 +5,19 @@
 <html>
 <head>
     <title>Add product</title>
-    <s:url value="${contextPath}/products/addProduct" var = "path"></s:url>
     <!-- Styles -->
     <%@ include file="templates/Css_template.jsp" %>
 
 </head>
 <body>
 <!-- Navigation -->
-<%@ include file="templates/NavBar_template.jsp"%>
+<%@ include file="templates/NavBar_template.jsp" %>
 
 
 <div class="container">
     <div class="row ">
         <!-- sidebar -->
-        <%@ include file="templates/Sidebar_template.jsp"%>
+        <%@ include file="templates/Sidebar_template.jsp" %>
 
         <div class="col ">
             <div class="row">
@@ -31,23 +30,26 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form id="addProductForm" action="${path}" method="post" commandName="item" enctype="multipart/form-data">
+                    <sf:form id="addProductForm" action="${contextPath}/admin/addProduct" method="POST"
+                             commandName="item" enctype="multipart/form-data">
 
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
-                            <sf:input path="name"  type="text" class="form-control" id="Name" ></sf:input>
+                            <sf:input path="name" type="text" class="form-control" id="Name"></sf:input>
                             <sf:errors path="name" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <sf:label path="setOfCategorizedItems" for="Category" class="font-weight-bold">Категория</sf:label>
+                            <sf:label path="setOfCategorizedItems" for="Category"
+                                      class="font-weight-bold">Категория</sf:label>
                             <sf:select path="setOfCategorizedItems" id="Category" class="form-control" multiple="true">
-                                    <sf:options items="${categoryName}" />
+                                <sf:options items="${categoryName}"/>
                             </sf:select>
                             <sf:errors path="setOfCategorizedItems" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <label for="Description" class="font-weight-bold">Описание товара</label>
-                            <sf:textarea path="description" class="form-control" id="Description" aria-label="With textarea"></sf:textarea>
+                            <sf:textarea path="description" class="form-control" id="Description"
+                                         aria-label="With textarea"></sf:textarea>
                             <sf:errors path="description" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
@@ -57,14 +59,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlFile1" class="font-weight-bold">Загрузить изображение</label>
-                            <input type="file" name="picture" accept="image/jpeg" class="form-control-file" id="exampleFormControlFile1">
+                            <input type="file" name="picture" accept="image/jpeg" class="form-control-file"
+                                   id="fileInputID">
                         </div>
 
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary ">Подтвердить</button>
-                                <button type="reset" class="btn btn-light ml-3 ">Отмена</button>
+                                <a href="${contextPath}/products" class="btn btn-light ml-3 ">Отмена</a>
                             </div>
                         </div>
 
@@ -79,6 +81,9 @@
 
 
 <!-- Footer -->
-<%@ include file="templates/Footer_template.jsp"%>
+<%@ include file="templates/Footer_template.jsp" %>
+<script src="${contextPath}/resources/vendor/Fileselect/src/bootstrap-fileselect.js"></script>
+<script src="${contextPath}/resources/custom_js/AddProductScript.js"></script>
+<script>$(document).ready(AddProductInit())</script>
 </body>
 </html>

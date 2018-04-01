@@ -41,10 +41,12 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${cartSet}" var="product">
-                                    <tr id = "productRow_${product.item.id}">
-                                        <td><button onclick="removeFromCart(${product.item.id})"
-                                               class="btn btn-danger btn-sm "><img
-                                                src="${contextPath}/resources/vendor/images/circle-x.svg" width="8"></button>
+                                    <tr id="productRow_${product.item.id}">
+                                        <td>
+                                            <button onclick="removeFromCart(${product.item.id})"
+                                                    class="btn btn-danger btn-sm "><img
+                                                    src="${contextPath}/resources/vendor/images/circle-x.svg" width="8">
+                                            </button>
                                             <span
                                                     class="ml-2">${product.item.name}</span>
                                         </td>
@@ -80,21 +82,13 @@
                 <div class="col-6 mx-auto">
                     <div class="row justify-content-center">
                         <div class="col-12 mt-4 mb-3">
-                            <h3 class="text-center text-primary">Сумма заказа: <span id = "cartTotalPrice"
-                                    class="font-weight-bold"> ${cart.totalPrice} </span></h3>
+                            <h3 class="text-center text-primary">Сумма заказа: <span id="cartTotalPrice"
+                                                                                     class="font-weight-bold"> ${cart.totalPrice} </span>
+                            </h3>
                         </div>
                         <div class="col-12 mb-4">
-                            <c:choose>
-                                <c:when test="${authenticated}">
-                                    <a href="${contextPath}/products/orderConfirmation"
-                                       class="btn btn-warning btn-block"
-                                       href="#">Оформить заказ</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="${contextPath}/products/customerDetails" class="btn btn-warning btn-block"
-                                       href="#">Оформить заказ</a>
-                                </c:otherwise>
-                            </c:choose>
+                            <a href="${contextPath}/products/customerDetails" class="btn btn-warning btn-block"
+                               href="#">Оформить заказ</a>
                         </div>
                     </div>
                 </div>

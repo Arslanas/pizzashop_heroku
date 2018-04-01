@@ -144,6 +144,6 @@
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
 <script src="${contextPath}/resources/custom_js/paginator.js"></script>
-<script>$(document).ready(onloadUsersManagement(${page.totalPages}, ${page.totalElements}, '${disableUserURL}', '${findUsersURL}'))</script>
+<script>$(document).ready(onloadUsersManagement(${page.totalPages}, ${page.totalElements}, '${disableUserURL}', '${findUsersURL}', ${page.size}))</script>
 </body>
 </html>

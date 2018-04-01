@@ -6,8 +6,6 @@
 <head>
     <title>Homepage</title>
 
-    <s:url value="${contextPath}/products/editProduct" var="path"></s:url>
-
     <!-- Styles -->
     <%@ include file="templates/Css_template.jsp" %>
 
@@ -33,7 +31,8 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${path}" method="POST" modelAttribute="${item}" commandName="item"
+                    <sf:form action="${contextPath}/admin/editProduct" method="POST" modelAttribute="${item}"
+                             commandName="item"
                              enctype="multipart/form-data">
 
                         <div class="form-group">
@@ -53,11 +52,13 @@
                             <sf:input path="id" type="hidden" id="Price"/>
                         </div>
                         <div class="form-group">
-                            <label name="picture" for="pictureID"><img width="100"
-                                                                       src="${contextPath}/products/image/${item.id}">
-                            </label>
+                            <c:if test="${not empty item.image.picture}">
+                                <label name="picture" for="fileInputID"><img width="100"
+                                                                             src="${contextPath}/products/image/${item.id}">
+                                </label>
+                            </c:if>
                             <input class="form-control-file" type="file" name="picture" accept="image/jpeg"
-                                   id="pictureID"></div>
+                                   id="fileInputID"></div>
 
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
@@ -67,9 +68,10 @@
                         </div>
                     </sf:form>
                     <div class="col-2 ml-auto ">
-                        <a href="${contextPath}/products/remove/${item.id}" class="btn btn-outline-danger ">Удалить</a>
+                        <sf:form action="${contextPath}/admin/remove/${item.id}" method="POST">
+                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                        </sf:form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -80,5 +82,8 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
+<script src="${contextPath}/resources/vendor/Fileselect/src/bootstrap-fileselect.js"></script>
+<script src="${contextPath}/resources/custom_js/AddProductScript.js"></script>
+<script>$(document).ready(AddProductInit())</script>
 </body>
 </html>

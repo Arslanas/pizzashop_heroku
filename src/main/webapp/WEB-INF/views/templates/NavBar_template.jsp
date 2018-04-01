@@ -31,8 +31,8 @@
                                 <img src="${contextPath}/resources/vendor/images/person.svg" width="20">${userName}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="userMenu">
-                                <a class="dropdown-item" href="${contextPath}/products/user/orders">Ваши заказы</a>
-                                <a class="dropdown-item" href="${contextPath}/products/user/details">Ваш профиль</a>
+                                <a class="dropdown-item" href="${contextPath}/user/orders">Ваши заказы</a>
+                                <a class="dropdown-item" href="${contextPath}/user/details">Ваш профиль</a>
                                 <div class="dropdown-divider"></div>
                                 <sf:form action="${contextPath}/logout" method="POST">
                                     <button type="submit" class="dropdown-item">Выход</button>
@@ -51,7 +51,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="userMenuAnonym">
                                 <a class="dropdown-item" href="${contextPath}/login">Вход</a>
-                                <a class="dropdown-item" href="${contextPath}/admin/userRegistration">Регистрация</a>
+                                <a class="dropdown-item" href="${contextPath}/user/registration">Регистрация</a>
                             </div>
                         </div>
                     </li>

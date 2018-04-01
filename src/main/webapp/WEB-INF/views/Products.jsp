@@ -102,10 +102,11 @@
                                                    class="btn btn-outline-warning active btn-sm">Заказать</button>
                                             </div>
                                         </div>
-                                        <sec:authorize url="${contextPath}/products/addProduct">
+                                        <sec:authorize access="hasAuthority('ADMIN')">
+                                            <div class="dropdown-divider"></div>
                                             <div class="row ">
                                                 <div class="col-12 mt-3 ">
-                                                    <a href="${contextPath}/products/editProduct/${item.id}"
+                                                    <a href="${contextPath}/admin/editProduct/${item.id}"
                                                        class="btn btn-outline-info text-center                                                                                                 btn-block">Редактировать</a>
                                                 </div>
                                             </div>

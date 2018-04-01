@@ -130,11 +130,17 @@
         <div class="col-12 justify-content-center">
             <div class="form-inline justify-content-center mt-5 mb-5">
                 <div class="form-group">
-                    <sf:form action="${contextPath}/products/orderConfirmation" method="post">
-                        <button type="button" class="btn btn-light ">назад</button>
-                        <input type="hidden" name="isAnonymous" value="${customer.enabled}">
+                    <sf:form action="${contextPath}/products/orderConfirmation" method="POST">
+                        <c:choose>
+                            <c:when test="${authenticated}">
+                                <a href="${contextPath}/products/shoppingCart" class="btn btn-light ">назад</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${contextPath}/products/customerDetails" class="btn btn-light ">назад</a>
+                            </c:otherwise>
+                        </c:choose>
                         <button type="submit" class="btn btn-warning btn-lg ml-3 ">Отправить заказ</button>
-                        <button type="reset" class="btn btn-light ml-3 ">отмена</button>
+                        <a href="${contextPath}/products/shoppingCart/clear" class="btn btn-light ml-3 ">отмена</a>
                     </sf:form>
                 </div>
             </div>

@@ -1,0 +1,3 @@
+function AddProductInit() {
+    $('#fileInputID').fileselect();
+}
