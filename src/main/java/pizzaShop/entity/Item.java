@@ -29,24 +29,24 @@ public class Item implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<CategorizedItem> setOfCategorizedItems = new HashSet<>();
+    private Set<CategorizedItem> categorizedItems = new HashSet<>();
 
     public Item() {
     }
 
-    public Item(String name, MonetaryAmount price, String description, Set<CategorizedItem> setOfCategorizedItems) {
+    public Item(String name, MonetaryAmount price, String description, Set<CategorizedItem> categorizedItems) {
         this.name = name;
         this.price = price;
         this.description = description;
-        this.setOfCategorizedItems = setOfCategorizedItems;
+        this.categorizedItems = categorizedItems;
     }
 
-    public Item(String name, MonetaryAmount price, String description, Image image, Set<CategorizedItem> setOfCategorizedItems) {
+    public Item(String name, MonetaryAmount price, String description, Image image, Set<CategorizedItem> categorizedItems) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.image = image;
-        this.setOfCategorizedItems = setOfCategorizedItems;
+        this.categorizedItems = categorizedItems;
     }
 
     public Long getId() {
@@ -81,12 +81,12 @@ public class Item implements Serializable{
         this.description = description;
     }
 
-    public Set<CategorizedItem> getSetOfCategorizedItems() {
-        return setOfCategorizedItems;
+    public Set<CategorizedItem> getCategorizedItems() {
+        return categorizedItems;
     }
 
-    public void setSetOfCategorizedItems(Set<CategorizedItem> setOfCategorizedItems) {
-        this.setOfCategorizedItems = setOfCategorizedItems;
+    public void setCategorizedItems(Set<CategorizedItem> setOfCategorizedItems) {
+        this.categorizedItems = setOfCategorizedItems;
     }
 
     public Image getImage() {

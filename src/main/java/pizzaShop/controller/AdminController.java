@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +49,6 @@ public class AdminController {
     }
 
 
-
     @RequestMapping(value = "/userManagementRest")
     @ResponseBody
     public Page<User> userManagementRest(Pageable pageable) {
@@ -62,9 +59,9 @@ public class AdminController {
     @ResponseBody
     public User userDisable(@PathVariable("username") String username) {
         User user = userService.findByUsername(username);
-        if(user.getEnabled() == true){
+        if (user.getEnabled() == true) {
             user.setEnabled(false);
-        }else {
+        } else {
             user.setEnabled(true);
         }
 
@@ -88,20 +85,13 @@ public class AdminController {
 
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public String addProductPost(@RequestPart("picture") MultipartFile file, Model model, @Valid @ModelAttribute("item") Item item, Errors errors, @SessionAttribute List<Category> categories) {
-        logger.info(item);
         if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
             return "Add_product";
         }
-        try {
-            if (file.getBytes().length != 0) item.getImage().setPicture(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Set<Category> categorySet = item.getSetOfCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
-        Item itemMerged = itemService.save(item);
-        categorySet.stream().map(e -> new CategorizedItem(e, itemMerged)).forEach(categorizedItemService::save);
+        itemService.setPicture(item, file);
+        itemService.save(item, item.getCategorizedItems());
         return "redirect:/products";
     }
 
@@ -115,17 +105,8 @@ public class AdminController {
 
     @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
     public String editProductPost(@RequestPart("picture") MultipartFile file, @ModelAttribute("itemEdit") Item item) {
-        if(file.getSize()>0){
-            try {
-                item.getImage().setPicture(file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            Image image = itemService.findOne(item.getId()).getImage();
-            item.setImage(image);
-        }
-        itemService.save(item);
+        itemService.changePicture(item, file);
+        itemService.update(item);
         return "redirect:/products";
     }
 
@@ -134,7 +115,6 @@ public class AdminController {
         itemService.delete(item);
         return "redirect:/products";
     }
-
 
 
     @InitBinder

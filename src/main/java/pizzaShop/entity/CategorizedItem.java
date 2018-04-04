@@ -46,8 +46,8 @@ public class CategorizedItem implements Serializable{
 
             @Override
             public int hashCode() {
-                int result = categoryID.hashCode();
-                result = 31 * result + itemID.hashCode();
+                int result = categoryID != null ? categoryID.hashCode() : 0;
+                result = 31 * result + (itemID != null ? itemID.hashCode() : 0);
                 return result;
             }
         }
@@ -72,6 +72,10 @@ public class CategorizedItem implements Serializable{
 
     public Item getItem() {
         return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     @Override

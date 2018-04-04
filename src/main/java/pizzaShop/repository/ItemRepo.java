@@ -14,6 +14,6 @@ import java.util.Set;
 public interface ItemRepo extends JpaRepository<Item, Long> {
     Page<Item> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-    @Query(value = "select i from Item i join i.setOfCategorizedItems c where c.category = :category")
+    @Query(value = "select i from Item i join i.categorizedItems c where c.category = :category")
     Page<Item> findByCategory(@Param(value = "category")Category category, Pageable pageable);
 }
