@@ -40,6 +40,14 @@
                             <sf:input path="name" type="text" class="form-control" id="Name"/>
                         </div>
                         <div class="form-group">
+                            <sf:label path="categorizedItems" for="Category"
+                                      class="font-weight-bold">Категория</sf:label>
+                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
+                                <sf:options items="${categoryName}"/>
+                            </sf:select>
+                            <sf:errors path="categorizedItems" cssClass="alert-danger"/>
+                        </div>
+                        <div class="form-group">
                             <label for="Description" class="font-weight-bold">Описание товара</label>
                             <sf:textarea path="description" class="form-control" id="Description"
                                          aria-label="With textarea"/>
@@ -49,7 +57,7 @@
                             <sf:input path="price.amount" type="text" class="form-control" id="Price"/>
                         </div>
                         <div class="form-group">
-                            <sf:input path="id" type="hidden" id="Price"/>
+                            <sf:input path="id" type="hidden" id="itemID"/>
                         </div>
                         <div class="form-group">
                             <c:if test="${not empty item.image.picture}">
@@ -58,12 +66,13 @@
                                 </label>
                             </c:if>
                             <input class="form-control-file" type="file" name="picture" accept="image/jpeg"
-                                   id="fileInputID"></div>
+                                   id="fileInputID">
+                        </div>
 
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary ">Подтвердить</button>
-                                <button type="reset" class="btn btn-light ml-3 ">Отмена</button>
+                                <a href="${contextPath}/products" class="btn btn-light ml-3 ">Отмена</a>
                             </div>
                         </div>
                     </sf:form>

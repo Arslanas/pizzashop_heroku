@@ -39,12 +39,12 @@
                             <sf:errors path="name" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <sf:label path="setOfCategorizedItems" for="Category"
+                            <sf:label path="categorizedItems" for="Category"
                                       class="font-weight-bold">Категория</sf:label>
-                            <sf:select path="setOfCategorizedItems" id="Category" class="form-control" multiple="true">
+                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
                                 <sf:options items="${categoryName}"/>
                             </sf:select>
-                            <sf:errors path="setOfCategorizedItems" cssClass="alert-danger"/>
+                            <sf:errors path="categorizedItems" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <label for="Description" class="font-weight-bold">Описание товара</label>
