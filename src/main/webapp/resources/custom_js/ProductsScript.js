@@ -5,7 +5,7 @@ var gUrlCartIncreaseByItemID;
 var gUrlCartDecreaseByItemID;
 
 function initProductsPage(context) {
-    var contextUrl = "http://localhost:8080"+context;
+    var contextUrl = context;
     gUrlAddItemID = contextUrl + '/products/add/';
     gUrlAddCartID = contextUrl + '/products/addCart/';
     gUrlCartRemoveByItemID = contextUrl + '/products/shoppingCart/remove/';
