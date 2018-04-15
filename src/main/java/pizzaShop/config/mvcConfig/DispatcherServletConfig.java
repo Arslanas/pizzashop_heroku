@@ -32,7 +32,6 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
         servletContext.setInitParameter("spring.profiles.active", "prod");
-
     }
 
 }

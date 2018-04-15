@@ -1,8 +1,5 @@
 *.idea
 *.iml
-
-*.png
-*.jpg
 *.html
 target
 log
