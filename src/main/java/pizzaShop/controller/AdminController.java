@@ -104,8 +104,13 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
-    public String editProductPost(@RequestPart("picture") MultipartFile file, @ModelAttribute("itemEdit") Item item) {
-        itemService.changePicture(item, file);
+    public String editProductPost(@RequestPart("picture") MultipartFile file, @Valid @ModelAttribute("itemEdit") Item item, Errors errors, Model model, @SessionAttribute List<Category> categories) {
+        if (errors.hasErrors()) {
+            model.addAttribute("categoryName", getCategoryName(categories));
+            model.addAttribute("item", item);
+            return "Add_product";
+        }
+        itemService.setPicture(item, file);
         itemService.update(item);
         return "redirect:/products";
     }

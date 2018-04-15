@@ -63,16 +63,14 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
 
     @Override
     public Item setPicture(Item item, MultipartFile picture) {
-        try {
-            if (picture.getBytes().length != 0) item.getImage().setPicture(picture.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (item.getId() == null) {
+            try {
+                if (picture.getBytes().length != 0) item.getImage().setPicture(picture.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return item;
         }
-        return item;
-    }
-
-    @Override
-    public Item changePicture(Item item, MultipartFile picture) {
         if (picture.getSize() > 0) {
             try {
                 item.getImage().setPicture(picture.getBytes());
