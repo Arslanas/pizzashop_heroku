@@ -33,5 +33,9 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
         super.onStartup(servletContext);
         servletContext.setInitParameter("spring.profiles.active", "prod");
     }
+    @Override
+    public void customizeRegistration(Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement("classpath:/multipartUploadTemp"));
+    }
 
 }

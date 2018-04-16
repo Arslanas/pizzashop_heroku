@@ -34,7 +34,6 @@
                     <sf:form action="${contextPath}/admin/editProduct" method="POST" modelAttribute="${item}"
                              commandName="item"
                              enctype="multipart/form-data">
-
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
                             <sf:input path="name" type="text" class="form-control" id="Name"/>
