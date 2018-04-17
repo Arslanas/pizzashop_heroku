@@ -35,7 +35,7 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
     }
     @Override
     public void customizeRegistration(Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("classpath:/multipartUploadTemp"));
+        registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
     }
 
 }
