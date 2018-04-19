@@ -2,27 +2,17 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import pizzaShop.config.mvcConfig.RootConfig;
-import pizzaShop.config.mvcConfig.ServletConfig;
-import pizzaShop.entity.CategorizedItem;
-import pizzaShop.entity.Category;
-import pizzaShop.entity.Item;
-import pizzaShop.entity.Temp;
+import pizzaShop.entity.*;
+import pizzaShop.entity.embedded.Address;
+import pizzaShop.entity.embedded.Contact;
 import pizzaShop.repository.TempRepository;
-import pizzaShop.service.CategorizedItemService;
-import pizzaShop.service.CategoryService;
-import pizzaShop.service.ItemService;
-import pizzaShop.service.ShoppingCartService;
-
-import java.util.HashSet;
+import pizzaShop.service.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class})
@@ -41,21 +31,32 @@ public class serviceItemTest {
     CategoryService categoryService;
     @Autowired
     ShoppingCartService shoppingCartService;
-
+    @Autowired
+    UserService userService;
 
     @Test
-    public void testFindAll(){
+    public void testFindAll() {
         System.out.println(itemService);
-        Assert.assertEquals(2,itemService.findAll().size());
-        Assert.assertEquals(3,categoryService.findAll().size());
-        Assert.assertEquals(4,catItemService.findAll().size());
+        Assert.assertEquals(2, itemService.findAll().size());
+        Assert.assertEquals(3, categoryService.findAll().size());
+        Assert.assertEquals(4, catItemService.findAll().size());
         Assert.assertEquals(1, shoppingCartService.findAll().size());
     }
+
     @Test
-    public void testAddOne(){
+    public void testAddOne() {
         tempRepository.save(new Temp("rrrr"));
-        Assert.assertEquals(2,tempRepository.findAll().size());
+        Assert.assertEquals(2, tempRepository.findAll().size());
         System.out.println(shoppingCartService.findOne(1l));
+    }
+
+    @Test
+    public void testUserService() {
+        Assert.assertEquals(1, userService.findAll().size());
+        User newUser = new User("nazar", "ss", true, new Contact("2332", "ds@sdf"), new Address("sfdf", 2,3,1));
+        userService.update(userService.findByUsername("arslan"));
+        userService.update(newUser);
+        Assert.assertEquals(2, userService.findAll().size());
     }
 
 }
