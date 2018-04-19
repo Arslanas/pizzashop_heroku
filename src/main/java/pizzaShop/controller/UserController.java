@@ -35,6 +35,7 @@ public class UserController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String userRegistrationPost(@ModelAttribute User user) {
+
         userService.save(user);
         return "redirect:/products";
     }
@@ -55,7 +56,7 @@ public class UserController {
     }
     @RequestMapping(value = "/detailsEdit", method = RequestMethod.POST)
     public String userDetailsEditPost(@ModelAttribute User user) {
-        userService.save(user);
+        userService.update(user);
         return "redirect:/products";
     }
     @RequestMapping("/orders")

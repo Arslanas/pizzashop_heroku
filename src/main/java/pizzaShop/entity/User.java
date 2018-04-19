@@ -44,7 +44,7 @@ public class User implements Serializable{
     @ElementCollection
     @CollectionTable(name = "AUTHORITIES", joinColumns = @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME"))
     @Column(name = "authority")
-    Set<String> authorities ;
+    private Set<String> authorities ;
 
 
     public User() {
@@ -111,6 +111,15 @@ public class User implements Serializable{
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    @JsonIgnore
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+    @JsonIgnore
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
     }
 
     @JsonIgnore
