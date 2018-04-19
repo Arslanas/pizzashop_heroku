@@ -113,6 +113,14 @@ public class User implements Serializable{
         this.date = date;
     }
 
+    public Set<String> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<String> authorities) {
+        this.authorities = authorities;
+    }
+
     @JsonIgnore
     public Set<String> getAuthorities() {
         return authorities;
