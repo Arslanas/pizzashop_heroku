@@ -29,13 +29,11 @@ public class ShoppingCartServiceImpl extends GenericServiceImpl<ShoppingCart, Lo
 
     @Override
     public ShoppingCart save(ShoppingCart cart) {
-        cart.getCart().stream().forEach(productService::save);
         return super.save(cart);
     }
 
     @Override
     public void delete(Long id) {
-        findOne(id).getCart().stream().forEach(e->productService.delete(e.getId()));
         super.delete(id);
     }
 }

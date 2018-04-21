@@ -98,6 +98,7 @@ public class ProductsController {
     @ResponseBody
     public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
         cart.add(new Product(item));
+        logger.info(cart);
         return cart;
     }
 

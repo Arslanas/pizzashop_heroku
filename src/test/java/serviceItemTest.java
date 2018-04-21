@@ -39,7 +39,7 @@ public class serviceItemTest {
     @Test
     public void testFindAll() {
         System.out.println(itemService);
-        Assert.assertEquals(2, itemService.findAll().size());
+        Assert.assertEquals(3, itemService.findAll().size());
         Assert.assertEquals(3, categoryService.findAll().size());
         Assert.assertEquals(4, catItemService.findAll().size());
         Assert.assertEquals(1, shoppingCartService.findAll().size());

@@ -1,6 +1,7 @@
 package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import pizzaShop.entity.embedded.MonetaryAmount;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class ShoppingCart {
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Product> cart = new HashSet<>();
 
     public ShoppingCart() {
@@ -60,7 +62,6 @@ public class ShoppingCart {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
     public Set<Product> getCart() {
         return cart;
     }
@@ -133,6 +134,3 @@ public class ShoppingCart {
                 '}';
     }
 }
-//{"id":null,"username":null,"totalPrice":2850,"date":null,"cart":[
-//        {"item":{"id":37,"name":"Anchous","price":450,"description":"ryba"},"quantity":5,"totalPrice":2250},
-//        {"item":{"id":15,"name":"Basket Chilly","price":600,"description":null},"quantity":1,"totalPrice":600}]}

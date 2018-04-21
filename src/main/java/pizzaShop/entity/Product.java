@@ -1,5 +1,6 @@
 package pizzaShop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import pizzaShop.entity.embedded.MonetaryAmount;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "SHOPPINGCART_ID")
+    @JsonBackReference
     private ShoppingCart cart;
 
     public Product() {
