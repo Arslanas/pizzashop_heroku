@@ -61,6 +61,10 @@ public class Product {
         return new MonetaryAmount(item.getPrice().getAmount().doubleValue() * quantity);
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

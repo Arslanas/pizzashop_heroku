@@ -22,10 +22,10 @@ public class ShoppingCart {
     @Column(name = "totalPrice")
     private MonetaryAmount totalPrice = new MonetaryAmount(0d);
 
-    @Column(name = "DATE", updatable = false, insertable = false)
+    @Column(name = "DATE", updatable = false)
     private LocalDateTime date;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     @JsonManagedReference
     private Set<Product> cart = new HashSet<>();
 

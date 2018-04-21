@@ -3,10 +3,12 @@ package pizzaShop.service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pizzaShop.entity.Product;
 import pizzaShop.entity.ShoppingCart;
 import pizzaShop.repository.ShoppingCartRepo;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ShoppingCartServiceImpl extends GenericServiceImpl<ShoppingCart, Long> implements ShoppingCartService {
@@ -29,7 +31,13 @@ public class ShoppingCartServiceImpl extends GenericServiceImpl<ShoppingCart, Lo
 
     @Override
     public ShoppingCart save(ShoppingCart cart) {
-        return super.save(cart);
+        Set<Product> products = cart.getCart();
+        ShoppingCart savedCart = super.save(cart);
+        products.forEach(e->{
+            e.setCart(savedCart);
+            productService.save(e);
+        });
+        return savedCart;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package pizzaShop.temp;
 
-;
+;import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class TempClass {
     public static void main(String[] args) {
@@ -12,8 +13,8 @@ public class TempClass {
 //        System.out.println(categorizedItem);;
 //
 //
-//        LocalDateTime dateTime = LocalDateTime.now(ZoneId.of("Etc/GMT-3"));
-//        System.out.println(dateTime);
+        LocalDateTime dateTime = LocalDateTime.now();
+        System.out.println(dateTime);
 //        System.out.println(dateTime.toLocalDate());
 //        System.out.println(dateTime.toLocalTime());
 //        System.out.println(dateTime.format(DateTimeFormatter.ISO_DATE));

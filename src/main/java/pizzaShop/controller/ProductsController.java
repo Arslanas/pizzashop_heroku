@@ -237,9 +237,9 @@ public class ProductsController {
     private String getAuthenticatedUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-
     private ShoppingCart addProductSetToCart(Set<Product> products, ShoppingCart cart) {
-        products.stream().forEach(product -> {
+        products.forEach(product -> {
+            product.setId(null);
             if (!cart.contains(product)) {
                 cart.add(product);
             } else {
@@ -247,7 +247,6 @@ public class ProductsController {
                 productCart.setQuantity(productCart.getQuantity() + product.getQuantity());
             }
         });
-
         return cart;
     }
 

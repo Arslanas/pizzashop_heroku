@@ -11,8 +11,11 @@ import pizzaShop.config.mvcConfig.RootConfig;
 import pizzaShop.entity.*;
 import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
+import pizzaShop.repository.ProductsRepo;
 import pizzaShop.repository.TempRepository;
 import pizzaShop.service.*;
+
+import java.time.LocalDateTime;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {RootConfig.class})
@@ -35,6 +38,8 @@ public class serviceItemTest {
     UserService userService;
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductsRepo productsRepo;
 
     @Test
     public void testFindAll() {
@@ -47,12 +52,8 @@ public class serviceItemTest {
     }
     @Test
     public void testItemDelete() {
-//        Assert.assertEquals(2, itemService.findAll().size());
-        System.out.println( productService.findByItem(itemService.findOne(2l)));
-        productService.findByItem(itemService.findOne(2l)).forEach(e->productService.delete(e.getId()));
-//        itemService.delete(2l);
-        Assert.assertEquals(0, productService.findByItem(itemService.findOne(2l)).size());
-//        Assert.assertEquals(0, productService.findAll().size());
+        itemService.delete(2l);
+        Assert.assertEquals(1, productService.findAll().size());
     }
 
     @Test
@@ -84,20 +85,27 @@ public class serviceItemTest {
         ShoppingCart cart = shoppingCartService.findOne(1l);
         cart.add(product);
         shoppingCartService.save(cart);
-        Assert.assertEquals(3, productService.findAll().size());
+        Assert.assertEquals(4, productService.findAll().size());
     }
     @Test
     public void testProductsDelete() {
-        Assert.assertEquals(3, productService.findAll().size());
-        System.out.println( productService.findAll());
-        productService.findAll().forEach(e->productService.delete(e.getId()));
-        System.out.println( productService.findAll());
-//        Assert.assertEquals(0, productService.findAll().size());
+        productService.findAll().forEach(e->productsRepo.delete(e));
+        Assert.assertEquals(0, productService.findAll().size());
     }
     @Test
     public void testShoppingCartDelete() {
         shoppingCartService.delete(1l);
         Assert.assertEquals(1, productService.findAll().size());
     }
-
+    @Test
+    public void testShoppingCartSave() {
+        Product product = new Product(itemService.findOne(3l));
+        ShoppingCart cart = new ShoppingCart();
+        cart.add(product);
+        cart.setUsername("testUSERNAME");
+        cart.setDate(LocalDateTime.now());
+        shoppingCartService.save(cart);
+        Assert.assertEquals(3, shoppingCartService.findAll().size());
+        Assert.assertEquals(4, productService.findAll().size());
+    }
 }

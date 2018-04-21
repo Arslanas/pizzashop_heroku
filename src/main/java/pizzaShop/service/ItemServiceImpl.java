@@ -66,7 +66,7 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
 
     @Override
     public void delete(Long id) {
-//        productService.findByItem(findOne(id)).stream().forEach(e->productService.delete(e.getId()));
+        productService.findByItem(findOne(id)).forEach(e->productService.delete(e.getId()));
         super.delete(id);
     }
 
