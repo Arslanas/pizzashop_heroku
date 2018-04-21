@@ -59,4 +59,9 @@ public class serviceItemTest {
         Assert.assertEquals(2, userService.findAll().size());
     }
 
+    @Test
+    public void testProducts() {
+        System.out.println(shoppingCartService.findAll());
+    }
+
 }

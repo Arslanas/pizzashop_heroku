@@ -21,6 +21,7 @@ public class ShoppingCartServiceImpl extends GenericServiceImpl<ShoppingCart, Lo
 
     @Override
     public List<ShoppingCart> findByUsername(String username) {
+
         return repo.findByUsernameOrderByDateDesc(username);
     }
 }

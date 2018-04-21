@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class Product {
 
     @ManyToOne
-    @JoinColumn(name = "ITEM_ID" )
+    @JoinColumn(name = "ITEM_ID")
     private Item item;
     @Column(name = "QUANTITY")
     private int quantity = 1;
