@@ -2,7 +2,7 @@ package pizzaShop.temp;
 
 import pizzaShop.entity.Item;
 import pizzaShop.entity.embedded.MonetaryAmount;
-import pizzaShop.entity.embedded.Product;
+import pizzaShop.entity.Product;
 
 import java.util.HashSet;
 import java.util.Set;

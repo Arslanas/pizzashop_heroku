@@ -33,6 +33,8 @@ public class serviceItemTest {
     ShoppingCartService shoppingCartService;
     @Autowired
     UserService userService;
+    @Autowired
+    ProductService productService;
 
     @Test
     public void testFindAll() {
@@ -60,8 +62,24 @@ public class serviceItemTest {
     }
 
     @Test
-    public void testProducts() {
-        System.out.println(shoppingCartService.findAll());
+    public void testProductsAdd() {
+        Product product = new Product(itemService.findOne(1l));
+        ShoppingCart cart = shoppingCartService.findOne(1l);
+        cart.add(product);
+        Assert.assertEquals(6,cart.getProductByItemId(1l).getQuantity());
+    }
+    @Test
+    public void testProductsSave() {
+        Product product = new Product(itemService.findOne(3l));
+        ShoppingCart cart = shoppingCartService.findOne(1l);
+        cart.add(product);
+        shoppingCartService.save(cart);
+        Assert.assertEquals(3, productService.findAll().size());
+    }
+    @Test
+    public void testProductsRemove() {
+        shoppingCartService.delete(1l);
+        Assert.assertEquals(0, productService.findAll().size());
     }
 
 }

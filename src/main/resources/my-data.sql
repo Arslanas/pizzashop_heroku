@@ -9,6 +9,7 @@ INSERT INTO category_item("ITEM_ID", "CATEGORY_ID") VALUES (2, 2);
 
 INSERT INTO ITEM ("NAME", "PRICE", "DESCRIPTION") VALUES ('pizza', 455, 'vkusno');
 INSERT INTO ITEM ("NAME", "PRICE", "DESCRIPTION") VALUES ('salat', 200, 'vkusno ochen');
+INSERT INTO ITEM ("NAME", "PRICE", "DESCRIPTION") VALUES ('tretiy', 4400, 'vku');
 
 INSERT INTO TEMP ("NAME") VALUES ('pizza');
 

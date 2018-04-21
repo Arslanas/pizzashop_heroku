@@ -46,11 +46,6 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
         return genericRepo.save(t);
     }
 
-    @Override
-    public void delete(T t) {
-        genericRepo.delete(t);
-    }
-
     public void delete(ID id) {
         genericRepo.delete(id);
     }

@@ -116,8 +116,8 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
-    public String removeProduct(@PathVariable("id") Item item) {
-        itemService.delete(item);
+    public String removeProduct(@PathVariable("id") Long id) {
+        itemService.delete(id);
         return "redirect:/products";
     }
 

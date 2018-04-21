@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import pizzaShop.entity.*;
 import pizzaShop.entity.embedded.MonetaryAmount;
-import pizzaShop.entity.embedded.Product;
+import pizzaShop.entity.Product;
 import pizzaShop.service.*;
 import pizzaShop.utilities.CustomPropertyMonetaryAmount;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
@@ -97,7 +97,8 @@ public class ProductsController {
     @RequestMapping(value = "/add/{itemID}")
     @ResponseBody
     public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
-        return addProductToCart(new Product(item), cart);
+        cart.add(new Product(item));
+        return cart;
     }
 
     @RequestMapping(value = "/addCart/{cartID}")
@@ -234,16 +235,6 @@ public class ProductsController {
 
     private String getAuthenticatedUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-
-    private ShoppingCart addProductToCart(Product product, ShoppingCart cart) {
-        if (!cart.contains(product)) {
-            logger.info(cart.getCart());
-            cart.add(product);
-        } else {
-            cart.getProductByItemId(product.getItem().getId()).increaseQuantity();
-        }
-        return cart;
     }
 
     private ShoppingCart addProductSetToCart(Set<Product> products, ShoppingCart cart) {

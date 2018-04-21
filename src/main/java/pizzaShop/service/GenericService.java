@@ -14,7 +14,6 @@ public interface GenericService<T,ID extends Serializable>  {
     Page<T> findAll(Pageable var);
     T findOne(ID id);
     T save(T t);
-    void delete(T t);
     void delete(ID id);
     boolean exists(ID var1);
 }

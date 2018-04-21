@@ -89,6 +89,7 @@ public class Item implements Serializable{
         this.categorizedItems = setOfCategorizedItems;
     }
 
+    @JsonIgnore
     public Image getImage() {
         return image;
     }

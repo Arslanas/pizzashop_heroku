@@ -1,9 +1,7 @@
 package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.format.annotation.DateTimeFormat;
 import pizzaShop.entity.embedded.MonetaryAmount;
-import pizzaShop.entity.embedded.Product;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,14 +14,17 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "USERNAME")
     private String username;
+
     @Column(name = "totalPrice")
     private MonetaryAmount totalPrice = new MonetaryAmount(0d);
+
     @Column(name = "DATE", updatable = false, insertable = false)
     private LocalDateTime date;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "PRODUCTS", joinColumns = @JoinColumn(name = "SHOPPINGCART_ID"))
+
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     private Set<Product> cart = new HashSet<>();
 
     public ShoppingCart() {
@@ -69,7 +70,17 @@ public class ShoppingCart {
     }
 
     public boolean add(Product product) {
-        return cart.add(product);
+        if (!cart.contains(product)) {
+            product.setCart(this);
+            return cart.add(product);
+        } else {
+            getProductByItemId(product.getItem().getId()).increaseQuantity();
+            return false;
+        }
+    }
+
+    public Product getProductByItemId(Long id) {
+        return  cart.stream().filter(product -> product.getItem().getId() == id).findFirst().get();
     }
 
     public MonetaryAmount getTotalPrice() {
@@ -86,16 +97,8 @@ public class ShoppingCart {
         return this;
     }
 
-    public Product getProductByItemId(Long id) {
-        return  cart.stream().filter(product -> product.getItem().getId() == id).findFirst().get();
-    }
-
     public boolean contains(Product product) {
         return cart.contains(product);
-    }
-
-    public Product getProductByItemID(long itemID){
-       return cart.stream().filter(e-> e.getItem().getId()==itemID).findFirst().get();
     }
 
     public void removeFromCartByItemID(long itemID){
