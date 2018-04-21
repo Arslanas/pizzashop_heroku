@@ -80,7 +80,7 @@ public class ShoppingCart {
         }
     }
 
-    public Product getProductByItemId(Long id) {
+    public Product getProductByItemId(long id) {
         return  cart.stream().filter(product -> product.getItem().getId() == id).findFirst().get();
     }
 
