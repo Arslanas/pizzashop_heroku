@@ -25,12 +25,15 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
     private static Logger logger = Logger.getLogger(ItemServiceImpl.class);
     ItemRepo repo;
     CategorizedItemService categorizedItemService;
+    ProductService productService;
+
 
     @Autowired
-    public ItemServiceImpl(ItemRepo itemRepo, CategorizedItemService categorizedItemService) {
+    public ItemServiceImpl(ItemRepo itemRepo, CategorizedItemService categorizedItemService, ProductService productService) {
         super(Item.class, itemRepo);
         repo = itemRepo;
         this.categorizedItemService = categorizedItemService;
+        this.productService = productService;
     }
 
     @Override
@@ -59,6 +62,12 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
         categorySet.stream().map(e -> new CategorizedItem(e, item)).forEach(categorizedItemService::save);
         save(item);
         return item;
+    }
+
+    @Override
+    public void delete(Long id) {
+//        productService.findByItem(findOne(id)).stream().forEach(e->productService.delete(e.getId()));
+        super.delete(id);
     }
 
     @Override

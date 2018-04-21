@@ -108,7 +108,6 @@ public class Item implements Serializable{
         if (!name.equals(other.name)) return false;
         if (!price.equals(other.price)) return false;
         return description != null ? description.equals(other.description) : other.description == null;
-
     }
 
     @Override

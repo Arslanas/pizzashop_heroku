@@ -42,7 +42,17 @@ public class serviceItemTest {
         Assert.assertEquals(3, itemService.findAll().size());
         Assert.assertEquals(3, categoryService.findAll().size());
         Assert.assertEquals(4, catItemService.findAll().size());
-        Assert.assertEquals(1, shoppingCartService.findAll().size());
+        Assert.assertEquals(3, productService.findAll().size());
+        Assert.assertEquals(2, shoppingCartService.findAll().size());
+    }
+    @Test
+    public void testItemDelete() {
+//        Assert.assertEquals(2, itemService.findAll().size());
+        System.out.println( productService.findByItem(itemService.findOne(2l)));
+        productService.findByItem(itemService.findOne(2l)).forEach(e->productService.delete(e.getId()));
+//        itemService.delete(2l);
+        Assert.assertEquals(0, productService.findByItem(itemService.findOne(2l)).size());
+//        Assert.assertEquals(0, productService.findAll().size());
     }
 
     @Test
@@ -77,9 +87,17 @@ public class serviceItemTest {
         Assert.assertEquals(3, productService.findAll().size());
     }
     @Test
-    public void testProductsRemove() {
+    public void testProductsDelete() {
+        Assert.assertEquals(3, productService.findAll().size());
+        System.out.println( productService.findAll());
+        productService.findAll().forEach(e->productService.delete(e.getId()));
+        System.out.println( productService.findAll());
+//        Assert.assertEquals(0, productService.findAll().size());
+    }
+    @Test
+    public void testShoppingCartDelete() {
         shoppingCartService.delete(1l);
-        Assert.assertEquals(0, productService.findAll().size());
+        Assert.assertEquals(1, productService.findAll().size());
     }
 
 }
