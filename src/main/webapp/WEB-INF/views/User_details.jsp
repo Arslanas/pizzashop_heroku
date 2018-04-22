@@ -64,6 +64,11 @@
                         </tr>
                         </tbody>
                     </table>
+                    <div class="col-2 ml-auto ">
+                        <sf:form action="${contextPath}/user/remove/${user.username}" method="POST">
+                            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                        </sf:form>
+                    </div>
                 </div>
             </div>
         </div>

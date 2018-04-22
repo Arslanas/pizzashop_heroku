@@ -68,7 +68,7 @@
                     <div class="row">
                         <div class="col-12 ">
                             <div class="col-4 mx-auto">
-                                <h1 class="text-info">Популярное</h1>
+                                <h1 class="text-info">Pizzashop</h1>
                             </div>
                         </div>
                         <c:forEach items="${page.content}" var="item">

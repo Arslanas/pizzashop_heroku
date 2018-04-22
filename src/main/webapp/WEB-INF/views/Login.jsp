@@ -46,8 +46,8 @@
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary ">Submit</button>
-                                <button type="submit" class="btn btn-light ml-3 ">Cancel</button>
+                                <button type="submit" class="btn btn-primary ">Подтвердить</button>
+                                <a href="${contextPath}/products" class="btn btn-light ml-3 ">Отмена</a>
                             </div>
                         </div>
                     </sf:form>

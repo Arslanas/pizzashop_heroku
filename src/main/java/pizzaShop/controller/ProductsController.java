@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/products")
 @SessionAttributes({"cart", "categories"})
 public class ProductsController {
 
@@ -50,31 +49,29 @@ public class ProductsController {
         this.categorizedItemService = categorizedItemService;
     }
 
-
     //////////////      PRODUCTS
 
-
-    @RequestMapping
+    @RequestMapping(value = {"/", "/products"})
     public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
         model.addAttribute("page", itemService.findAll(pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
     }
 
-    @RequestMapping("/{category}")
+    @RequestMapping("/products/{category}")
     public String productsByCategory(@PathVariable("category") Category category, Model model, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
         model.addAttribute("page", itemService.getItemsByCategory(category, pageable));
         return "Products";
     }
 
-    @RequestMapping(value = "/search")
+    @RequestMapping(value = "/products/search")
     public String productSearch(Model model, @RequestParam("search") String search, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
         model.addAttribute("page", itemService.getItemsBySearchString(search, pageable));
         model.addAttribute("search", search);
         return "Products";
     }
 
-    @RequestMapping("/image/{id}")
+    @RequestMapping("/products/image/{id}")
     public void productsImage(@PathVariable("id") Item item, HttpServletResponse response) throws ServletException, IOException {
         int DEFAULT_BUFFER_SIZE = 10240;
         response.reset();
@@ -94,7 +91,7 @@ public class ProductsController {
     }
 
     //////////////          SHOPPINGCART
-    @RequestMapping(value = "/add/{itemID}")
+    @RequestMapping(value = "/products/add/{itemID}")
     @ResponseBody
     public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
         cart.add(new Product(item));
@@ -102,13 +99,13 @@ public class ProductsController {
         return cart;
     }
 
-    @RequestMapping(value = "/addCart/{cartID}")
+    @RequestMapping(value = "/products/addCart/{cartID}")
     @ResponseBody
     public ShoppingCart addItemSetToCart(@PathVariable("cartID") ShoppingCart fromCart, @SessionAttribute("cart") ShoppingCart cart) {
         return addProductSetToCart(fromCart.getCart(), cart);
     }
 
-    @RequestMapping("/shoppingCart")
+    @RequestMapping("/products/shoppingCart")
     public String shoppingCartHandler(@SessionAttribute ShoppingCart cart, Model model, HttpSession session) {
         if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
             session.setAttribute("isRegistered", false);
@@ -122,7 +119,7 @@ public class ProductsController {
         return "ShoppingCart";
     }
 
-    @RequestMapping("/shoppingCart/clear")
+    @RequestMapping("/products/shoppingCart/clear")
     public String shoppingCartClear(@SessionAttribute ShoppingCart cart) {
         cart.getCart().clear();
         return "redirect:/products";
@@ -130,21 +127,21 @@ public class ProductsController {
 
     //////////////      REST
 
-    @RequestMapping("/shoppingCart/increase/{item}")
+    @RequestMapping("/products/shoppingCart/increase/{item}")
     @ResponseBody
     public ShoppingCart shoppingCartIncrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
         cart.getProductByItemId(itemID).increaseQuantity();
         return cart;
     }
 
-    @RequestMapping("/shoppingCart/decrease/{item}")
+    @RequestMapping("/products/shoppingCart/decrease/{item}")
     @ResponseBody
     public ShoppingCart shoppingCartDecrease(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
         cart.getProductByItemId(itemID).decreaseQuantity();
         return cart;
     }
 
-    @RequestMapping("/shoppingCart/remove/{item}")
+    @RequestMapping("/products/shoppingCart/remove/{item}")
     @ResponseBody
     public ShoppingCart shoppingCartRemove(@PathVariable("item") long itemID, @SessionAttribute ShoppingCart cart) {
         cart.removeFromCartByItemID(itemID);
@@ -156,7 +153,7 @@ public class ProductsController {
 
     //////////////          ORDER_CONFIRMATION
 
-    @RequestMapping("/customerDetails")
+    @RequestMapping("/products/customerDetails")
     public String customerDetails(Model model, HttpSession session) {
         if(!isAnonymous()){
             session.setAttribute("customer", userService.findByUsername(getAuthenticatedUsername()));
@@ -172,7 +169,7 @@ public class ProductsController {
         }
     }
 
-    @RequestMapping(value = "/customerDetails", method = RequestMethod.POST)
+    @RequestMapping(value = "/products/customerDetails", method = RequestMethod.POST)
     public String customerDetailsPost(HttpSession session, Model model, @Valid @ModelAttribute("customer") User customer, Errors errors) {
         if (errors.hasErrors()) {
             model.addAttribute("customer", customer);
@@ -182,7 +179,7 @@ public class ProductsController {
         return "redirect:/products/orderConfirmation";
     }
 
-    @RequestMapping("/orderConfirmation")
+    @RequestMapping("/products/orderConfirmation")
     public String confirmationOrder(@SessionAttribute User customer, @SessionAttribute ShoppingCart cart, Model model) {
         model.addAttribute("cartSet", cart.getCart());
         model.addAttribute("customer", customer);
@@ -190,14 +187,14 @@ public class ProductsController {
         return "OrderConfirmation";
     }
 
-    @RequestMapping(value = "/orderConfirmation", method = RequestMethod.POST)
+    @RequestMapping(value = "/products/orderConfirmation", method = RequestMethod.POST)
     public String confirmationOrderPost(@SessionAttribute ShoppingCart cart, SessionStatus status) {
         status.setComplete();
         if (isAnonymous()) {
-            return "redirect:/products";
+            return "OrderSuccess";
         }
         shoppingCartService.save(cart);
-        return "redirect:/products";
+        return "OrderSuccess";
     }
 
 //////////////          ORDER_CONFIRMATION
