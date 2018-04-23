@@ -42,7 +42,9 @@
                             <sf:label path="categorizedItems" for="Category"
                                       class="font-weight-bold">Категория</sf:label>
                             <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
-                                <sf:options items="${categoryName}"/>
+                                <c:forEach items="${categoryName}" var="category">
+                                    <sf:option id="optionID_${category}" value="${category}">${category}</sf:option>
+                                </c:forEach>
                             </sf:select>
                             <sf:errors path="categorizedItems" cssClass="alert-danger"/>
                         </div>
@@ -58,6 +60,13 @@
                         <div class="form-group">
                             <sf:input path="id" type="hidden" id="itemID"/>
                         </div>
+                        <div class="form-group">
+                            <c:forEach items="${item.categorizedItems}" var="catItem">
+                                <input name="categorizedItems" value="${catItem.category.name}" type="hidden"
+                                       id="catItemsNameID_${catItem.category.name}"/>
+                            </c:forEach>
+                        </div>
+
                         <div class="form-group">
                             <c:if test="${not empty item.image.picture}">
                                 <label name="picture" for="fileInputID"><img width="100"
@@ -91,7 +100,7 @@
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp" %>
 <script src="${contextPath}/resources/vendor/Fileselect/src/bootstrap-fileselect.js"></script>
-<script src="${contextPath}/resources/custom_js/AddProductScript.js"></script>
-<script>$(document).ready(AddProductInit())</script>
+<script src="${contextPath}/resources/custom_js/EditProductScript.js"></script>
+<script>$(document).ready(EditProductInit())</script>
 </body>
 </html>

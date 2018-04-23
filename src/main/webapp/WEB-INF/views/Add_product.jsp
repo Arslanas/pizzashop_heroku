@@ -42,7 +42,9 @@
                             <sf:label path="categorizedItems" for="Category"
                                       class="font-weight-bold">Категория</sf:label>
                             <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
-                                <sf:options items="${categoryName}"/>
+                                <c:forEach items="${categoryName}" var="category">
+                                    <sf:option id="optionID_${category}" value="${category}">${category}</sf:option>
+                                </c:forEach>
                             </sf:select>
                             <sf:errors path="categorizedItems" cssClass="alert-danger"/>
                         </div>
