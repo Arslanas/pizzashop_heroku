@@ -8,7 +8,18 @@ function editCategory(name, list) {
 }
 function parseCategory() {
     var categories = [];
-    $( "[id^='optionID_']" ).each(function () {
+    var catItems = [];
+    $("[id^='optionID_']").each(function () {
         categories.push($(this).text());
     });
+    $("[id^='catItemsNameID_']").each(function () {
+        catItems.push($(this).attr('value'));
+    });
+    catItems.forEach(function (item) {
+        categories.forEach(function (category) {
+            if (item === category) {
+                $('#optionID_' + item).attr('selected', true);
+            }
+        })
+    })
 }

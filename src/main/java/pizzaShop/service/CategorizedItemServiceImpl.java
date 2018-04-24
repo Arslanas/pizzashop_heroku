@@ -10,15 +10,15 @@ import pizzaShop.repository.CategorizedItemRepo;
 @Service
 public class CategorizedItemServiceImpl extends GenericServiceImpl<CategorizedItem, CategorizedItem.CompositeID> implements CategorizedItemService {
     private static Logger logger = Logger.getLogger(ItemServiceImpl.class);
-
+    CategorizedItemRepo repo;
     @Autowired
     public CategorizedItemServiceImpl(CategorizedItemRepo categorizedItemRepo) {
         super(CategorizedItem.class, categorizedItemRepo);
+        this.repo = categorizedItemRepo;
     }
 
     @Override
     public void delete(Item item) {
-        CategorizedItemRepo repo = (CategorizedItemRepo) genericRepo;
         repo.deleteByItem(item);
     }
 }

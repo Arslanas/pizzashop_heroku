@@ -61,9 +61,9 @@
                             <sf:input path="id" type="hidden" id="itemID"/>
                         </div>
                         <div class="form-group">
-                            <c:forEach items="${item.categorizedItems}" var="catItem">
-                                <input name="categorizedItems" value="${catItem.category.name}" type="hidden"
-                                       id="catItemsNameID_${catItem.category.name}"/>
+                            <c:forEach items="${oldCategoryItems}" var="oldCategory">
+                                <input value="${oldCategory}" type="hidden"
+                                       id="catItemsNameID_${oldCategory}"/>
                             </c:forEach>
                         </div>
 

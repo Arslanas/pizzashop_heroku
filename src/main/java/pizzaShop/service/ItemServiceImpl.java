@@ -47,9 +47,9 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
     }
 
     @Override
-    public Item save(Item item, Set<CategorizedItem> categorizedItemSet) {
-        Set<Category> categorySet = categorizedItemSet.stream().map(e -> e.getCategory()).collect(Collectors.toSet());
-        Item itemMerged = save(item);
+    public Item save(Item item) {
+        Set<Category> categorySet = item.getCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
+        Item itemMerged = super.save(item);
         categorySet.stream().map(e -> new CategorizedItem(e, itemMerged)).forEach(categorizedItemService::save);
         return itemMerged;
     }
@@ -60,7 +60,7 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
         item.getCategorizedItems().clear();
         categorizedItemService.delete(item);
         categorySet.stream().map(e -> new CategorizedItem(e, item)).forEach(categorizedItemService::save);
-        save(item);
+        super.save(item);
         return item;
     }
 

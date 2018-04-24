@@ -12,7 +12,6 @@ import java.util.Set;
 public interface ItemService extends GenericService<Item, Long> {
     Page<Item> getItemsBySearchString(String search, Pageable pageable);
     Page<Item> getItemsByCategory(Category category, Pageable pageable);
-    Item save(Item item, Set<CategorizedItem> categorySet);
     Item update(Item item);
     Item setPicture(Item item, MultipartFile picture);
 }

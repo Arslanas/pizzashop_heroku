@@ -23,6 +23,8 @@ import pizzaShop.validator.CustomPropertyCategorizedItem;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,20 +93,21 @@ public class AdminController {
             return "Add_product";
         }
         itemService.setPicture(item, file);
-        itemService.save(item, item.getCategorizedItems());
+        itemService.save(item);
         return "redirect:/products";
     }
 
     @RequestMapping("/editProduct/{id}")
     public String editProduct(@PathVariable("id") Item item, Model model, @SessionAttribute List<Category> categories) {
+        model.addAttribute("categoryName", getCategoryName(categories));
+        model.addAttribute("oldCategoryItems", item.getCategorizedItems().stream().map(CategorizedItem::getCategory).map(Category::getName).collect(Collectors.toList()));
         model.addAttribute("item", item);
         model.addAttribute("itemID", item.getId());
-        model.addAttribute("categoryName", getCategoryName(categories));
         return "Edit_product";
     }
 
     @RequestMapping(value = "/editProduct", method = RequestMethod.POST)
-    public String editProductPost(@RequestPart("picture") MultipartFile file, @Valid @ModelAttribute("itemEdit") Item item, Errors errors, Model model, @SessionAttribute List<Category> categories) {
+    public String editProductPost(@RequestPart("picture") MultipartFile file, @Valid @ModelAttribute("item") Item item, Errors errors, Model model, @SessionAttribute List<Category> categories) {
         if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
