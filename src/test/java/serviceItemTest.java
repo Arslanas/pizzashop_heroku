@@ -2,6 +2,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -11,8 +13,7 @@ import pizzaShop.config.mvcConfig.RootConfig;
 import pizzaShop.entity.*;
 import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
-import pizzaShop.repository.ProductsRepo;
-import pizzaShop.repository.TempRepository;
+import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.service.*;
 
 import java.time.LocalDateTime;
@@ -22,10 +23,9 @@ import java.time.LocalDateTime;
 @Transactional
 @WebAppConfiguration
 @ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class serviceItemTest {
 
-    @Autowired
-    TempRepository tempRepository;
     @Autowired
     ItemService itemService;
     @Autowired
@@ -38,27 +38,120 @@ public class serviceItemTest {
     UserService userService;
     @Autowired
     ProductService productService;
-    @Autowired
-    ProductsRepo productsRepo;
 
+    //_____ITEM________CRUD_test
     @Test
-    public void testItemSave() {
-
+    public void testItemCreate() {
+        CategorizedItem categorizedItem = new CategorizedItem();
+        categorizedItem.setCategory(categoryService.findOne(1));
+        Item item = new Item();
+        item.setPrice(new MonetaryAmount(3d));
+        item.setName("itemTest");
+        item.getCategorizedItems().add(categorizedItem);
+        itemService.save(item);
+        Assert.assertEquals(4, itemService.findAll().size());
+        Assert.assertEquals(item, itemService.findOne(4l));
+        Assert.assertEquals(5, catItemService.findAll().size());
     }
-//________________
     @Test
-    public void testFindAll() {
-        System.out.println(itemService);
+    public void testItemRead() {
+        Item item = new Item();
+        item.setPrice(new MonetaryAmount(455d));
+        item.setName("pizza");
+        item.setDescription("vkusno");
         Assert.assertEquals(3, itemService.findAll().size());
-        Assert.assertEquals(3, categoryService.findAll().size());
+        Assert.assertEquals(item, itemService.findOne(1l));
+    }
+    @Test
+    public void testItemUpdate() {
+        Item item = new Item();
+        item.setPrice(new MonetaryAmount(23d));
+        item.setId(1l);
+        item.setName("pizzaUpdated");
+        item.setDescription("");
+        item.getCategorizedItems().add(new CategorizedItem(categoryService.findOne(1), item));
+        item.getCategorizedItems().add(new CategorizedItem(categoryService.findOne(2), item));
+        item.getCategorizedItems().add(new CategorizedItem(categoryService.findOne(3), item));
+        itemService.update(item);
+        Assert.assertEquals(3, itemService.findAll().size());
         Assert.assertEquals(4, catItemService.findAll().size());
-        Assert.assertEquals(3, productService.findAll().size());
-        Assert.assertEquals(2, shoppingCartService.findAll().size());
     }
     @Test
     public void testItemDelete() {
-        itemService.delete(2l);
-        Assert.assertEquals(1, productService.findAll().size());
+        itemService.delete(1l);
+        Assert.assertEquals(2, itemService.findAll().size());
+        Assert.assertEquals(1, catItemService.findAll().size());
+        Assert.assertEquals(2, productService.findAll().size());
+
+    }
+
+    //_____ITEM________CRUD_test
+
+
+    //_____Product________CRUD_test
+
+    @Test
+    public void testProductCreate() {
+        Product product = new Product(itemService.findOne(3l));
+        product.setCart(shoppingCartService.findOne(1l));
+        productService.save(product);
+        Assert.assertEquals(4, productService.findAll().size());
+        Assert.assertEquals(product, productService.findOne(4l));
+    }
+    @Test
+    public void testProductRead() {
+        Product product = new Product(itemService.findOne(3l));
+        product.setCart(shoppingCartService.findOne(1l));
+        productService.save(product);
+        Assert.assertEquals(4, productService.findAll().size());
+        Assert.assertEquals(product, productService.findOne(4l));
+    }
+    @Test
+    public void testProductUpdate() {
+        Product product = new Product(itemService.findOne(3l));
+        product.setCart(shoppingCartService.findOne(1l));
+        productService.save(product);
+        Assert.assertEquals(4, productService.findAll().size());
+        Assert.assertEquals(product, productService.findOne(4l));
+    }
+    @Test
+    public void testProductDelete() {
+        productService.delete(2l);
+        Assert.assertEquals(2, productService.findAll().size());
+    }
+
+    @Test
+    public void testProductAddToShoppingCart() {
+        Product product = new Product(itemService.findOne(1l));
+        ShoppingCart cart = shoppingCartService.findOne(1l);
+        cart.add(product);
+        Assert.assertEquals(6,cart.getProductByItemId(1l).getQuantity());
+    }
+
+    //_____Product________CRUD_test
+
+
+    //_____User________CRUD_test
+    @Test
+    public void testUserCreate() {
+        User user = new User("test", "test", true, new Contact("2332", "email@gmail"), new Address("sfdf", 2,3,1));
+        userService.save(user);
+        Assert.assertEquals(3, userService.findAll().size());
+        Assert.assertEquals(user, userService.findByUsername("test"));
+    }
+    @Test
+    public void testUserRead() {
+        User user = new User("test", "test", true, new Contact("2332", "email@gmail"), new Address("sfdf", 2,3,1));
+        userService.save(user);
+        Assert.assertEquals(3, userService.findAll().size());
+        Assert.assertEquals(user, userService.findByUsername("test"));
+    }
+    @Test
+    public void testUserUpdate() {
+        User user = userService.findByUsername("arslan");
+        user.setEnabled(false);
+        userService.update(user);
+        Assert.assertEquals(2, userService.findAll().size());
     }
     @Test
     public void testUserDelete(){
@@ -68,49 +161,13 @@ public class serviceItemTest {
         Assert.assertEquals(2, productService.findAll().size());
     }
 
-    @Test
-    public void testAddOne() {
-        tempRepository.save(new Temp("rrrr"));
-        Assert.assertEquals(2, tempRepository.findAll().size());
-        System.out.println(shoppingCartService.findOne(1l));
-    }
+    //_____User________CRUD_test
+
+
+    //_____ShoppingCart________CRUD_test
 
     @Test
-    public void testUserService() {
-        Assert.assertEquals(2, userService.findAll().size());
-        User newUser = new User("yelena", "ss", true, new Contact("2332", "ds@sdf"), new Address("sfdf", 2,3,1));
-        userService.update(userService.findByUsername("arslan"));
-        userService.update(newUser);
-        Assert.assertEquals(3, userService.findAll().size());
-    }
-
-    @Test
-    public void testProductsAdd() {
-        Product product = new Product(itemService.findOne(1l));
-        ShoppingCart cart = shoppingCartService.findOne(1l);
-        cart.add(product);
-        Assert.assertEquals(6,cart.getProductByItemId(1l).getQuantity());
-    }
-
-    @Test
-    public void testProductsDelete() {
-        productService.findAll().forEach(e->productsRepo.delete(e));
-        Assert.assertEquals(0, productService.findAll().size());
-    }
-    @Test
-    public void testShoppingCartDelete() {
-        shoppingCartService.delete(1l);
-        Assert.assertEquals(1, productService.findAll().size());
-    }
-    @Test
-    public void testProductsSave() {
-        Product product = new Product(itemService.findOne(3l));
-        product.setCart(shoppingCartService.findOne(1l));
-        productService.save(product);
-        Assert.assertEquals(4, productService.findAll().size());
-    }
-    @Test
-    public void testShoppingCartSave() {
+    public void testShoppingCartCreate() {
         Product product = new Product(itemService.findOne(3l));
         ShoppingCart cart = new ShoppingCart();
         cart.add(product);
@@ -119,5 +176,15 @@ public class serviceItemTest {
         shoppingCartService.save(cart);
         Assert.assertEquals(3, shoppingCartService.findAll().size());
         Assert.assertEquals(4, productService.findAll().size());
+    }
+    @Test
+    public void testShoppingCartRead() {
+        Assert.assertEquals(2, shoppingCartService.findOne(1l).getCart().size());
+    }
+    @Test
+    public void testShoppingCartDelete() {
+        shoppingCartService.delete(1l);
+        Assert.assertEquals(1, shoppingCartService.findAll().size());
+        Assert.assertEquals(1, productService.findAll().size());
     }
 }

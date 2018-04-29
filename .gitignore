@@ -1,6 +1,7 @@
 *.idea
 *.iml
 *.html
+temp
 target
 log
 log4j.*

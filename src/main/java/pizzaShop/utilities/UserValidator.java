@@ -1,9 +1,7 @@
-package pizzaShop.validator;
+package pizzaShop.utilities;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pizzaShop.entity.ItemForm;
 import pizzaShop.entity.User;
 import pizzaShop.service.UserService;
 

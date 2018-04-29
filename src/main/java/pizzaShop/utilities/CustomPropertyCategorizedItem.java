@@ -1,8 +1,7 @@
-package pizzaShop.validator;
+package pizzaShop.utilities;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import pizzaShop.entity.CategorizedItem;
 import pizzaShop.service.CategoryService;
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pizzaShop.entity.ShoppingCart;
 import pizzaShop.entity.User;
 import pizzaShop.service.*;
-import pizzaShop.validator.UserValidator;
+import pizzaShop.utilities.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

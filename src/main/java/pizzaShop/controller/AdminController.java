@@ -18,7 +18,7 @@ import pizzaShop.entity.User;
 import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.service.*;
 import pizzaShop.utilities.CustomPropertyMonetaryAmount;
-import pizzaShop.validator.CustomPropertyCategorizedItem;
+import pizzaShop.utilities.CustomPropertyCategorizedItem;
 
 import javax.validation.Valid;
 import java.util.List;
