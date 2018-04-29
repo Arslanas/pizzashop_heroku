@@ -42,6 +42,11 @@ public class serviceItemTest {
     ProductsRepo productsRepo;
 
     @Test
+    public void testItemSave() {
+
+    }
+//________________
+    @Test
     public void testFindAll() {
         System.out.println(itemService);
         Assert.assertEquals(3, itemService.findAll().size());

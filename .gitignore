@@ -3,3 +3,4 @@
 *.html
 target
 log
+log4j.*
