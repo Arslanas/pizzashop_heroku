@@ -59,7 +59,9 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
         Set<Category> categorySet = item.getCategorizedItems().stream().map(e -> e.getCategory()).collect(Collectors.toSet());
         item.getCategorizedItems().clear();
         categorizedItemService.delete(item);
-        categorySet.stream().map(e -> new CategorizedItem(e, item)).forEach(categorizedItemService::save);
+        Set<CategorizedItem> categorizedItemSet = categorySet.stream().map(e -> new CategorizedItem(e, item)).collect(Collectors.toSet());
+        categorizedItemSet.forEach(categorizedItemService::save);
+        item.setCategorizedItems(categorizedItemSet);
         super.save(item);
         return item;
     }

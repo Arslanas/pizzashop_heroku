@@ -2,6 +2,7 @@ package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 import pizzaShop.entity.embedded.Address;
 import pizzaShop.entity.embedded.Contact;
@@ -23,10 +24,12 @@ public class User implements Serializable{
     @Id
     @Column(name = "USERNAME")
     @NotNull
+    @NotBlank(message = "Заполните поле")
     private String username;
 
     @Column(name = "PASSWORD")
     @NotNull
+    @NotBlank(message = "Заполните поле")
     private String password;
     @Column(name = "ENABLED")
     @NotNull
@@ -35,6 +38,7 @@ public class User implements Serializable{
     @Valid
     private Contact contact = new Contact();
     @NotNull
+    @Valid
     private Address address = new Address();
 
     @JsonFormat(pattern="dd-MM-yyyy")

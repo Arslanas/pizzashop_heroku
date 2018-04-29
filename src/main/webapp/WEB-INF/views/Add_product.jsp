@@ -41,7 +41,7 @@
                         <div class="form-group">
                             <sf:label path="categorizedItems" for="Category"
                                       class="font-weight-bold">Категория</sf:label>
-                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
+                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true" size="${categoryName.size()}">
                                 <c:forEach items="${categoryName}" var="category">
                                     <sf:option id="optionID_${category}" value="${category}">${category}</sf:option>
                                 </c:forEach>
@@ -57,7 +57,7 @@
                         <div class="form-group">
                             <sf:label path="price.amount" for="Price" class="font-weight-bold">Цена</sf:label>
                             <sf:input path="price.amount" type="text" class="form-control" id="Price"></sf:input>
-                            <sf:errors path="price" cssClass="alert-danger"/>
+                            <sf:errors path="price.amount" cssClass="alert-danger"/>
                         </div>
 
                         <div class="form-group">

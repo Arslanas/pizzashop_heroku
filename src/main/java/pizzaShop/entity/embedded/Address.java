@@ -1,5 +1,7 @@
 package pizzaShop.entity.embedded;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -9,6 +11,7 @@ public class Address {
 
     @Column(name = "STREETHOME")
     @NotNull
+    @NotBlank(message = "Заполните поле")
     private String streetHome;
     @Column(name = "APPARTMENT")
     private int appartment;

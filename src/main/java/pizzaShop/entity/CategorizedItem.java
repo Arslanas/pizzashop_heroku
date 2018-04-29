@@ -1,6 +1,7 @@
 package pizzaShop.entity;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.io.Serializable;
 
 @Entity
@@ -11,6 +12,7 @@ public class CategorizedItem implements Serializable{
     protected CompositeID id = new CompositeID();
     @ManyToOne()
     @JoinColumn(name = "CATEGORY_ID", updatable = false, insertable = false)
+    @Valid
     Category category;
     @ManyToOne()
     @JoinColumn(name = "ITEM_ID", updatable = false, insertable = false)

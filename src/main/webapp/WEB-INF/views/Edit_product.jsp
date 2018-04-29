@@ -24,7 +24,7 @@
             <div class="row">
 
                 <div class="col-12 mx-auto mt-5">
-                    <h3 class="text-center font-weight-bold text-info">Добавить товар</h3>
+                    <h3 class="text-center font-weight-bold text-info">Редактировать товар</h3>
                 </div>
 
 
@@ -37,11 +37,12 @@
                         <div class="form-group">
                             <sf:label path="name" for="Name" class="font-weight-bold">Название товара</sf:label>
                             <sf:input path="name" type="text" class="form-control" id="Name"/>
+                            <sf:errors path="name" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <sf:label path="categorizedItems" for="Category"
                                       class="font-weight-bold">Категория</sf:label>
-                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true">
+                            <sf:select path="categorizedItems" id="Category" class="form-control" multiple="true" size="${categoryName.size()}">
                                 <c:forEach items="${categoryName}" var="category">
                                     <sf:option id="optionID_${category}" value="${category}">${category}</sf:option>
                                 </c:forEach>
@@ -56,6 +57,7 @@
                         <div class="form-group">
                             <sf:label path="price.amount" for="Price" class="font-weight-bold">Цена</sf:label>
                             <sf:input path="price.amount" type="text" class="form-control" id="Price"/>
+                            <sf:errors path="price.amount" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <sf:input path="id" type="hidden" id="itemID"/>
@@ -83,6 +85,7 @@
                                 <a href="${contextPath}/products" class="btn btn-light ml-3 ">Отмена</a>
                             </div>
                         </div>
+
                     </sf:form>
                     <div class="col-2 ml-auto ">
                         <sf:form action="${contextPath}/admin/remove/${item.id}" method="POST">

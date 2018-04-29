@@ -15,18 +15,13 @@ import pizzaShop.entity.CategorizedItem;
 import pizzaShop.entity.Category;
 import pizzaShop.entity.Item;
 import pizzaShop.entity.User;
-import pizzaShop.entity.embedded.Image;
 import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.service.*;
 import pizzaShop.utilities.CustomPropertyMonetaryAmount;
 import pizzaShop.validator.CustomPropertyCategorizedItem;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,17 +32,13 @@ public class AdminController {
     private static Logger logger = Logger.getLogger(AdminController.class);
     private final CategoryService categoryService;
     private final UserService userService;
-    private final ShoppingCartService shoppingCartService;
     private final ItemService itemService;
-    private final CategorizedItemService categorizedItemService;
 
     @Autowired
     public AdminController(UserService userService, ShoppingCartService shoppingCartService, CategoryService categoryService, ItemService itemService, CategorizedItemService categorizedItemService) {
         this.categoryService = categoryService;
-        this.shoppingCartService = shoppingCartService;
         this.userService = userService;
         this.itemService = itemService;
-        this.categorizedItemService = categorizedItemService;
     }
 
 
@@ -111,7 +102,7 @@ public class AdminController {
         if (errors.hasErrors()) {
             model.addAttribute("categoryName", getCategoryName(categories));
             model.addAttribute("item", item);
-            return "Add_product";
+            return "Edit_product";
         }
         itemService.setPicture(item, file);
         itemService.update(item);
@@ -130,9 +121,8 @@ public class AdminController {
         binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
         binder.registerCustomEditor(MonetaryAmount.class, new CustomPropertyMonetaryAmount());
     }
-//____________________________
 
     private List<String> getCategoryName(List<Category> categories) {
-        return categories.stream().map(e -> e.getName()).collect(Collectors.toList());
+        return categories.stream().map(Category::getName).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,7 @@
 package pizzaShop.entity;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class Category implements Comparable<Category>, Serializable {
     private Integer id;
     @NotNull
     @Column(name = "NAME")
+    @NotBlank(message = "Выберите одну или несколько категорий")
     private String name;
     @NotNull
     @Column(name = "ORDERS")

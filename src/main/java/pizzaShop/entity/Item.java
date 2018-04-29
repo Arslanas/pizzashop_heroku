@@ -1,11 +1,15 @@
 package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import pizzaShop.entity.embedded.Image;
 import pizzaShop.entity.embedded.MonetaryAmount;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +22,11 @@ public class Item implements Serializable{
     private Long id;
     @NotNull
     @Column(name = "NAME")
+    @NotBlank(message = "Заполните поле")
     private String name;
 
+    @Valid
+    @NotNull(message = "Назначьте цену")
     private MonetaryAmount price = new MonetaryAmount(0);
 
     @Column(name = "DESCRIPTION")
@@ -29,6 +36,7 @@ public class Item implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, orphanRemoval = true)
+    @NotEmpty(message = "Выберите категорию")
     private Set<CategorizedItem> categorizedItems = new HashSet<>();
 
     public Item() {

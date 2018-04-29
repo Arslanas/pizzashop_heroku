@@ -11,10 +11,12 @@ import javax.validation.constraints.Pattern;
 public class Contact {
     @Column(name = "PHONENUM")
     @NotNull
-    @NotBlank
-    @Pattern(regexp = "^\\+7 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$", message = "Not matches")
+    @NotBlank(message = "Заполните поле")
+    @Pattern(regexp = "^\\+7 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$", message = "Неправильный номер")
     private String phoneNum;
     @Column(name = "EMAIL")
+    @NotBlank(message = "Заполните поле")
+    @Pattern(regexp = ".*@.*", message = "Неправильный адрес почты")
     private String email;
 
     public Contact() {

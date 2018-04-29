@@ -2,10 +2,13 @@ package pizzaShop.temp;
 
 ;import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 public class TempClass {
     public static void main(String[] args) {
-        System.out.println(Double.valueOf("231.12312"));
+//        System.out.println(Double.valueOf("231.12312"));
 //        CategorizedItem categorizedItem = new CategorizedItem();
 //        Category category = new Category();
 //        category.setName("ars");
@@ -15,6 +18,7 @@ public class TempClass {
 //
         LocalDateTime dateTime = LocalDateTime.now();
         System.out.println(dateTime);
+        System.out.println(dateTime.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("eng"))));
 //        System.out.println(dateTime.toLocalDate());
 //        System.out.println(dateTime.toLocalTime());
 //        System.out.println(dateTime.format(DateTimeFormatter.ISO_DATE));

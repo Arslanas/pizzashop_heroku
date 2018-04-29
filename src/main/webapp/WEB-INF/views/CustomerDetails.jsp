@@ -32,6 +32,7 @@
                         <div class="form-group">
                             <sf:label path="username" for="Name">Имя</sf:label>
                             <sf:input path="username"  type="text" class="form-control" id="Name" />
+                            <sf:errors path="username" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <sf:input path="password" type="hidden" class="form-control" id="Password" />
@@ -39,11 +40,12 @@
                         <div class="form-group">
                             <sf:label path="contact.phoneNum" for="Mobil">Мобильный тел.</sf:label>
                             <sf:input path="contact.phoneNum"  type="text" class="form-control" id="Mobil"/>
-                            <sf:errors path="contact.phoneNum"/>
+                            <sf:errors path="contact.phoneNum" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <label for="Mobil">Адрес</label>
+                            <sf:label path="address.streetHome" for="Address">Адрес</sf:label>
                             <sf:input path="address.streetHome" type="text" class="form-control" id="Address"/>
+                            <sf:errors path="address.streetHome" cssClass="alert-danger"/>
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">

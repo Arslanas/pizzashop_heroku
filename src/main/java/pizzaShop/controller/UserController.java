@@ -5,15 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import pizzaShop.entity.ShoppingCart;
 import pizzaShop.entity.User;
 import pizzaShop.service.*;
+import pizzaShop.validator.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -39,8 +40,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String userRegistrationPost(@ModelAttribute User user) {
-
+    public String userRegistrationPost(@Valid @ModelAttribute User user, Errors errors, Model model) {
+        if (errors.hasErrors()){
+            model.addAttribute("user", user);
+            return "UserRegistration";
+        }
         userService.save(user);
         return "RegistrationSuccess";
     }
@@ -81,7 +85,10 @@ public class UserController {
 
     }
 
-
+    @InitBinder("user")
+    public void userBinder(WebDataBinder binder){
+        binder.addValidators(new UserValidator(userService));
+    }
     private String getUsername() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }

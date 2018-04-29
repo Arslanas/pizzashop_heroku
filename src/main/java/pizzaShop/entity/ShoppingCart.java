@@ -34,11 +34,11 @@ public class ShoppingCart {
 
     @JsonIgnore
     public String getFormattedDate() {
-        return date.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL));
+        return date.toLocalDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(new Locale("ru")));
     }
     @JsonIgnore
     public String getFormattedTime() {
-        return date.toLocalTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+        return date.toLocalTime().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(new Locale("ru")));
     }
 
 
