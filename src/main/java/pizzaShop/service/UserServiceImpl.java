@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pizzaShop.entity.User;
 import pizzaShop.repository.UserRepo;
 
-import java.util.Set;
 
 @Service
 @Transactional
