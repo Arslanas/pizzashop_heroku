@@ -56,8 +56,6 @@ public class AdminController {
         } else {
             user.setEnabled(true);
         }
-
-        logger.info(user);
         return userService.save(user);
     }
 

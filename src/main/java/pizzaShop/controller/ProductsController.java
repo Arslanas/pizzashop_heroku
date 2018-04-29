@@ -39,15 +39,13 @@ public class ProductsController {
     private final UserService userService;
     private final ShoppingCartService shoppingCartService;
     private final ItemService itemService;
-    private final CategorizedItemService categorizedItemService;
 
     @Autowired
-    public ProductsController(UserService userService, ShoppingCartService shoppingCartService, CategoryService categoryService, ItemService itemService, CategorizedItemService categorizedItemService) {
+    public ProductsController(UserService userService, ShoppingCartService shoppingCartService, CategoryService categoryService, ItemService itemService) {
         this.categoryService = categoryService;
         this.shoppingCartService = shoppingCartService;
         this.userService = userService;
         this.itemService = itemService;
-        this.categorizedItemService = categorizedItemService;
     }
 
     //////////////      PRODUCTS
@@ -96,7 +94,6 @@ public class ProductsController {
     @ResponseBody
     public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
         cart.add(new Product(item));
-        logger.info(cart);
         return cart;
     }
 
@@ -114,8 +111,6 @@ public class ProductsController {
             session.setAttribute("isRegistered", true);
         }
         session.setAttribute("authorities", SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().map(e -> e.getAuthority()).collect(Collectors.toList()));
-
-        logger.info(session.getAttribute("authorities"));
         model.addAttribute("cartSet", cart.getCart());
         return "ShoppingCart";
     }
@@ -174,7 +169,6 @@ public class ProductsController {
     public String customerDetailsPost(HttpSession session, Model model, @Valid @ModelAttribute("customer") User customer, Errors errors) {
         if (errors.hasErrors()) {
             model.addAttribute("customer", customer);
-            logger.info(errors);
             return "CustomerDetails";
         }
         session.setAttribute("customer", customer);

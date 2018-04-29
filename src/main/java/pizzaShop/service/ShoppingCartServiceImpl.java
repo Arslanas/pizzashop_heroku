@@ -19,7 +19,7 @@ public class ShoppingCartServiceImpl extends GenericServiceImpl<ShoppingCart, Lo
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartRepo repo, ProductService productService) {
         super(ShoppingCart.class, repo);
-        this.repo = (ShoppingCartRepo) repo;
+        this.repo = repo;
         this.productService = productService;
     }
 
