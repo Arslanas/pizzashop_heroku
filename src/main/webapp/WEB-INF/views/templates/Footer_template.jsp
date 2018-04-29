@@ -14,5 +14,4 @@
 <script src="${contextPath}/resources/vendor/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/vendor/js/jquery.mask.min.js"></script>
 <script src="${contextPath}/resources/custom_js/ProductsScript.js"></script>
-<script src="${contextPath}/resources/custom_js/addProductFormValidator.js"></script>
 <script src="${contextPath}/resources/vendor/js/bootstrap.min.js"></script>

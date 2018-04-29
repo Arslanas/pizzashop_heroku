@@ -1,10 +1,10 @@
 $().ready(function () {
     $("#addProductForm").validate({
         rules:{
-            // name:"required",
-            // setOfCategorizedItems:"required",
-            // description:"required",
-            // price:"required",
+            name:"required",
+            setOfCategorizedItems:"required",
+            description:"required",
+            price:"required"
         },
         messages:{
             name:"Введите название",

@@ -31,7 +31,7 @@
 
                 <!-- Form -->
                 <div class="col-12 mt-4 mb-5">
-                    <sf:form action="${contextPath}/user/registration" commandName="user" method="POST">
+                    <sf:form id = "UserRegistrationFormID" action="${contextPath}/user/registration" commandName="user" method="POST">
                         <div class="form-group">
                             <label for="Name">Имя профиля</label>
                             <sf:input path="username" type="text" name="username" class="form-control" id="Name" />
@@ -48,8 +48,8 @@
                             <sf:errors path="contact.email" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <label for="Mobil">Мобильный тел.</label>
-                            <sf:input path="contact.phoneNum" type="text" class="form-control" id="Mobil"/>
+                            <label for="phoneNumID">Мобильный тел.</label>
+                            <sf:input path="contact.phoneNum" type="text" class="form-control" id="phoneNumID"/>
                             <sf:errors path="contact.phoneNum" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
@@ -88,6 +88,7 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp"%>
-
+<script src="${contextPath}/resources/custom_js/UserRegistrationScript.js"></script>
+<script>$(document).ready(UserRegistrationInit())</script>
 </body>
 </html>

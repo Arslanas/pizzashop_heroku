@@ -31,7 +31,7 @@
                 <!-- Form -->
                 <div class="col-11 mx-auto mt-4 mb-5">
 
-                    <sf:form action="${contextPath}/admin/editProduct" method="POST" modelAttribute="${item}"
+                    <sf:form id="editProductForm" action="${contextPath}/admin/editProduct" method="POST" modelAttribute="${item}"
                              commandName="item"
                              enctype="multipart/form-data">
                         <div class="form-group">

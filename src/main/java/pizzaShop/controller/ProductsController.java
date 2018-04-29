@@ -9,10 +9,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import pizzaShop.entity.*;
+import pizzaShop.entity.embedded.Address;
+import pizzaShop.entity.embedded.Contact;
 import pizzaShop.entity.embedded.MonetaryAmount;
 import pizzaShop.entity.Product;
 import pizzaShop.service.*;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -173,6 +178,7 @@ public class ProductsController {
     public String customerDetailsPost(HttpSession session, Model model, @Valid @ModelAttribute("customer") User customer, Errors errors) {
         if (errors.hasErrors()) {
             model.addAttribute("customer", customer);
+            logger.info(errors);
             return "CustomerDetails";
         }
         session.setAttribute("customer", customer);
@@ -223,7 +229,7 @@ public class ProductsController {
     }
 
     private User getCustomerUser() {
-        return new User("", "", false);
+        return new User("", "customerPassword", false, new Contact("", "customer@email"), new Address());
     }
 
     private boolean isAnonymous() {
@@ -246,5 +252,4 @@ public class ProductsController {
         });
         return cart;
     }
-
 }

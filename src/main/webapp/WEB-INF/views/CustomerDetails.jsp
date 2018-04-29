@@ -38,8 +38,11 @@
                             <sf:input path="password" type="hidden" class="form-control" id="Password" />
                         </div>
                         <div class="form-group">
+                            <sf:input path="contact.email" type="hidden" class="form-control" id="emailID" />
+                        </div>
+                        <div class="form-group">
                             <sf:label path="contact.phoneNum" for="Mobil">Мобильный тел.</sf:label>
-                            <sf:input path="contact.phoneNum"  type="text" class="form-control" id="Mobil"/>
+                            <sf:input path="contact.phoneNum"  type="text" class="form-control" id="phoneNumID"/>
                             <sf:errors path="contact.phoneNum" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
@@ -79,6 +82,6 @@
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp"%>
 <script src="${contextPath}/resources/custom_js/customerDetails.js"></script>
-<script>$(document).ready(addMask())</script>
+<script>$(document).ready(validateForm())</script>
 </body>
 </html>
