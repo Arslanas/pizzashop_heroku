@@ -20,7 +20,6 @@ import pizzaShop.entity.Product;
 import pizzaShop.service.*;
 import pizzaShop.utilities.CustomPropertyMonetaryAmount;
 import pizzaShop.utilities.CustomPropertyCategorizedItem;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

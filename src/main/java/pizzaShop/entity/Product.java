@@ -2,7 +2,6 @@ package pizzaShop.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import pizzaShop.entity.embedded.MonetaryAmount;
-
 import javax.persistence.*;
 
 @Entity

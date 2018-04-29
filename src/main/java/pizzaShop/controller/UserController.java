@@ -12,7 +12,6 @@ import pizzaShop.entity.ShoppingCart;
 import pizzaShop.entity.User;
 import pizzaShop.service.*;
 import pizzaShop.utilities.UserValidator;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;

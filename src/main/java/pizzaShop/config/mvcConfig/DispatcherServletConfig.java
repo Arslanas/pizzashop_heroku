@@ -2,7 +2,6 @@ package pizzaShop.config.mvcConfig;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
 import javax.servlet.*;
 import javax.servlet.ServletRegistration.Dynamic;
 

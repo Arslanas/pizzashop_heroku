@@ -1,16 +1,12 @@
 package pizzaShop.entity.embedded;
 
-import org.hibernate.validator.constraints.NotBlank;
 import pizzaShop.utilities.CurrencyConverterJPA;
-
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 @Embeddable
 public class MonetaryAmount {
