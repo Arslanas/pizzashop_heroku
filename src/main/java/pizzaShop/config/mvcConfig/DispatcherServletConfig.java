@@ -23,19 +23,20 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
     }
 
     @Override
-    protected Filter[] getServletFilters() {
-        return new Filter[]{new CharacterEncodingFilter("UTF-8", true)};
-    }
-
-    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
+
+        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
+        encodingFilter.setInitParameter("encoding", "UTF-8");
+        encodingFilter.setInitParameter("forceEncoding", "true");
+        encodingFilter.addMappingForUrlPatterns(null, false, "/*");
+
         servletContext.setInitParameter("spring.profiles.active", "prod");
     }
     @Override
     public void customizeRegistration(Dynamic registration) {
-       registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
-//        registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
+//       registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
+        registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
     }
 
 }
