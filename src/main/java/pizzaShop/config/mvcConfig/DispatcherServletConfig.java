@@ -1,9 +1,6 @@
 package pizzaShop.config.mvcConfig;
 
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import pizzaShop.utilities.CharacterEncodingFilterExtended;
-
 import javax.servlet.*;
 import javax.servlet.ServletRegistration.Dynamic;
 
@@ -26,11 +23,6 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-
-        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
-        encodingFilter.setInitParameter("encoding", "UTF-8");
-        encodingFilter.setInitParameter("forceEncoding", "true");
-        encodingFilter.addMappingForUrlPatterns(null, false, "/*");
 
         super.onStartup(servletContext);
 
