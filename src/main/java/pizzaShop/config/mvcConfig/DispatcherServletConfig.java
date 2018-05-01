@@ -2,6 +2,8 @@ package pizzaShop.config.mvcConfig;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import pizzaShop.utilities.CharacterEncodingFilterExtended;
+
 import javax.servlet.*;
 import javax.servlet.ServletRegistration.Dynamic;
 
@@ -24,20 +26,19 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
 
-        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
+        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilterExtended());
         encodingFilter.setInitParameter("encoding", "UTF-8");
         encodingFilter.setInitParameter("forceEncoding", "true");
         encodingFilter.addMappingForUrlPatterns(null, false, "/*");
-
-        super.onStartup(servletContext);
 
         servletContext.setInitParameter("spring.profiles.active", "prod");
     }
     @Override
     public void customizeRegistration(Dynamic registration) {
        registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
-//        registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
+//       registration.setMultipartConfig(new MultipartConfigElement("D:\\temp"));
     }
 
 }

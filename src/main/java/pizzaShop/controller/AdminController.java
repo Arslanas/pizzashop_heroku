@@ -80,7 +80,7 @@ public class AdminController {
             model.addAttribute("item", item);
             return "Add_product";
         }
-        itemService.setPicture(item, file);
+        if (file != null) itemService.setPicture(item, file);
         itemService.save(item);
         return "redirect:/products";
     }
@@ -101,7 +101,7 @@ public class AdminController {
             model.addAttribute("item", item);
             return "Edit_product";
         }
-        itemService.setPicture(item, file);
+        if (file != null) itemService.setPicture(item, file);
         itemService.update(item);
         return "redirect:/products";
     }
