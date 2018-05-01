@@ -24,12 +24,13 @@ public class DispatcherServletConfig extends AbstractAnnotationConfigDispatcherS
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
 
         FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
         encodingFilter.setInitParameter("encoding", "UTF-8");
         encodingFilter.setInitParameter("forceEncoding", "true");
         encodingFilter.addMappingForUrlPatterns(null, false, "/*");
+
+        super.onStartup(servletContext);
 
         servletContext.setInitParameter("spring.profiles.active", "prod");
     }
