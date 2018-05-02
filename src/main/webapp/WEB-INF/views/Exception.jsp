@@ -18,7 +18,10 @@
 
 <div class="container">
     <div class="row">
-        <h1 class="mx-auto mt-5 mb-5 text-primary">Exception occured</h1>
+        <h1 class="mx-auto mt-5 mb-5 text-info">Извините, произошла ошибка</h1>
+    </div>
+    <div class="row">
+        <a href="${contextPath}/" class="btn btn-warning mx-auto mt-5 mb-5">Продолжить</a>
     </div>
 </div>
 

@@ -37,15 +37,18 @@
                         </ol>
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
-                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid"
+                                     src="${contextPath}/resources/images/carousel_1_cropped.jpg"
                                      alt="First slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid"
+                                     src="${contextPath}/resources/images/carousel_2_cropped.jpg"
                                      alt="Second slide">
                             </div>
                             <div class="carousel-item">
-                                <img class="d-block img-fluid" src="${contextPath}/resources/vendor/images/1200x350.png"
+                                <img class="d-block img-fluid"
+                                     src="${contextPath}/resources/images/carousel_4_cropped.jpg"
                                      alt="Third slide">
                             </div>
                         </div>
@@ -88,9 +91,7 @@
                                         <h4 class="card-title text-info">
                                                 ${item.name}
                                         </h4>
-
                                         <small class="text-muted">${item.description}</small>
-
                                     </div>
                                     <div class="card-footer">
                                         <div class="row">
@@ -99,7 +100,8 @@
                                             </div>
                                             <div class="col-6 mt-2">
                                                 <button id="itemID-${item.id}" onclick="addToCart(${item.id})"
-                                                   class="btn btn-outline-warning active btn-sm">Заказать</button>
+                                                        class="btn btn-outline-warning active btn-sm">Заказать
+                                                </button>
                                             </div>
                                         </div>
                                         <sec:authorize access="hasAuthority('ADMIN')">

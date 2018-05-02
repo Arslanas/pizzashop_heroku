@@ -22,10 +22,7 @@
             <div class="row">
 
                 <div class="col-12  mx-auto mt-5 jumbotron">
-                    <h1 class="text-center text-info jumbotron">Благодарим Вас за заказ!</h1>
-                    <br>
-                    <br>
-                    <h5 class="text-center text-info">Наш диспетчер перезвонит Вам в течении 10 минут!</h5>
+                    <h1 class="text-center text-info jumbotron">Ваш заказ принят!</h1>
                 </div>
             </div>
         </div>

@@ -16,11 +16,8 @@
                        class="btn btn-outline-info bg-info btn-block text-white ">${category.name}</a>
                 </c:forEach>
                 <sec:authorize access="hasAuthority('ADMIN')">
-                    <a href="${contextPath}/admin/addProduct" class="btn btn-outline-info bg-info btn-block text-white">Add
-                        product</a>
-                    <a href="${contextPath}/admin/userManagement"
-                       class="btn btn-outline-info bg-info btn-block text-white ">All
-                        users</a>
+                    <a href="${contextPath}/admin/addProduct" class="btn btn-outline-info bg-info btn-block text-white">Добавить продукт</a>
+                    <a href="${contextPath}/admin/userManagement" class="btn btn-outline-info bg-info btn-block text-white ">Пользователи</a>
                 </sec:authorize>
             </div>
         </div>
