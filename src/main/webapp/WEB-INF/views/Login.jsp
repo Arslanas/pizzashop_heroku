@@ -31,7 +31,7 @@
 
                 <!-- Form -->
                 <div class="col-8 mx-auto mt-4 mb-5">
-                    <sf:form action="${contextPath}/login" method="post">
+                    <sf:form id = "loginFormID" action="${contextPath}/login" method="post">
                         <div class="form-group">
                             <label for="Name">Имя профиля</label>
                             <input type=text" class="form-control" name="username" id="Name">

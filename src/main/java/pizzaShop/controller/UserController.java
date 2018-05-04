@@ -57,12 +57,16 @@ public class UserController {
 
     @RequestMapping("/detailsEdit")
     public String userDetailsEdit(Model model) {
-        model.addAttribute("user", userService.findByUsername(getUsername()));
+        model.addAttribute("userEdit", userService.findByUsername(getUsername()));
         return "User_details_edit";
     }
 
     @RequestMapping(value = "/detailsEdit", method = RequestMethod.POST)
-    public String userDetailsEditPost(@ModelAttribute User user) {
+    public String userDetailsEditPost(Model model, @Valid @ModelAttribute("userEdit") User user, Errors errors) {
+        if(errors.hasErrors()){
+            model.addAttribute("userEdit", user);
+            return  "User_details_edit";
+        }
         userService.update(user);
         return "redirect:/products";
     }

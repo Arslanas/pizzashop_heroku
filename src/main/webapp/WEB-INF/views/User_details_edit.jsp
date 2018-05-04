@@ -27,25 +27,30 @@
                 </div>
                 <!-- Form -->
                 <div class="col-12 mt-4 mb-5">
-                    <sf:form action="${contextPath}/user/detailsEdit" commandName="user" method="POST">
+                    <sf:form id = "UserRegistrationFormID" action="${contextPath}/user/detailsEdit" commandName="userEdit" method="POST">
                         <div class="form-group">
                             <sf:input path="username" type="hidden" name="username" class="form-control" id="Name" />
+                            <sf:errors path="username" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <label for="Password">Пароль</label>
                             <sf:input path="password" type="text"  name="password" class="form-control" id="Password"/>
+                            <sf:errors path="password" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
                             <label for="Email">Почта</label>
                             <sf:input path="contact.email" type="email" class="form-control" id="Email"/>
+                            <sf:errors path="contact.email" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <label for="Mobil">Мобильный тел.</label>
-                            <sf:input path="contact.phoneNum" type="text" class="form-control" id="Mobil"/>
+                            <label for="phoneNumID">Мобильный тел.</label>
+                            <sf:input path="contact.phoneNum" type="text" class="form-control" id="phoneNumID"/>
+                            <sf:errors path="contact.phoneNum" cssClass="alert-danger"/>
                         </div>
                         <div class="form-group">
-                            <label for="Mobil">Адрес</label>
+                            <label for="Address">Адрес</label>
                             <sf:input path="address.streetHome" type="text" class="form-control" id="Address"/>
+                            <sf:errors path="address.streetHome" cssClass="alert-danger"/>
                         </div>
                         <div class="form-inline justify-content-center mt-5">
                             <div class="form-group">
@@ -78,6 +83,7 @@
 
 <!-- Footer -->
 <%@ include file="templates/Footer_template.jsp"%>
-
+<script src="${contextPath}/resources/custom_js/UserRegistrationScript.js"></script>
+<script>$(document).ready(UserRegistrationInit())</script>
 </body>
 </html>

@@ -38,17 +38,17 @@
                         <div class="carousel-inner" role="listbox">
                             <div class="carousel-item active">
                                 <img class="d-block img-fluid"
-                                     src="${contextPath}/resources/images/carousel_1_cropped.jpg"
+                                     src="${contextPath}/resources/images/carousel_1_cropped_2V.jpg"
                                      alt="First slide">
                             </div>
                             <div class="carousel-item">
                                 <img class="d-block img-fluid"
-                                     src="${contextPath}/resources/images/carousel_2_cropped.jpg"
+                                     src="${contextPath}/resources/images/carousel_2_cropped_2V.jpg"
                                      alt="Second slide">
                             </div>
                             <div class="carousel-item">
                                 <img class="d-block img-fluid"
-                                     src="${contextPath}/resources/images/carousel_4_cropped.jpg"
+                                     src="${contextPath}/resources/images/carousel_3_cropped_2V.jpg"
                                      alt="Third slide">
                             </div>
                         </div>
