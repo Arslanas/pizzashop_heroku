@@ -3,6 +3,7 @@ package pizzaShop.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,7 +52,7 @@ public class ProductsController {
     //////////////      PRODUCTS
 
     @RequestMapping(value = {"/", "/products"})
-    public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "name") Pageable pageable) {
+    public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "price.amount", direction = Sort.Direction.DESC) Pageable pageable) {
         model.addAttribute("page", itemService.findAll(pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
         return "Products";
