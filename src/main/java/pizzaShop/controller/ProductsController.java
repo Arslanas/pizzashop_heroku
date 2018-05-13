@@ -55,7 +55,7 @@ public class ProductsController {
     public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "price.amount", direction = Sort.Direction.DESC) Pageable pageable) {
         model.addAttribute("page", itemService.findAll(pageable));
         model.addAttribute("requestType", request.getRequestURL().toString());
-        return "Products";
+        return "Home";
     }
 
     @RequestMapping("/products/{category}")
