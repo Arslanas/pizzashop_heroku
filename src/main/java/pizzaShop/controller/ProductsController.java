@@ -49,7 +49,7 @@ public class ProductsController {
         this.itemService = itemService;
     }
 
-    //////////////      PRODUCTS
+//////////////      PRODUCTS
 
     @RequestMapping(value = {"/", "/products"})
     public String products(Model model, HttpServletRequest request, @PageableDefault(size = Integer.MAX_VALUE, sort = "price.amount", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -90,7 +90,7 @@ public class ProductsController {
         }
     }
 
-    //////////////          SHOPPINGCART
+//////////////          SHOPPINGCART
     @RequestMapping(value = "/products/add/{itemID}")
     @ResponseBody
     public ShoppingCart addItemToCart(@PathVariable("itemID") Item item, @SessionAttribute("cart") ShoppingCart cart) {
@@ -122,7 +122,7 @@ public class ProductsController {
         return "redirect:/products";
     }
 
-    //////////////      REST
+//////////////      REST
 
     @RequestMapping("/products/shoppingCart/increase/{item}")
     @ResponseBody
@@ -145,10 +145,7 @@ public class ProductsController {
         return cart;
     }
 
-//////////////      REST
-//////////////          SHOPPINGCART
-
-    //////////////          ORDER_CONFIRMATION
+//////////////          ORDER_CONFIRMATION
 
     @RequestMapping("/products/customerDetails")
     public String customerDetails(Model model, HttpSession session) {
@@ -194,20 +191,15 @@ public class ProductsController {
         return "OrderSuccess";
     }
 
-//////////////          ORDER_CONFIRMATION
-
-
-    //////////////          VALIDATOR
+//////////////          VALIDATOR
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(CategorizedItem.class, new CustomPropertyCategorizedItem(categoryService));
         binder.registerCustomEditor(MonetaryAmount.class, new CustomPropertyMonetaryAmount());
     }
-//////////////          VALIDATOR
 
 
-//////////////          Helpers
-
+//////////////
 
     @ModelAttribute("cart")
     public ShoppingCart shoppingCart() {
