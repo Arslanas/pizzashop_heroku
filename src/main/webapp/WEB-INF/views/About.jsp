@@ -39,7 +39,7 @@
             <p class=" text-white text-center"><a class="font-weight-bold text-warning" href="https://github.com/Arslanas/pizzashop_heroku">GitHub</a> </p>
             <p class=" text-white text-center">
                 Для входа в приложение в качестве администратора используйте
-                логин - <span class="text-warning font-weight-bold">admin</span> и пароль - <span class="text-warning font-weight-bold">password</span>.
+                логин - <span class="text-warning font-weight-bold">admin</span> и пароль - <span class="text-warning font-weight-bold">password</span>. У администратора имеется возможность добавления, редактирования товаров и просмотр списка зарегистрированных пользователей.
                 Регистрация в приложении не требует подтверждения введенных Вами данных (используйте произвольные)
             </p>
             <p class=" text-white text-center"><a class="btn btn-warning" href="${contextPath}/">Приложение</a> </p>
