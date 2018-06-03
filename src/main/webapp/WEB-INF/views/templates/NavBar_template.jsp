@@ -33,6 +33,7 @@
                             <div class="dropdown-menu" aria-labelledby="userMenu">
                                 <a class="dropdown-item" href="${contextPath}/user/orders">Ваши заказы</a>
                                 <a class="dropdown-item" href="${contextPath}/user/details">Ваш профиль</a>
+                                <a class="dropdown-item" href="${contextPath}/about">Про</a>
                                 <div class="dropdown-divider"></div>
                                 <sf:form action="${contextPath}/logout" method="POST">
                                     <button type="submit" class="dropdown-item">Выход</button>
@@ -52,6 +53,7 @@
                             <div class="dropdown-menu" aria-labelledby="userMenuAnonym">
                                 <a class="dropdown-item" href="${contextPath}/login">Вход</a>
                                 <a class="dropdown-item" href="${contextPath}/user/registration">Регистрация</a>
+                                <a class="dropdown-item" href="${contextPath}/about">Про</a>
                             </div>
                         </div>
                     </li>

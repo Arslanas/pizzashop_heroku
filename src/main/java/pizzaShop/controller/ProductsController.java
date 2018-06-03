@@ -191,6 +191,10 @@ public class ProductsController {
         return "OrderSuccess";
     }
 
+    @RequestMapping(value = "/about")
+    public String about(){
+        return "About";
+    }
 //////////////          VALIDATOR
     @InitBinder
     public void initBinder(WebDataBinder binder) {
