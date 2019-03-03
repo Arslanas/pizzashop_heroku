@@ -15,6 +15,7 @@ public class PingController {
     private final String server = "https://homefin-server.herokuapp.com";
     private double min = 0.2;
     private int count;
+    private int responseCount;
 
 
     @GetMapping()
@@ -23,7 +24,12 @@ public class PingController {
     }
     @GetMapping("pingResponse")
     public String pingResponse() {
-        return "Ping_Response_OK";
+        responseCount++;
+        return "Pizzars_response_OK";
+    }
+    @GetMapping("getResponseCount")
+    public int getResponseCount() {
+        return responseCount;
     }
 
 
