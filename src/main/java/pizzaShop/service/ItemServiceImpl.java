@@ -27,7 +27,6 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Long> implements I
     CategorizedItemService categorizedItemService;
     ProductService productService;
 
-
     @Autowired
     public ItemServiceImpl(ItemRepo itemRepo, CategorizedItemService categorizedItemService, ProductService productService) {
         super(Item.class, itemRepo);
