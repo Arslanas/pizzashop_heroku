@@ -12,8 +12,8 @@ import org.springframework.web.client.RestTemplate;
 public class PingController {
     @Autowired
     RestTemplate restTemplate;
-    private final String server = "https://homefin-server.herokuapp.com";
-    private double min = 0.2;
+    private final String server = "https://homefin-server.herokuapp.com/ping/pingResponse";
+    private double min = 0.5;
     private int count;
     private int responseCount;
 
